@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+  
+  <parameters>
+      <parameter key="ecommit_javascript.manager.class">Ecommit\JavascriptBundle\jQuery\Manager</parameter>
+      <parameter key="ecommit_javascript.jQuery_core.js">/jQuery/jquery.min.js</parameter>
+      <parameter key="ecommit_javascript.jQuery_core.auto_enable">false</parameter>
+      <parameter key="ecommit_javascript.jQuery_tools.js">/jQuery/tools/jquery.tools.min.js</parameter>
+      <parameter key="ecommit_javascript.twig.extension.jQuery.class">Ecommit\JavascriptBundle\Twig\jQueryExtension</parameter>
+      <parameter key="ecommit_javascript.jQuery.ajax.autocallbacks">true</parameter>
+      <parameter key="ecommit_javascript.listener.class">Ecommit\JavascriptBundle\Listener\JavascriptListener</parameter>
+  </parameters>
+  
+  <services>
+    <service id="ecommit_javascript.manager" class="%ecommit_javascript.manager.class%">
+        <argument type="collection">
+                <argument key="js">%ecommit_javascript.jQuery_core.js%</argument>
+                <argument key="auto_enable">%ecommit_javascript.jQuery_core.auto_enable%</argument>
+        </argument>
+        <argument type="collection">
+                <argument key="js">%ecommit_javascript.jQuery_tools.js%</argument>
+        </argument>
+        <argument>%ecommit_javascript.jQuery.ajax.autocallbacks%</argument>
+        <argument type="service" id="translator" on-invalid="ignore" />
+    </service>
+    
+    <service id="ecommit_javascript.twig.extension.jQuery" class="%ecommit_javascript.twig.extension.jQuery.class%">
+        <argument type="service" id="ecommit_javascript.manager" />
+        <tag name="twig.extension" />
+    </service>
+    
+    <service id="ecommit_javascript.listener" class="%ecommit_javascript.listener.class%">
+            <tag name="kernel.listener" event="onCoreResponse" />
+            <argument type="service" id="ecommit_javascript.manager" />
+    </service>
+  </services>
+</container>
