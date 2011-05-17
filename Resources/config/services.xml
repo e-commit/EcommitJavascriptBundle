@@ -21,7 +21,7 @@
                 <argument key="js">%ecommit_javascript.jQuery_tools.js%</argument>
         </argument>
         <argument>%ecommit_javascript.jQuery.ajax.autocallbacks%</argument>
-        <argument type="service" id="translator" on-invalid="ignore" />
+        <argument type="service" id="ecommit_util.helper" />
     </service>
     
     <service id="ecommit_javascript.twig.extension.jQuery" class="%ecommit_javascript.twig.extension.jQuery.class%">

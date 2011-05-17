@@ -12,7 +12,7 @@
 namespace Ecommit\JavascriptBundle\jQuery;
 
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Ecommit\UtilBundle\Helper\UtilHelper;
 
 class Manager 
 {
@@ -25,18 +25,17 @@ class Manager
     protected  $jQuery_tools_enabled = false;
     
     protected $ajaxAutoCallbacks;
-    protected $translator = null;
-
+    protected $util;
 
     /**
      * Constructor
      * 
      * @param array $jQuery_core
      * @param array $jQuery_tools
-     * @param type $ajaxAutoCallbacks
-     * @param TranslatorInterface $translator 
+     * @param bool $ajaxAutoCallbacks 
+     * @param UtilHelper $utilHelper
      */
-    public function __construct(Array $jQuery_core, Array $jQuery_tools, $ajaxAutoCallbacks, TranslatorInterface $translator = null) 
+    public function __construct(Array $jQuery_core, Array $jQuery_tools, $ajaxAutoCallbacks, UtilHelper $util) 
     {
         $this->loadFiles($jQuery_core, 'jQuery_core');
         $this->loadFiles($jQuery_tools, 'jQuery_tools');
@@ -48,7 +47,7 @@ class Manager
         }
         
         $this->ajaxAutoCallbacks = $ajaxAutoCallbacks;
-        $this->translator = $translator;
+        $this->util = $util;
     }
     
     /**
@@ -224,7 +223,7 @@ class Manager
     {
         $html_options['href'] = isset($html_options['href']) ? $html_options['href'] : '#';
         $html_options['onclick'] = $this->jQueryRemoteFunction($url, $options).'; return false;';
-        return $this->tag('a', $html_options, $name);
+        return $this->util->tag('a', $html_options, $name);
     }
     
     /**
@@ -242,7 +241,7 @@ class Manager
         $html_options['type'] = 'button';
         $html_options['value'] = $name;
         $html_options['onclick'] = $this->jQueryRemoteFunction($url, $options).'; return false;';
-        return $this->tag('input', $html_options);
+        return $this->util->tag('input', $html_options);
     }
     
     /**
@@ -261,7 +260,7 @@ class Manager
         $html_options['action'] = isset($options_html['action']) ? $options_html['action'] : $url;
 	$html_options['method'] = isset($options_html['method']) ? $options_html['method'] : 'post';
         $html_options['onsubmit'] = $this->jQueryRemoteFunction($url, $options).'; return false;';
-        return $this->tag('form', $html_options, null, true);
+        return $this->util->tag('form', $html_options, null, true);
     }
     
     /**
@@ -305,10 +304,10 @@ class Manager
 	// Auto callback
         if(($this->ajaxAutoCallbacks && empty($options['auto_errors'])) || !empty($options['auto_errors']))
         {
-            $callback_error = "if(XMLHttpRequest.status=='401'){alert('".$this->escape_javascript($this->translate('Vous avez perdu la connexion.'))."');window.location.reload(true);}";
-            $callback_error .= "else if(XMLHttpRequest.status=='403'){alert('".$this->escape_javascript($this->translate('Vous n\'avez pas les droits nécessaires.'))."');}";
-            $callback_error .= "else if(XMLHttpRequest.status=='404'){alert('".$this->escape_javascript($this->translate('La page demandée est introuvable.'))."');}";
-            $callback_error .= "else if(XMLHttpRequest.status=='500'){alert('".$this->escape_javascript($this->translate('Une erreur est survenue.'))."');}";            
+            $callback_error = "if(XMLHttpRequest.status=='401'){alert('".$this->util->escape_javascript($this->util->translate('Vous avez perdu la connexion.'))."');window.location.reload(true);}";
+            $callback_error .= "else if(XMLHttpRequest.status=='403'){alert('".$this->util->escape_javascript($this->util->translate('Vous n\'avez pas les droits nécessaires.'))."');}";
+            $callback_error .= "else if(XMLHttpRequest.status=='404'){alert('".$this->util->escape_javascript($this->util->translate('La page demandée est introuvable.'))."');}";
+            $callback_error .= "else if(XMLHttpRequest.status=='500'){alert('".$this->util->escape_javascript($this->util->translate('Une erreur est survenue.'))."');}";            
             if(isset($update_failure))
             {
                     $update_failure = $callback_error.' '.$update_failure;
@@ -388,7 +387,7 @@ class Manager
 	}
 	if (isset($options['confirm']))
 	{
-		$function = "if (confirm('".$this->escape_javascript($options['confirm'])."')) { $function; }";
+		$function = "if (confirm('".$this->util->escape_javascript($options['confirm'])."')) { $function; }";
 		if (isset($options['cancel']))
 		{
 			$function = $function.' else { '.$options['cancel'].' }';
@@ -396,65 +395,6 @@ class Manager
 	}
 
 	return $function;
-    }
-    
-    /**
-     * Constructs an html tag
-     * 
-     * @param string $name Tag name
-     * @param array $options Tag options
-     * @param string $content Content
-     * @param bool $open True to leave tag open
-     * @return string 
-     */
-    protected function tag($name, Array $options = array(), $content = null, $open = false)
-    {
-        if (!$name)
-        {
-            return '';
-        }
-        $options_html = '';
-        foreach ($options as $key => $value)
-        {
-            $options_html .= ' '.$key.'="'.\htmlspecialchars($value, \ENT_COMPAT).'"';
-        }
-        if($content)
-        {
-            return '<'.$name.$options_html.'>'.$content.'</'.$name.'>';
-        }
-        else
-        {
-            return '<'.$name.$options_html.(($open) ? '>' : ' />');
-        }
-    }
-    
-    /**
-     * Escapes text for Javascript
-     * 
-     * @param string $javascript Input Text
-     * @return string 
-     */
-    protected function escape_javascript($javascript = '')
-    {
-      $javascript = preg_replace('/\r\n|\n|\r/', "\\n", $javascript);
-      $javascript = preg_replace('/(["\'])/', '\\\\\1', $javascript);
-
-      return $javascript;
-    }
-    
-    /**
-     * Translates text
-     * 
-     * @param string $text Input text
-     * @return string 
-     */
-    protected function translate($text)
-    {
-        if(is_null($this->translator))
-        {
-            return $text;
-        }
-        return $this->translator->trans($text);
     }
 }
 
