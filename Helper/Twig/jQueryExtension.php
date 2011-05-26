@@ -48,12 +48,12 @@ class jQueryExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            'ecommit_jQuery_insert_js' => new Twig_Function_Method($this, 'insert_js', array('is_safe' => array('all'))),
-            'ecommit_jQuery_insert_css' => new Twig_Function_Method($this, 'insert_css', array('is_safe' => array('all'))),
-            'ecommit_jQuery_ajax' => new Twig_Function_Method($this, 'jQuery_remote_function', array('is_safe' => array('all'))),
-            'ecommit_jQuery_ajax_link' => new Twig_Function_Method($this, 'jQuery_link_to_remote', array('is_safe' => array('all'))),
-            'ecommit_jQuery_ajax_button' => new Twig_Function_Method($this, 'jQuery_button_to_remote', array('is_safe' => array('all'))),
-            'ecommit_jQuery_ajax_form' => new Twig_Function_Method($this, 'jQuery_form_to_remote', array('is_safe' => array('all'))),
+            'jQuery_insert_js' => new Twig_Function_Method($this, 'insert_js', array('is_safe' => array('all'))),
+            'jQuery_insert_css' => new Twig_Function_Method($this, 'insert_css', array('is_safe' => array('all'))),
+            'jQuery_ajax' => new Twig_Function_Method($this, 'jQuery_remote_function', array('is_safe' => array('all'))),
+            'jQuery_ajax_link' => new Twig_Function_Method($this, 'jQuery_link_to_remote', array('is_safe' => array('all'))),
+            'jQuery_ajax_button' => new Twig_Function_Method($this, 'jQuery_button_to_remote', array('is_safe' => array('all'))),
+            'jQuery_ajax_form' => new Twig_Function_Method($this, 'jQuery_form_to_remote', array('is_safe' => array('all'))),
         );
     }
     
