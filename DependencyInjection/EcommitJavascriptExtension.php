@@ -52,13 +52,6 @@ class EcommitJavascriptExtension extends Extension {
             $mergedConfig = array_merge($mergedConfig, $cnf);
         }
 
-        //Options du manager
-        if (isset($mergedConfig['manager']['class'])) 
-        {
-            $container->setParameter($alias . '.manager.class', $mergedConfig['manager']['class']);
-        }
-        
-        //Options du core de jQuery
         if (isset($mergedConfig['jQuery_core']['auto_enable'])) 
         {
             $container->setParameter($alias . '.jQuery_core.auto_enable', $mergedConfig['jQuery_core']['auto_enable']);
@@ -71,14 +64,9 @@ class EcommitJavascriptExtension extends Extension {
         {
             $container->setParameter($alias . '.jQuery_tools.js', $mergedConfig['jQuery_tools']['js']);
         }
-        if (isset($mergedConfig['twig']['extension']['jQuery']['class'])) 
+        if (isset($mergedConfig['ajax']['autocallbacks'])) 
         {
-            $container->setParameter($alias . '.twig.extension.jQuery.class', $mergedConfig['twig']['extension']['jQuery']['class']);
-        }
-        if (isset($mergedConfig['jQuery']['ajax']['autocallbacks'])) 
-        {
-            $container->setParameter($alias . '.jQuery.ajax.autocallbacks', $mergedConfig['jQuery']['ajax']['autocallbacks']);
+            $container->setParameter($alias . '.ajax.autocallbacks', $mergedConfig['ajax']['autocallbacks']);
         }
     }
-
 }

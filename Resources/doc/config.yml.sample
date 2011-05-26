@@ -1,0 +1,8 @@
+ecommit_javascript:
+    jQuery_core:
+         auto_enable: false
+         js: /file_jQuery_core.js
+    jQuery_tools:
+         js: /file_jQuery_tools.js
+    ajax:
+         autocallbacks: false

@@ -9,7 +9,7 @@
       <parameter key="ecommit_javascript.jQuery_core.auto_enable">false</parameter>
       <parameter key="ecommit_javascript.jQuery_core.js">/jQuery/jquery.min.js</parameter>
       <parameter key="ecommit_javascript.jQuery_tools.js">/jQuery/tools/jquery.tools.min.js</parameter>
-      <parameter key="ecommit_javascript.jQuery.ajax.autocallbacks">true</parameter>      
+      <parameter key="ecommit_javascript.ajax.autocallbacks">true</parameter>      
   </parameters>
   
   <services>
@@ -21,7 +21,7 @@
         <argument type="collection">
                 <argument key="js">%ecommit_javascript.jQuery_tools.js%</argument>
         </argument>
-        <argument>%ecommit_javascript.jQuery.ajax.autocallbacks%</argument>
+        <argument>%ecommit_javascript.ajax.autocallbacks%</argument>
         <argument type="service" id="ecommit_util.helper" />
     </service>
     
