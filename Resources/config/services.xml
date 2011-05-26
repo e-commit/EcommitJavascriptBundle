@@ -7,8 +7,8 @@
       <parameter key="ecommit_javascript.listener.class">Ecommit\JavascriptBundle\Listener\JavascriptListener</parameter>
       
       <parameter key="ecommit_javascript.jQuery_core.auto_enable">false</parameter>
-      <parameter key="ecommit_javascript.jQuery_core.js">/jQuery/jquery.min.js</parameter>
-      <parameter key="ecommit_javascript.jQuery_tools.js">/jQuery/tools/jquery.tools.min.js</parameter>
+      <parameter key="ecommit_javascript.jQuery_core.js">/bundles/ecommitjavascript/jQuery/jquery.min.js</parameter>
+      <parameter key="ecommit_javascript.jQuery_tools.js">/bundles/ecommitjavascript/jQuery/tools/jquery.tools.min.js</parameter>
       <parameter key="ecommit_javascript.ajax.autocallbacks">true</parameter>      
   </parameters>
   

@@ -29,3 +29,5 @@ public function registerBundles()
     );
 }
 
+* Execute command line:
+    php app/console assets:install web
