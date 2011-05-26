@@ -6,7 +6,7 @@
  *                                                 *
  ***************************************************
 
-* Add EcommitJavascriptBundle to your src/ dir
+* Add EcommitJavascriptBundle to your /src/Ecommit dir
 
 * Add the Ecommit namespace to your autoloader:
 
