@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\JavascriptBundle\Twig;
+namespace Ecommit\JavascriptBundle\Helper\Twig;
 
 use Twig_Extension;
 use Twig_Function_Method;
