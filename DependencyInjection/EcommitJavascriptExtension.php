@@ -60,6 +60,14 @@ class EcommitJavascriptExtension extends Extension {
         {
             $container->setParameter($alias . '.jQuery_core.js', $mergedConfig['jQuery_core']['js']);
         }
+        if (isset($mergedConfig['jQuery_ui']['js'])) 
+        {
+            $container->setParameter($alias . '.jQuery_ui.js', $mergedConfig['jQuery_ui']['js']);
+        }
+        if (isset($mergedConfig['jQuery_ui']['css'])) 
+        {
+            $container->setParameter($alias . '.jQuery_ui.css', $mergedConfig['jQuery_ui']['css']);
+        }
         if (isset($mergedConfig['jQuery_tools']['js'])) 
         {
             $container->setParameter($alias . '.jQuery_tools.js', $mergedConfig['jQuery_tools']['js']);

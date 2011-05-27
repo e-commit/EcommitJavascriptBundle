@@ -20,6 +20,9 @@ class Manager
     protected  $jQuery_core_js = array();
     protected  $jQuery_core_css = array();
     protected  $jQuery_core_enabled = false;
+    protected  $jQuery_ui_js = array();
+    protected  $jQuery_ui_css = array();
+    protected  $jQuery_ui_enabled = false;
     protected  $jQuery_tools_js = array();
     protected  $jQuery_tools_css = array();
     protected  $jQuery_tools_enabled = false;
@@ -35,9 +38,10 @@ class Manager
      * @param bool $ajaxAutoCallbacks 
      * @param UtilHelper $utilHelper
      */
-    public function __construct(Array $jQuery_core, Array $jQuery_tools, $ajaxAutoCallbacks, UtilHelper $util) 
+    public function __construct(Array $jQuery_core, Array $jQuery_ui, Array $jQuery_tools, $ajaxAutoCallbacks, UtilHelper $util) 
     {
         $this->loadFiles($jQuery_core, 'jQuery_core');
+        $this->loadFiles($jQuery_ui, 'jQuery_ui');
         $this->loadFiles($jQuery_tools, 'jQuery_tools');
         
         //Active ou non le core jQuery par défaut
@@ -80,6 +84,14 @@ class Manager
     }
     
     /**
+     * Enables jQuery UI
+     */
+    public function enablejQueryUi()
+    {
+        $this->jQuery_ui_enabled = true;
+    }
+    
+    /**
      * Enables jQuery Tools
      */
     public function enablejQueryTools()
@@ -99,6 +111,13 @@ class Manager
        if($this->jQuery_core_enabled)
        {
            foreach($this->jQuery_core_js as $file)
+           {
+               $return_files[] = $file;
+           }
+       }
+       if($this->jQuery_ui_enabled)
+       {
+           foreach($this->jQuery_ui_js as $file)
            {
                $return_files[] = $file;
            }
@@ -124,6 +143,13 @@ class Manager
        if($this->jQuery_core_enabled)
        {
            foreach($this->jQuery_core_css as $file)
+           {
+               $return_files[] = $file;
+           }
+       }
+       if($this->jQuery_ui_enabled)
+       {
+           foreach($this->jQuery_ui_css as $file)
            {
                $return_files[] = $file;
            }
