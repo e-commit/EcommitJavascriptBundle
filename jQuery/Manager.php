@@ -88,6 +88,7 @@ class Manager
      */
     public function enablejQueryUi()
     {
+        $this->enablejQuery();
         $this->jQuery_ui_enabled = true;
     }
     
