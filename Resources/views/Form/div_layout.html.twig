@@ -1,0 +1,30 @@
+{% use 'TwigBundle:Form:div_layout.html.twig' %}
+{% block js_date_widget %}
+{% spaceless %}
+    {{ block('text_widget') }}
+    <script type="text/javascript">
+        $(function() {
+            $("#{{ id }}").datepicker({
+                dateFormat:     '{{ date_format|raw }}',
+                changeMonth:    {{ change_month }},
+                changeYear:     {{ change_year }},
+                firstDay:       {{ first_day }},
+                gotoCurrent:    {{ go_to_current }},
+                numberOfMonths: {{ number_of_months }},
+                closeText:      '{% trans %}Close{% endtrans %}',
+                currentText:    '{% trans %}Today{% endtrans %}',
+                prevText:       '{% trans %}Prev{% endtrans %}',
+                nextText:       '{% trans %}Next{% endtrans %}',
+                dayNames:       [{% trans %}'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'{% endtrans %}],
+                dayNamesMin:    [{% trans %}'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'{% endtrans %}],
+                dayNamesShort:  [{% trans %}'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'{% endtrans %}],
+                monthNames:     [{% trans %}'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'{% endtrans %}],
+                monthNamesShort: [{% trans %}'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'{% endtrans %}]
+                {% if other %}
+                , {{ other|raw }}
+                {% endif %}
+            });
+	});
+    </script>
+{% endspaceless %}
+{% endblock %}
