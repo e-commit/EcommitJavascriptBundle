@@ -6,6 +6,7 @@
       <parameter key="ecommit_javascript.helper.twig.extension.jQuery.class">Ecommit\JavascriptBundle\Helper\Twig\jQueryExtension</parameter>
       <parameter key="ecommit_javascript.listener.class">Ecommit\JavascriptBundle\Listener\JavascriptListener</parameter>
       <parameter key="ecommit_javascript.form.type.js_date.class">Ecommit\JavascriptBundle\Form\Type\JsDateType</parameter>
+      <parameter key="ecommit_javascript.form.type.entity_autocomplete.class">Ecommit\JavascriptBundle\Form\Type\EntityAutoCompleteType</parameter>
       
       <parameter key="ecommit_javascript.jQuery_core.auto_enable">false</parameter>
       <parameter key="ecommit_javascript.jQuery_core.js">/bundles/ecommitjavascript/jQuery/jquery.min.js</parameter>
@@ -45,6 +46,12 @@
     <service id="ecommit_javascript.form.type.js_date" class="%ecommit_javascript.form.type.js_date.class%">
         <argument type="service" id="ecommit_javascript.manager" />
         <tag name="form.type" alias="js_date" />
+    </service>
+    
+    <service id="ecommit_javascript.form.type.entity_autocomplete" class="%ecommit_javascript.form.type.entity_autocomplete.class%">
+        <argument type="service" id="ecommit_javascript.manager" />
+        <argument type="service" id="doctrine.orm.default_entity_manager" />
+        <tag name="form.type" alias="entity_autocomplete" />
     </service>
   </services>
 </container>

@@ -28,3 +28,35 @@
     </script>
 {% endspaceless %}
 {% endblock %}
+
+{% block entity_autocomplete_widget %}
+{% spaceless %}
+    {{ form_widget(form.text) }}
+    {{ form_widget(form.key) }}
+    <img src="{{ image_autocomplete }}" style="margin-left: 5px;" alt="autocomplete" />
+    <img src="{{ image_ok }}" style="display: none; margin-left: 5px;" id="image_{{id}}" alt="ok" />
+    
+    <script type="text/javascript">
+        $(function() {
+            $("#{{ form.children.text.vars.id }}").unbind();
+            $("#{{ form.children.text.vars.id }}").bind("change", function(){
+                $("#{{ form.children.key.vars.id }}").val('');
+                $("#image_{{id}}").hide();
+            });
+            $("#{{ form.children.text.vars.id }}").autocomplete({
+                source: '{{ url }}',
+                minLength: {{ min_length }},
+                select: function( event, ui ) {
+                    if(ui.item){
+                        $("#{{ form.children.key.vars.id }}").val(ui.item.key);
+                        $("#image_{{id}}").show();
+                    }
+                 } 
+            });
+            if($("#{{ form.children.key.vars.id }}").val()){
+                $("#image_{{id}}").show();
+            }
+	});
+    </script>
+{% endspaceless %}
+{% endblock %}
