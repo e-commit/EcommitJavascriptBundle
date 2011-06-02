@@ -27,6 +27,9 @@ class Manager
     protected  $jQuery_tools_css = array();
     protected  $jQuery_tools_enabled = false;
     
+    protected $others_js = array();
+    protected $others_css = array();
+    
     protected $ajaxAutoCallbacks;
     protected $util;
 
@@ -101,6 +104,32 @@ class Manager
         $this->jQuery_tools_enabled = true;
     }
     
+    /**
+     * Adds JS file
+     * 
+     * @param string $file
+     */
+    public function addJs($file)
+    {
+        if(!in_array($file, $this->others_js))
+        {
+            $this->others_js[] = $file;
+        }
+    }
+    
+    /**
+     * Adds CSS file
+     * 
+     * @param string $file
+     */
+    public function addCss($file)
+    {
+        if(!in_array($file, $this->others_css))
+        {
+            $this->others_css[] = $file;
+        }
+    }
+    
    /**
     * Returns JS active files
     * 
@@ -129,6 +158,10 @@ class Manager
            {
                $return_files[] = $file;
            }
+       }
+       foreach($this->others_js as $file)
+       {
+           $return_files[] = $file;
        }
        return $return_files;
    }
@@ -161,6 +194,10 @@ class Manager
            {
                $return_files[] = $file;
            }
+       }
+       foreach($this->others_css as $file)
+       {
+           $return_files[] = $file;
        }
        return $return_files;
    }
