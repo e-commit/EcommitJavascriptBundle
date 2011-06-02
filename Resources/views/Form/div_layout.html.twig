@@ -60,3 +60,27 @@
     </script>
 {% endspaceless %}
 {% endblock %}
+
+{% block multi_entity_autocomplete_widget %}
+{% spaceless %}
+    <input type="text" {{ block('attributes') }} value="" />
+
+    <script type="text/javascript">
+        $(function() {
+            $("#{{ id }}").tokenInput('{{ url }}', {
+                hintText:           '{{ hint_text|trans }}',
+                noResultsText:      '{{ no_results_text|trans }}',
+                searchingText:      '{{ searching_text|trans }}',
+                theme:              '{{ theme }}',
+                minChars:           {{ min_chars }},
+                preventDuplicates:  {{ prevent_duplicates }},
+                queryParam:         '{{ query_param }}',
+                tokenLimit:         {{ max }}
+                {% if value %}
+                ,prePopulate:       {{ value|raw }}
+                {% endif %}
+            });
+        });
+    </script>
+{% endspaceless %}
+{% endblock %}
