@@ -79,7 +79,7 @@ class EntityToAutoCompleteTransformer implements DataTransformerInterface
             return null;
         }
         
-        if(!is_scalar($key))
+        if(!is_string($key))
         {
             throw new TransformationFailedException('Value is not scalar');
         }
