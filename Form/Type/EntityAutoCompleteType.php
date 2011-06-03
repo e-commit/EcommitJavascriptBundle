@@ -104,8 +104,8 @@ class EntityAutoCompleteType extends AbstractType
             'alias'             => null,
             'method'            => '__toString',
             'key_method'        => 'getId',
-            'image_autocomplete'=> '/bundles/ecommitcrud/images/i16/keyboard_magnify.png',
-            'image_ok'          => '/bundles/ecommitcrud/images/i16/apply.png',
+            'image_autocomplete'=> 'ecr/images/i16/keyboard_magnify.png',
+            'image_ok'          => 'ecr/images/i16/apply.png',
             'min_length'        => 2,
             
             'error_bubbling'    => false,

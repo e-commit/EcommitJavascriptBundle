@@ -85,14 +85,14 @@ class MultiEntityAutoCompleteType extends AbstractType
     public function buildView(FormView $view, FormInterface $form)
     {
         $this->javascript_manager->enablejQuery();
-        $this->javascript_manager->addJs('/bundles/ecommitjavascript/jQuery/tokeninput/js/jquery.tokeninput.min.js');
+        $this->javascript_manager->addJs('ejs/jQuery/tokeninput/js/jquery.tokeninput.min.js');
         
         $default_themes = array(null, 'facebook', 'mac');
         $theme = $form->getAttribute('theme');
         if(in_array($theme, $default_themes))
         {
             $file_name = (is_null($theme))? 'token-input.css' : 'token-input-'.$theme.'.css';
-            $this->javascript_manager->addCss('/bundles/ecommitjavascript/jQuery/tokeninput/css/'.$file_name);
+            $this->javascript_manager->addCss('ejs/jQuery/tokeninput/css/'.$file_name);
         }
         
         $view->set('url', $form->getAttribute('url'));

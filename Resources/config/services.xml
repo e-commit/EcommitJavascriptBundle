@@ -10,10 +10,10 @@
       <parameter key="ecommit_javascript.form.type.multi_entity_autocomplete.class">Ecommit\JavascriptBundle\Form\Type\MultiEntityAutoCompleteType</parameter>
       
       <parameter key="ecommit_javascript.jQuery_core.auto_enable">false</parameter>
-      <parameter key="ecommit_javascript.jQuery_core.js">/bundles/ecommitjavascript/jQuery/jquery.min.js</parameter>
-      <parameter key="ecommit_javascript.jQuery_ui.js">/bundles/ecommitjavascript/jQuery/ui/js/jquery-ui.custom.min.js</parameter>
-      <parameter key="ecommit_javascript.jQuery_ui.css">/bundles/ecommitjavascript/jQuery/ui/css/smoothness/jquery-ui.custom.css</parameter>
-      <parameter key="ecommit_javascript.jQuery_tools.js">/bundles/ecommitjavascript/jQuery/tools/jquery.tools.min.js</parameter>
+      <parameter key="ecommit_javascript.jQuery_core.js">ejs/jQuery/jquery.min.js</parameter>
+      <parameter key="ecommit_javascript.jQuery_ui.js">ejs/jQuery/ui/js/jquery-ui.custom.min.js</parameter>
+      <parameter key="ecommit_javascript.jQuery_ui.css">ejs/jQuery/ui/css/smoothness/jquery-ui.custom.css</parameter>
+      <parameter key="ecommit_javascript.jQuery_tools.js">ejs/jQuery/tools/jquery.tools.min.js</parameter>
       <parameter key="ecommit_javascript.ajax.autocallbacks">true</parameter>      
   </parameters>
   
