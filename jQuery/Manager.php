@@ -133,12 +133,13 @@ class Manager
    /**
     * Returns JS active files
     * 
+    * @param boolean $with_jquery
     * @return array
     */
-   public function getJsEnabledFiles()
+   public function getJsEnabledFiles($with_jquery = true)
    {
        $return_files = array();
-       if($this->jQuery_core_enabled)
+       if($with_jquery && $this->jQuery_core_enabled)
        {
            foreach($this->jQuery_core_js as $file)
            {
@@ -169,12 +170,13 @@ class Manager
    /**
     * Returns CSS active files
     * 
+    * @param boolean $with_jquery
     * @return array 
     */
-   public function getCssEnabledFiles()
+   public function getCssEnabledFiles($with_jquery = true)
    {
        $return_files = array();
-       if($this->jQuery_core_enabled)
+       if($with_jquery && $this->jQuery_core_enabled)
        {
            foreach($this->jQuery_core_css as $file)
            {
@@ -205,12 +207,13 @@ class Manager
    /**
     * Returns code required for inserting JS files
     * 
+    * @param boolean $with_jquery
     * @return string 
     */
-   public function getCodeInsertJs()
+   public function getCodeInsertJs($with_jquery = true)
     {
         $js = '';
-        foreach($this->getJsEnabledFiles() as $file)
+        foreach($this->getJsEnabledFiles($with_jquery) as $file)
         {
             $js .= '<script type="text/javascript" src="'.$file.'"></script>'."\n\t";
         }
@@ -220,12 +223,13 @@ class Manager
     /**
      *Returns code required for inserting CSS files
      * 
+     * @param boolean $with_jquery
      * @return string 
      */
-    public function getCodeInsertCss()
+    public function getCodeInsertCss($with_jquery = true)
     {
         $css = '';
-        foreach($this->getCssEnabledFiles() as $file)
+        foreach($this->getCssEnabledFiles($with_jquery) as $file)
         {
             $css .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$file.'" />'."\n\t";
         }

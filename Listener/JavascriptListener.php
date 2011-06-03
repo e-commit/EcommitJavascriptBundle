@@ -44,9 +44,10 @@ class JavascriptListener
         
         $response = $event->getResponse();
         $content = $response->getContent();
+        $with_jquery = !$event->getRequest()->isXmlHttpRequest();
         
-        $content_js = $this->jQueryManager->getCodeInsertJs();
-        $content_css = $this->jQueryManager->getCodeInsertCss();
+        $content_js = $this->jQueryManager->getCodeInsertJs($with_jquery);
+        $content_css = $this->jQueryManager->getCodeInsertCss($with_jquery);
         $tag_js = $this->jQueryManager->getJsTag();
         $tag_css = $this->jQueryManager->getCssTag();
         
