@@ -142,26 +142,26 @@ class Manager
        {
            foreach($this->jQuery_core_js as $file)
            {
-               $return_files[] = $this->util->getUrl($file);
+               $return_files[] = $this->util->getAssetUrl($file);
            }
        }
        if($this->jQuery_ui_enabled)
        {
            foreach($this->jQuery_ui_js as $file)
            {
-               $return_files[] = $this->util->getUrl($file);
+               $return_files[] = $this->util->getAssetUrl($file);
            }
        }
        if($this->jQuery_tools_enabled)
        {
            foreach($this->jQuery_tools_js as $file)
            {
-               $return_files[] = $this->util->getUrl($file);
+               $return_files[] = $this->util->getAssetUrl($file);
            }
        }
        foreach($this->others_js as $file)
        {
-           $return_files[] = $this->util->getUrl($file);
+           $return_files[] = $this->util->getAssetUrl($file);
        }
        return $return_files;
    }
@@ -178,26 +178,26 @@ class Manager
        {
            foreach($this->jQuery_core_css as $file)
            {
-               $return_files[] = $this->util->getUrl($file);
+               $return_files[] = $this->util->getAssetUrl($file);
            }
        }
        if($this->jQuery_ui_enabled)
        {
            foreach($this->jQuery_ui_css as $file)
            {
-               $return_files[] = $this->util->getUrl($file);
+               $return_files[] = $this->util->getAssetUrl($file);
            }
        }
        if($this->jQuery_tools_enabled)
        {
            foreach($this->jQuery_tools_css as $file)
            {
-               $return_files[] = $this->util->getUrl($file);
+               $return_files[] = $this->util->getAssetUrl($file);
            }
        }
        foreach($this->others_css as $file)
        {
-           $return_files[] = $this->util->getUrl($file);
+           $return_files[] = $this->util->getAssetUrl($file);
        }
        return $return_files;
    }
