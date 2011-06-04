@@ -285,6 +285,7 @@ class Manager
      * - condition: Perform remote request conditionally by this expression. Use this to describe browser-side conditions 
      *   when request should not be initiated
      * - confirm: Adds confirmation dialog
+	 * - cache: Request Cache (Default: false)
      * - crsf: [Not yet implemented]
      */
     public function jQueryLinkToRemote($name, $url, $options = array(), $html_options = array())
@@ -426,11 +427,14 @@ class Manager
              */
 	}
 	
+	//Cache
+	$cache = (empty($options['cache']))? 'false' : 'true';
 
 	// build the function
 	$function = "jQuery.ajax({";
 	$function .= 'type:\''.$method.'\'';
 	$function .= ',dataType:\'' . $dataType . '\'';
+	$function .= ',cache: '.$cache;
 	if (isset($type)) $function .= ',async:'.$type;
 	if (isset($formData)) $function .= ',data:'.$formData;
 	if (isset($update_success) and !isset($callback_success)) $function .= ',success:function(data, textStatus){jQuery(\''.$update_success.'\').'.$updateMethod.'(data);}';
