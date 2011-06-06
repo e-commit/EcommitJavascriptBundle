@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
 use Doctrine\ORM\EntityManager;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToMultiAutoCompleteTransformer;
+use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToMultiAutoCompleteTransformer;
 
 class MultiEntityAutoCompleteType extends AbstractType
 {
@@ -67,8 +68,15 @@ class MultiEntityAutoCompleteType extends AbstractType
             throw new FormException('"query_builder" or "class" option is required');
         }
         
-        $builder->appendClientTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
-        $builder->addEventSubscriber(new MergeCollectionListener());
+		if($options['input'] == 'entity')
+		{
+			$builder->appendClientTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+			$builder->addEventSubscriber(new MergeCollectionListener());
+		}
+		else
+		{
+			$builder->appendClientTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+		}
         
         $builder->setAttribute('url', $options['url']);
         $builder->setAttribute('hint_text', $options['hint_text']);
@@ -115,6 +123,7 @@ class MultiEntityAutoCompleteType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
+			'input'				=> 'entity',
             'url'               => null,
             'em'                => $this->em,
             'class'             => null,
@@ -134,6 +143,16 @@ class MultiEntityAutoCompleteType extends AbstractType
             //Field not required because the "html 5 error" is displayed
             //outside the screen (field outside the screen): Browser error is invisible
             'required'          => false,
+        );
+    }
+	
+	public function getAllowedOptionValues(array $options)
+    {
+        return array(
+            'input'     => array(
+                'entity',
+                'key',
+            ),
         );
     }
 
