@@ -74,7 +74,7 @@ class EntityAutoCompleteType extends AbstractType
         $builder->setAttribute('url', $options['url']);
         $builder->setAttribute('image_autocomplete', $options['image_autocomplete']);
         $builder->setAttribute('image_ok', $options['image_ok']);
-        $builder->setAttribute('min_length', $options['min_length']);
+        $builder->setAttribute('min_chars', $options['min_chars']);
     }
 
     
@@ -85,7 +85,7 @@ class EntityAutoCompleteType extends AbstractType
         $view->set('url', $form->getAttribute('url'));
         $view->set('image_autocomplete', $form->getAttribute('image_autocomplete'));
         $view->set('image_ok', $form->getAttribute('image_ok'));
-        $view->set('min_length', $form->getAttribute('min_length'));
+        $view->set('min_chars', $form->getAttribute('min_chars'));
     }
     
     
@@ -106,7 +106,7 @@ class EntityAutoCompleteType extends AbstractType
             'key_method'        => 'getId',
             'image_autocomplete'=> 'ecr/images/i16/keyboard_magnify.png',
             'image_ok'          => 'ecr/images/i16/apply.png',
-            'min_length'        => 2,
+            'min_chars'			=> 1,
             
             'error_bubbling'    => false,
         );

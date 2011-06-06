@@ -45,7 +45,7 @@
             });
             $("#{{ form.children.text.vars.id }}").autocomplete({
                 source: '{{ url }}',
-                minLength: {{ min_length }},
+                minLength: {{ min_chars }},
                 select: function( event, ui ) {
                     if(ui.item){
                         $("#{{ form.children.key.vars.id }}").val(ui.item.key);
