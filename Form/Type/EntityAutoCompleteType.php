@@ -19,6 +19,7 @@ use Symfony\Component\Form\Exception\FormException;
 use Doctrine\ORM\EntityManager;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToAutoCompleteTransformer;
+use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToAutoCompleteTransformer;
 
 class EntityAutoCompleteType extends AbstractType
 {
@@ -69,7 +70,14 @@ class EntityAutoCompleteType extends AbstractType
             throw new FormException('"query_builder" or "class" option is required');
         }
         
-        $builder->appendClientTransformer(new EntityToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+        if($options['input'] == 'entity')
+		{
+			$builder->appendClientTransformer(new EntityToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+		}
+		else
+		{
+			$builder->appendClientTransformer(new KeyToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+		}
         
         $builder->setAttribute('url', $options['url']);
         $builder->setAttribute('image_autocomplete', $options['image_autocomplete']);
@@ -97,6 +105,7 @@ class EntityAutoCompleteType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
+			'input'				=> 'entity',
             'url'               => null,
             'em'                => $this->em,
             'class'             => null,
@@ -109,6 +118,16 @@ class EntityAutoCompleteType extends AbstractType
             'min_chars'			=> 1,
             
             'error_bubbling'    => false,
+        );
+    }
+	
+	public function getAllowedOptionValues(array $options)
+    {
+        return array(
+            'input'     => array(
+                'entity',
+                'key',
+            ),
         );
     }
 
