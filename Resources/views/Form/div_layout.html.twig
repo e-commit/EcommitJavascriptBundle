@@ -33,7 +33,7 @@
 {% spaceless %}
     {{ form_widget(form.text) }}
     {{ form_widget(form.key) }}
-    <img src="{{ asset(image_autocomplete) }}" style="margin-left: 5px;" alt="autocomplete" />
+    <img src="{{ asset(image_autocomplete) }}" style="margin-left: 5px;" alt="autocomplete" title="{% trans %}Autocomplete{% endtrans %}" />
     <img src="{{ asset(image_ok) }}" style="display: none; margin-left: 5px;" id="image_{{id}}" alt="ok" />
     
     <script type="text/javascript">
