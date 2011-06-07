@@ -40,8 +40,8 @@
     </service>
     
     <service id="ecommit_javascript.listener" class="%ecommit_javascript.listener.class%">
-            <tag name="kernel.listener" event="onCoreResponse" />
-            <argument type="service" id="ecommit_javascript.manager" />
+		<tag name="kernel.listener" event="core.response" method="onCoreResponse" />
+		<argument type="service" id="ecommit_javascript.manager" />
     </service>
     
     <service id="ecommit_javascript.form.type.js_date" class="%ecommit_javascript.form.type.js_date.class%">
