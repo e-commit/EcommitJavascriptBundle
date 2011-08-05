@@ -1,7 +1,7 @@
-{% use 'TwigBundle:Form:div_layout.html.twig' %}
+{% use 'form_div_layout.html.twig' %}
 {% block js_date_widget %}
 {% spaceless %}
-    {{ block('text_widget') }}
+    {{ block('field_widget') }}
     <script type="text/javascript">
         $(function() {
             $("#{{ id }}").datepicker({
@@ -63,7 +63,7 @@
 
 {% block multi_entity_autocomplete_widget %}
 {% spaceless %}
-    <input type="text" {{ block('attributes') }} value="" />
+    <input type="text" {{ block('widget_attributes') }} value="" />
 
     <script type="text/javascript">
         $(function() {
