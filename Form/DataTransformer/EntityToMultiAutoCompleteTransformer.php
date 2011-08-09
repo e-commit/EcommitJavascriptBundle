@@ -68,8 +68,8 @@ class EntityToMultiAutoCompleteTransformer implements DataTransformerInterface
         foreach($collection as $entity)
         {
             $new_entity = array();
-            $new_entity['id'] = \htmlentities($entity->$key_method());
-            $new_entity['name'] = \htmlentities($entity->$method());
+            $new_entity['id'] = \htmlentities($entity->$key_method(), ENT_COMPAT, 'UTF-8');
+            $new_entity['name'] = \htmlentities($entity->$method(), ENT_COMPAT, 'UTF-8');
             $results[] = $new_entity;
         }
               
