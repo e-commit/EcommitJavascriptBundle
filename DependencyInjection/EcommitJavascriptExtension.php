@@ -11,70 +11,29 @@
 
 namespace Ecommit\JavascriptBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Loader;
 
-class EcommitJavascriptExtension extends Extension {
-
-    
+class EcommitJavascriptExtension extends Extension
+{
     /**
-     * Loads a specific configuration.
-     *
-     * @param array            $config    An array of configuration values
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     * {@inheritDoc}
      */
-    public function load(array $config, ContainerBuilder $container) 
+    public function load(array $configs, ContainerBuilder $container) 
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+		
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-
-        $this->mergeExternalConfig($config, $container, $this->getAlias());
-    }
-
-    
-    /**
-     * Merges app config with bundle config
-     * 
-     * @param array $config
-     * @param ContainerBuilder $container
-     * @param string $alias 
-     */
-    private function mergeExternalConfig(array $config, ContainerBuilder $container, $alias)
-    {
-        $mergedConfig = array();
-
-        foreach ($config as $cnf) 
-        {
-            $mergedConfig = array_merge($mergedConfig, $cnf);
-        }
-
-        if (isset($mergedConfig['jQuery_core']['auto_enable'])) 
-        {
-            $container->setParameter($alias . '.jQuery_core.auto_enable', $mergedConfig['jQuery_core']['auto_enable']);
-        }
-        if (isset($mergedConfig['jQuery_core']['js'])) 
-        {
-            $container->setParameter($alias . '.jQuery_core.js', $mergedConfig['jQuery_core']['js']);
-        }
-        if (isset($mergedConfig['jQuery_ui']['js'])) 
-        {
-            $container->setParameter($alias . '.jQuery_ui.js', $mergedConfig['jQuery_ui']['js']);
-        }
-        if (isset($mergedConfig['jQuery_ui']['css'])) 
-        {
-            $container->setParameter($alias . '.jQuery_ui.css', $mergedConfig['jQuery_ui']['css']);
-        }
-        if (isset($mergedConfig['jQuery_tools']['js'])) 
-        {
-            $container->setParameter($alias . '.jQuery_tools.js', $mergedConfig['jQuery_tools']['js']);
-        }
-        if (isset($mergedConfig['ajax']['autocallbacks'])) 
-        {
-            $container->setParameter($alias . '.ajax.autocallbacks', $mergedConfig['ajax']['autocallbacks']);
-        }
+		
+		$container->setParameter('ecommit_javascript.jQuery_core.auto_enable', $config['jQuery_core']['auto_enable']);
+		$container->setParameter('ecommit_javascript.jQuery_core.js', $config['jQuery_core']['js']);
+		$container->setParameter('ecommit_javascript.jQuery_ui.js', $config['jQuery_ui']['js']);
+		$container->setParameter('ecommit_javascript.jQuery_ui.css', $config['jQuery_ui']['css']);
+		$container->setParameter('ecommit_javascript.jQuery_tools.js', $config['jQuery_tools']['js']);
+		$container->setParameter('ecommit_javascript.ajax.autocallbacks', $config['ajax']['autocallbacks']);
     }
 }
