@@ -48,6 +48,13 @@ class Configuration implements ConfigurationInterface
 						->booleanNode('autocallbacks')->defaultTrue()->end()
 					->end()
 				->end()
+				->arrayNode('tiny_mce')
+					->addDefaultsIfNotSet()
+					->children()
+						->scalarNode('script_url')->defaultValue('js/tiny_mce/tiny_mce.js')->end()
+						->scalarNode('jQuery_script_url')->defaultValue('js/tiny_mce/jquery.tinymce.js')->end()
+					->end()
+				->end()
             ->end()
         ;
 

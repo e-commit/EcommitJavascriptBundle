@@ -42,3 +42,6 @@ public function registerBundles()
 
 * Add into .htaccess file (before Symfony lines):
     RewriteRule ^ejs/(.+)$ bundles/ecommitjavascript/$1 [L]
+
+* If TinyMCE is used, install "TinyMCE jQuery package" (with languages if required).
+  Default directory: js/tiny_mce

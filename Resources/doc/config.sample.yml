@@ -15,3 +15,8 @@ ecommit_javascript:
     ajax:
          #Ajoute automatiquement le traitement des erreurs dans les requetes Ajax
          autocallbacks: true
+    tiny_mce:
+         #Chemin du fichier Javascript de TinyMCE
+         script_url: js/tiny_mce/tiny_mce.js
+         #Chemin du fichier Javascript du plugin jQuery TinyMCE
+         jQuery_script_url: js/tiny_mce/jquery.tinymce.js

@@ -35,5 +35,7 @@ class EcommitJavascriptExtension extends Extension
 		$container->setParameter('ecommit_javascript.jQuery_ui.css', $config['jQuery_ui']['css']);
 		$container->setParameter('ecommit_javascript.jQuery_tools.js', $config['jQuery_tools']['js']);
 		$container->setParameter('ecommit_javascript.ajax.autocallbacks', $config['ajax']['autocallbacks']);
+		$container->setParameter('ecommit_javascript.tiny_mce.script_url', $config['tiny_mce']['script_url']);
+		$container->setParameter('ecommit_javascript.tiny_mce.jQuery_script_url', $config['tiny_mce']['jQuery_script_url']);
     }
 }
