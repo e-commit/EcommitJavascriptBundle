@@ -55,6 +55,15 @@ class Configuration implements ConfigurationInterface
 						->scalarNode('jQuery_script_url')->defaultValue('js/tiny_mce/jquery.tinymce.js')->end()
 					->end()
 				->end()
+				->arrayNode('recaptcha')
+					->addDefaultsIfNotSet()
+					->children()
+						->scalarNode('public_key')->defaultValue(null)->end()
+						->scalarNode('private_key')->defaultValue(null)->end()
+						->booleanNode('secure')->defaultFalse()->end()
+						->booleanNode('enable')->defaultTrue()->end()
+					->end()
+				->end()
             ->end()
         ;
 

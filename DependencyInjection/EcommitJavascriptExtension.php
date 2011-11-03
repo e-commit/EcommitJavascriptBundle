@@ -37,5 +37,9 @@ class EcommitJavascriptExtension extends Extension
 		$container->setParameter('ecommit_javascript.ajax.autocallbacks', $config['ajax']['autocallbacks']);
 		$container->setParameter('ecommit_javascript.tiny_mce.script_url', $config['tiny_mce']['script_url']);
 		$container->setParameter('ecommit_javascript.tiny_mce.jQuery_script_url', $config['tiny_mce']['jQuery_script_url']);
+		$container->setParameter('ecommit_javascript.recaptcha.public_key', $config['recaptcha']['public_key']);
+		$container->setParameter('ecommit_javascript.recaptcha.private_key', $config['recaptcha']['private_key']);
+		$container->setParameter('ecommit_javascript.recaptcha.secure', $config['recaptcha']['secure']);
+		$container->setParameter('ecommit_javascript.recaptcha.enable', $config['recaptcha']['enable']);
     }
 }
