@@ -71,13 +71,13 @@ class EntityAutoCompleteType extends AbstractType
         }
         
         if($options['input'] == 'entity')
-		{
-			$builder->appendClientTransformer(new EntityToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
-		}
-		else
-		{
-			$builder->appendClientTransformer(new KeyToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
-		}
+        {
+            $builder->appendClientTransformer(new EntityToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+        }
+        else
+        {
+            $builder->appendClientTransformer(new KeyToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+        }
         
         $builder->setAttribute('url', $options['url']);
         $builder->setAttribute('image_autocomplete', $options['image_autocomplete']);
@@ -105,7 +105,7 @@ class EntityAutoCompleteType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-			'input'				=> 'entity',
+            'input'             => 'entity',
             'url'               => null,
             'em'                => $this->em,
             'class'             => null,
@@ -115,13 +115,13 @@ class EntityAutoCompleteType extends AbstractType
             'key_method'        => 'getId',
             'image_autocomplete'=> 'ecr/images/i16/keyboard_magnify.png',
             'image_ok'          => 'ecr/images/i16/apply.png',
-            'min_chars'			=> 1,
+            'min_chars'         => 1,
             
             'error_bubbling'    => false,
         );
     }
-	
-	public function getAllowedOptionValues(array $options)
+    
+    public function getAllowedOptionValues(array $options)
     {
         return array(
             'input'     => array(

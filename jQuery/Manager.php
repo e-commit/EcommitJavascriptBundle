@@ -285,7 +285,7 @@ class Manager
      * - condition: Perform remote request conditionally by this expression. Use this to describe browser-side conditions 
      *   when request should not be initiated
      * - confirm: Adds confirmation dialog
-	 * - cache: Request Cache (Default: false)
+     * - cache: Request Cache (Default: false)
      * - crsf: [Not yet implemented]
      */
     public function jQueryLinkToRemote($name, $url, $options = array(), $html_options = array())
@@ -327,7 +327,7 @@ class Manager
     {
         $options['form'] = true;
         $html_options['action'] = isset($options_html['action']) ? $options_html['action'] : $url;
-	$html_options['method'] = isset($options_html['method']) ? $options_html['method'] : 'post';
+        $html_options['method'] = isset($options_html['method']) ? $options_html['method'] : 'post';
         $html_options['onsubmit'] = $this->jQueryRemoteFunction($url, $options).'; return false;';
         return $this->util->tag('form', $html_options, null, true);
     }
@@ -345,32 +345,32 @@ class Manager
         $this->enablejQuery();   
 
         // Defining elements to update
-	if (isset($options['update']) && is_array($options['update']))
-	{
-		// On success, update the element with returned data
-		if (isset($options['update']['success'])) $update_success = "#".$options['update']['success'];
+    if (isset($options['update']) && is_array($options['update']))
+    {
+        // On success, update the element with returned data
+        if (isset($options['update']['success'])) $update_success = "#".$options['update']['success'];
 
-		// On failure, execute a client-side function
-		if (isset($options['update']['failure'])) $update_failure = $options['update']['failure'];
-	}
-	else if (isset($options['update'])) $update_success = "#".$options['update'];
+        // On failure, execute a client-side function
+        if (isset($options['update']['failure'])) $update_failure = $options['update']['failure'];
+    }
+    else if (isset($options['update'])) $update_success = "#".$options['update'];
 
-	// Update method
-	$positionUpdate = isset($options['position']) ? $options['position'] : '';
+    // Update method
+    $positionUpdate = isset($options['position']) ? $options['position'] : '';
         $updateMethod = 'html';
-	switch ($positionUpdate) {
-		case 'before':$updateMethod='before';break;
-		case 'after':$updateMethod='after';break;
-		case 'top':$updateMethod='prepend';break;
-		case 'bottom':$updateMethod='append';break;
-	}
+    switch ($positionUpdate) {
+        case 'before':$updateMethod='before';break;
+        case 'after':$updateMethod='after';break;
+        case 'top':$updateMethod='prepend';break;
+        case 'bottom':$updateMethod='append';break;
+    }
 
-	// Callbacks
-	if (isset($options['loading'])) $callback_loading = $options['loading'];
-	if (isset($options['complete'])) $callback_complete = $options['complete'];
-	if (isset($options['success'])) $callback_success = $options['success'];
-	
-	// Auto callback
+    // Callbacks
+    if (isset($options['loading'])) $callback_loading = $options['loading'];
+    if (isset($options['complete'])) $callback_complete = $options['complete'];
+    if (isset($options['success'])) $callback_success = $options['success'];
+    
+    // Auto callback
         if(($this->ajaxAutoCallbacks && empty($options['auto_errors'])) || !empty($options['auto_errors']))
         {
             $callback_error = "if(XMLHttpRequest.status=='401'){alert('".$this->util->escape_javascript($this->util->translate('Vous avez perdu la connexion.'))."');window.location.reload(true);}";
@@ -386,87 +386,86 @@ class Manager
                     $update_failure = $callback_error;
             }
         }
-	
-	
-	$execute = 'false';
-	if ((isset($options['script'])) && ($options['script'] == '1')) $execute = 'true';
+    
+    
+    $execute = 'false';
+    if ((isset($options['script'])) && ($options['script'] == '1')) $execute = 'true';
 
-	// Data Type
-	if (isset($options['dataType']))
-	{
-		$dataType = $options['dataType'];
-	}
-	elseif ($execute)
-	{
-		$dataType = 'html';
-	}
-	else
-	{
-		$dataType = 'text';
-	}
+    // Data Type
+    if (isset($options['dataType']))
+    {
+        $dataType = $options['dataType'];
+    }
+    elseif ($execute)
+    {
+        $dataType = 'html';
+    }
+    else
+    {
+        $dataType = 'text';
+    }
 
-	// POST or GET ?
-	$method = 'POST';
-	if ((isset($options['method'])) && (strtoupper($options['method']) == 'GET')) $method = $options['method'];
+    // POST or GET ?
+    $method = 'POST';
+    if ((isset($options['method'])) && (strtoupper($options['method']) == 'GET')) $method = $options['method'];
 
-	// async or sync, async is default
-	if ((isset($options['type'])) && ($options['type'] == 'synchronous')) $type = 'false';
+    // async or sync, async is default
+    if ((isset($options['type'])) && ($options['type'] == 'synchronous')) $type = 'false';
 
-	// Is it a form submitting
-	if (isset($options['form'])) $formData = 'jQuery(this).serialize()';
-	elseif (isset($options['submit'])) $formData = '{\'#'.$options['submit'].'\'}.serialize()';
-	// boutell and JoeZ99: 'with' should not be quoted, it's not useful
-	// that way, see the Symfony documentation for the original remote_function
-	elseif (isset($options['with'])) $formData = $options['with'];
-	
-	// Is it a link with csrf protection
-	elseif(isset($options['csrf']) && $options['csrf'] == '1')
-	{
+    // Is it a form submitting
+    if (isset($options['form'])) $formData = 'jQuery(this).serialize()';
+    elseif (isset($options['submit'])) $formData = '{\'#'.$options['submit'].'\'}.serialize()';
+    // boutell and JoeZ99: 'with' should not be quoted, it's not useful
+    // that way, see the Symfony documentation for the original remote_function
+    elseif (isset($options['with'])) $formData = $options['with'];
+    
+    // Is it a link with csrf protection
+    elseif(isset($options['csrf']) && $options['csrf'] == '1')
+    {
             /*
              * TODO
              */
-	}
-	
-	//Cache
-	$cache = (empty($options['cache']))? 'false' : 'true';
+    }
+    
+    //Cache
+    $cache = (empty($options['cache']))? 'false' : 'true';
 
-	// build the function
-	$function = "jQuery.ajax({";
-	$function .= 'type:\''.$method.'\'';
-	$function .= ',dataType:\'' . $dataType . '\'';
-	$function .= ',cache: '.$cache;
-	if (isset($type)) $function .= ',async:'.$type;
-	if (isset($formData)) $function .= ',data:'.$formData;
-	if (isset($update_success) and !isset($callback_success)) $function .= ',success:function(data, textStatus){jQuery(\''.$update_success.'\').'.$updateMethod.'(data);}';
-	if (isset($update_failure)) $function .= ',error:function(XMLHttpRequest, textStatus, errorThrown){'.$update_failure.'}';
-	if (isset($callback_loading)) $function .= ',beforeSend:function(XMLHttpRequest){'.$callback_loading.'}';
-	if (isset($callback_complete)) $function .= ',complete:function(XMLHttpRequest, textStatus){'.$callback_complete.'}';
-	if (isset($callback_success)) $function .= ',success:function(data, textStatus){'.$callback_success.'}';
+    // build the function
+    $function = "jQuery.ajax({";
+    $function .= 'type:\''.$method.'\'';
+    $function .= ',dataType:\'' . $dataType . '\'';
+    $function .= ',cache: '.$cache;
+    if (isset($type)) $function .= ',async:'.$type;
+    if (isset($formData)) $function .= ',data:'.$formData;
+    if (isset($update_success) and !isset($callback_success)) $function .= ',success:function(data, textStatus){jQuery(\''.$update_success.'\').'.$updateMethod.'(data);}';
+    if (isset($update_failure)) $function .= ',error:function(XMLHttpRequest, textStatus, errorThrown){'.$update_failure.'}';
+    if (isset($callback_loading)) $function .= ',beforeSend:function(XMLHttpRequest){'.$callback_loading.'}';
+    if (isset($callback_complete)) $function .= ',complete:function(XMLHttpRequest, textStatus){'.$callback_complete.'}';
+    if (isset($callback_success)) $function .= ',success:function(data, textStatus){'.$callback_success.'}';
         $function .= ',url:\''.$url.'\'';
-	$function .= '})';
+    $function .= '})';
 
-	if (isset($options['before']))
-	{
-		$function = $options['before'].'; '.$function;
-	}
-	if (isset($options['after']))
-	{
-		$function = $function.'; '.$options['after'];
-	}
-	if (isset($options['condition']))
-	{
-		$function = 'if ('.$options['condition'].') { '.$function.'; }';
-	}
-	if (isset($options['confirm']))
-	{
-		$function = "if (confirm('".$this->util->escape_javascript($options['confirm'])."')) { $function; }";
-		if (isset($options['cancel']))
-		{
-			$function = $function.' else { '.$options['cancel'].' }';
-		}
-	}
+    if (isset($options['before']))
+    {
+        $function = $options['before'].'; '.$function;
+    }
+    if (isset($options['after']))
+    {
+        $function = $function.'; '.$options['after'];
+    }
+    if (isset($options['condition']))
+    {
+        $function = 'if ('.$options['condition'].') { '.$function.'; }';
+    }
+    if (isset($options['confirm']))
+    {
+        $function = "if (confirm('".$this->util->escape_javascript($options['confirm'])."')) { $function; }";
+        if (isset($options['cancel']))
+        {
+            $function = $function.' else { '.$options['cancel'].' }';
+        }
+    }
 
-	return $function;
+    return $function;
     }
 }
-

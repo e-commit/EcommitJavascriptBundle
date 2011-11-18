@@ -68,15 +68,15 @@ class MultiEntityAutoCompleteType extends AbstractType
             throw new FormException('"query_builder" or "class" option is required');
         }
         
-		if($options['input'] == 'entity')
-		{
-			$builder->appendClientTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
-			$builder->addEventSubscriber(new MergeCollectionListener());
-		}
-		else
-		{
-			$builder->appendClientTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
-		}
+        if($options['input'] == 'entity')
+        {
+            $builder->appendClientTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+            $builder->addEventSubscriber(new MergeCollectionListener());
+        }
+        else
+        {
+            $builder->appendClientTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+        }
         
         $builder->setAttribute('url', $options['url']);
         $builder->setAttribute('hint_text', $options['hint_text']);
@@ -123,7 +123,7 @@ class MultiEntityAutoCompleteType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-			'input'				=> 'entity',
+            'input'             => 'entity',
             'url'               => null,
             'em'                => $this->em,
             'class'             => null,
@@ -145,8 +145,8 @@ class MultiEntityAutoCompleteType extends AbstractType
             'required'          => false,
         );
     }
-	
-	public function getAllowedOptionValues(array $options)
+    
+    public function getAllowedOptionValues(array $options)
     {
         return array(
             'input'     => array(

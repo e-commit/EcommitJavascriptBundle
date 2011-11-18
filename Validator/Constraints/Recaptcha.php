@@ -19,21 +19,21 @@ use Symfony\Component\Validator\Constraint;
 class Recaptcha extends Constraint
 {
 
-	public $message = 'Captcha invalide';
+    public $message = 'Captcha invalide';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getTargets()
-	{
-		return Constraint::PROPERTY_CONSTRAINT;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return Constraint::PROPERTY_CONSTRAINT;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function validatedBy()
-	{
-		return 'ecommit_javascript.validator.constraints.recaptcha';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function validatedBy()
+    {
+        return 'ecommit_javascript.validator.constraints.recaptcha';
+    }
 }

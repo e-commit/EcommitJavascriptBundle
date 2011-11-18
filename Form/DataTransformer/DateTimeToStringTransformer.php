@@ -17,7 +17,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class DateTimeToStringTransformer extends BaseDateTimeTransformer
 {
-	private $format;
+    private $format;
 
     /**
      * Transforms a \DateTime instance to a string
@@ -79,7 +79,7 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
      * @throws TransformationFailedException if the date could not be parsed
      * @throws TransformationFailedException if the input timezone is not supported
      */
-	public function reverseTransform($value)
+    public function reverseTransform($value)
     {
         if (empty($value)) {
             return null;
@@ -91,11 +91,11 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
 
         try {
             $dateTime = \DateTime::createFromFormat($this->format, $value, new \DateTimeZone($this->outputTimezone));
-			$errors = \DateTime::getLastErrors();
-			if ($errors['warning_count'] > 0 || $errors['error_count'] > 0) {
-				throw new \Exception('Date is invalid. List of warnings: "' . implode(', "',array_values($errors['warnings'])) . '" ' .
-						'List of errors: "' . implode(', "',array_values($errors['errors'])) . '"');
-			}
+            $errors = \DateTime::getLastErrors();
+            if ($errors['warning_count'] > 0 || $errors['error_count'] > 0) {
+                throw new \Exception('Date is invalid. List of warnings: "' . implode(', "',array_values($errors['warnings'])) . '" ' .
+                        'List of errors: "' . implode(', "',array_values($errors['errors'])) . '"');
+            }
 
             // Force value to be in same format as given to transform
             if ($value !== $dateTime->format($this->format)) {

@@ -33,34 +33,34 @@ class KeyToMultiAutoCompleteTransformer extends EntityToMultiAutoCompleteTransfo
         {
             throw new UnexpectedTypeException($keys, 'array');
         }
-		
-		$key_method = $this->key_method;
+        
+        $key_method = $this->key_method;
         $method = $this->method;
         $results = array();
-		try
+        try
         {
             //Not use directly $this->query_builder otherwise transform and 
-			//reverse functions will use the same request 
-			$query_builder = clone $this->query_builder;
-			$query_builder->setParameters($this->query_builder->getParameters());
-			
-			$query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, $keys))
+            //reverse functions will use the same request 
+            $query_builder = clone $this->query_builder;
+            $query_builder->setParameters($this->query_builder->getParameters());
+            
+            $query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, $keys))
             ->setMaxResults($this->max)
             ->getQuery();
             
             foreach($query->execute() as $entity)
             {
                 $new_entity = array();
-				$new_entity['id'] = \htmlentities($entity->$key_method(), ENT_COMPAT, 'UTF-8');
-				$new_entity['name'] = \htmlentities($entity->$method(), ENT_COMPAT, 'UTF-8');
-				$results[] = $new_entity;
+                $new_entity['id'] = \htmlentities($entity->$key_method(), ENT_COMPAT, 'UTF-8');
+                $new_entity['name'] = \htmlentities($entity->$method(), ENT_COMPAT, 'UTF-8');
+                $results[] = $new_entity;
             }
         }
         catch(\Exception $e)
         {
             throw new TransformationFailedException('Tranformation: Query Error');
         }
-		return json_encode($results); 
+        return json_encode($results); 
     }
     
     /**
@@ -91,15 +91,15 @@ class KeyToMultiAutoCompleteTransformer extends EntityToMultiAutoCompleteTransfo
             return $collection;
         }
         
-		$key_method = $this->key_method;
+        $key_method = $this->key_method;
         try
         {
             //Not use directly $this->query_builder otherwise transform and 
-			//reverse functions will use the same request 
-			$query_builder = clone $this->query_builder;
-			$query_builder->setParameters($this->query_builder->getParameters());
-			
-			$query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, $ids))
+            //reverse functions will use the same request 
+            $query_builder = clone $this->query_builder;
+            $query_builder->setParameters($this->query_builder->getParameters());
+            
+            $query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, $ids))
             ->setMaxResults($this->max)
             ->getQuery();
             

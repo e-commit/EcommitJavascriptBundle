@@ -18,46 +18,46 @@ use Symfony\Component\Form\Exception\FormException;
 
 class RecaptchaType extends AbstractType
 {
-	const RECAPTCHA_API_SERVER = 'http://www.google.com/recaptcha/api';
+    const RECAPTCHA_API_SERVER = 'http://www.google.com/recaptcha/api';
     const RECAPTCHA_API_SECURE_SERVER = 'https://www.google.com/recaptcha/api';
     const RECAPTCHA_API_JS_SERVER = 'http://www.google.com/recaptcha/api/js/recaptcha_ajax.js';
-	
-	protected $public_key;
-	protected $secure;
-	protected $enable;
-	protected $language;
-	
-	public function __construct($public_key, $secure, $enable, $language)
+    
+    protected $public_key;
+    protected $secure;
+    protected $enable;
+    protected $language;
+    
+    public function __construct($public_key, $secure, $enable, $language)
     {
         $this->public_key = $public_key;
-		$this->secure = $secure;
-		$this->enable = $enable;
-		$this->language = $language;
+        $this->secure = $secure;
+        $this->enable = $enable;
+        $this->language = $language;
     }
-	
-	public function getPublicKey()
+    
+    public function getPublicKey()
     {
         return $this->public_key;
     }
 
-	public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormView $view, FormInterface $form)
     {
         if (!$this->enable)
-		{
+        {
             return;
         }
-		
-		if(empty($this->public_key))
-		{
-			throw new \Exception('Recaptcha: Public and private keys are required');
-		}
+        
+        if(empty($this->public_key))
+        {
+            throw new \Exception('Recaptcha: Public and private keys are required');
+        }
         
         if ($this->secure)
-		{
+        {
             $server = self::RECAPTCHA_API_SECURE_SERVER;
         }
-		else
-		{
+        else
+        {
             $server = self::RECAPTCHA_API_SERVER;
         }
 
@@ -66,25 +66,25 @@ class RecaptchaType extends AbstractType
         $view->set('public_key', $this->public_key);
         $view->set('recaptcha_enable', $this->enable);
     }
-	
-	public function getDefaultOptions(array $options)
+    
+    public function getDefaultOptions(array $options)
     {
         return array(
-			'attr' => array(
-				'options' => array(
-				'theme' => 'clean',
-				'lang' => $this->language,
-				)
-			),
+            'attr' => array(
+                'options' => array(
+                'theme' => 'clean',
+                'lang' => $this->language,
+                )
+            ),
         );
     }
-	
-	public function getParent(array $options)
+    
+    public function getParent(array $options)
     {
         return 'field';
     }
-	
-	public function getName()
+    
+    public function getName()
     {
         return 'recaptcha';
     }

@@ -131,7 +131,7 @@ div.token-input-dropdown-mac {
     -moz-box-shadow: 0 5px 20px 0 rgba(0,0,0,0.25);
     -webkit-box-shadow: 0 5px 20px 0 rgba(0,0,0,0.25);
     clip:rect(0px, 1000px, 1000px, -10px);
-	z-index: 1010;
+    z-index: 1010;
 }
 
 div.token-input-dropdown-mac p {

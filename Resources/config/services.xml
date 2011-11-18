@@ -8,9 +8,9 @@
       <parameter key="ecommit_javascript.form.type.js_date.class">Ecommit\JavascriptBundle\Form\Type\JsDateType</parameter>
       <parameter key="ecommit_javascript.form.type.entity_autocomplete.class">Ecommit\JavascriptBundle\Form\Type\EntityAutoCompleteType</parameter>
       <parameter key="ecommit_javascript.form.type.multi_entity_autocomplete.class">Ecommit\JavascriptBundle\Form\Type\MultiEntityAutoCompleteType</parameter>
-	  <parameter key="ecommit_javascript.form.type.tiny_mce.class">Ecommit\JavascriptBundle\Form\Type\TinyMCEType</parameter>
-	  <parameter key="ecommit_javascript.form.type.recaptcha.class">Ecommit\JavascriptBundle\Form\Type\RecaptchaType</parameter>
-	  <parameter key="ecommit_javascript.validator.constraints.recaptcha.class">Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator</parameter>
+      <parameter key="ecommit_javascript.form.type.tiny_mce.class">Ecommit\JavascriptBundle\Form\Type\TinyMCEType</parameter>
+      <parameter key="ecommit_javascript.form.type.recaptcha.class">Ecommit\JavascriptBundle\Form\Type\RecaptchaType</parameter>
+      <parameter key="ecommit_javascript.validator.constraints.recaptcha.class">Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator</parameter>
   </parameters>
   
   <services>
@@ -36,8 +36,8 @@
     </service>
     
     <service id="ecommit_javascript.listener" class="%ecommit_javascript.listener.class%">
-		<tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
-		<argument type="service" id="ecommit_javascript.manager" />
+        <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+        <argument type="service" id="ecommit_javascript.manager" />
     </service>
     
     <service id="ecommit_javascript.form.type.js_date" class="%ecommit_javascript.form.type.js_date.class%">
@@ -56,23 +56,23 @@
         <argument type="service" id="doctrine.orm.default_entity_manager" />
         <tag name="form.type" alias="multi_entity_autocomplete" />
     </service>
-	
-	<service id="ecommit_javascript.form.type.tiny_mce" class="%ecommit_javascript.form.type.tiny_mce.class%">
+    
+    <service id="ecommit_javascript.form.type.tiny_mce" class="%ecommit_javascript.form.type.tiny_mce.class%">
         <argument type="service" id="ecommit_javascript.manager" />
         <argument>%ecommit_javascript.tiny_mce.script_url%</argument>
-		<argument>%ecommit_javascript.tiny_mce.jQuery_script_url%</argument>
+        <argument>%ecommit_javascript.tiny_mce.jQuery_script_url%</argument>
         <tag name="form.type" alias="tiny_mce" />
     </service>
-	
-	<service id="ecommit_javascript.form.type.recaptcha" class="%ecommit_javascript.form.type.recaptcha.class%">
+    
+    <service id="ecommit_javascript.form.type.recaptcha" class="%ecommit_javascript.form.type.recaptcha.class%">
         <argument>%ecommit_javascript.recaptcha.public_key%</argument>
-		<argument>%ecommit_javascript.recaptcha.secure%</argument>
-		<argument>%ecommit_javascript.recaptcha.enable%</argument>
-		<argument>%locale%</argument>
+        <argument>%ecommit_javascript.recaptcha.secure%</argument>
+        <argument>%ecommit_javascript.recaptcha.enable%</argument>
+        <argument>%locale%</argument>
         <tag name="form.type" alias="recaptcha" />
     </service>
-	
-	<service id="ecommit_javascript.validator.constraints.recaptcha" class="%ecommit_javascript.validator.constraints.recaptcha.class%">
+    
+    <service id="ecommit_javascript.validator.constraints.recaptcha" class="%ecommit_javascript.validator.constraints.recaptcha.class%">
         <argument type="service" id="service_container" />
         <tag name="validator.constraint_validator" alias="ecommit_javascript.validator.constraints.recaptcha" />
     </service>

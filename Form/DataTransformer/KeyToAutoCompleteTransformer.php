@@ -34,14 +34,14 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
             throw new UnexpectedTypeException($key, 'scalar');
         }
         
-		try
+        try
         {
-			//Not use directly $this->query_builder otherwise transform and 
-			//reverse functions will use the same request 
-			$query_builder = clone $this->query_builder;
-			$query_builder->setParameters($this->query_builder->getParameters());
-			
-			$query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
+            //Not use directly $this->query_builder otherwise transform and 
+            //reverse functions will use the same request 
+            $query_builder = clone $this->query_builder;
+            $query_builder->setParameters($this->query_builder->getParameters());
+            
+            $query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
             ->setParameter('key_transformer', $key)
             ->getQuery();
             
@@ -51,7 +51,7 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
         {
             throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
         }
-		
+        
         $key_method = $this->key_method;
         $method = $this->method;
         $key = $entity->$key_method();
@@ -82,11 +82,11 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
         try
         {
             //Not use directly $this->query_builder otherwise transform and 
-			//reverse functions will use the same request 
-			$query_builder = clone $this->query_builder;
-			$query_builder->setParameters($this->query_builder->getParameters());
-			
-			$query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
+            //reverse functions will use the same request 
+            $query_builder = clone $this->query_builder;
+            $query_builder->setParameters($this->query_builder->getParameters());
+            
+            $query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
             ->setParameter('key_transformer', $key)
             ->getQuery();
             
@@ -96,7 +96,7 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
         {
             throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
         }
-		$key_method = $this->key_method;
+        $key_method = $this->key_method;
         return $entity->$key_method();
     }
 }
