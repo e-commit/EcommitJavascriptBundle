@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\FormBuilder;
 
 class RecaptchaType extends AbstractType
 {
@@ -38,6 +39,11 @@ class RecaptchaType extends AbstractType
     public function getPublicKey()
     {
         return $this->public_key;
+    }
+    
+    public function buildForm(FormBuilder $builder, array $options)
+    {
+         $builder->setAttribute('options', $options['options']);
     }
 
     public function buildView(FormView $view, FormInterface $form)
@@ -65,17 +71,16 @@ class RecaptchaType extends AbstractType
         $view->set('url_noscript', $server.'/noscript?k='.$this->public_key);
         $view->set('public_key', $this->public_key);
         $view->set('recaptcha_enable', $this->enable);
+        $view->set('options', $form->getAttribute('options'));
     }
     
     public function getDefaultOptions(array $options)
     {
         return array(
-            'attr' => array(
-                'options' => array(
+            'options' => array(
                 'theme' => 'clean',
                 'lang' => $this->language,
-                )
-            ),
+            )
         );
     }
     
