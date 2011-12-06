@@ -86,7 +86,7 @@ class TinyMCEType extends AbstractType
             'active_plugins'    => 'safari,style,table,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,pagebreak',
             'buttons1'          => 'newdocument,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bullist,numlist,|,outdent,indent,|,print,fullscreen,preview,|,cleanup,code',
             'buttons2'          => 'formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,styleprops,|,nonbreaking,pagebreak',
-            'buttons3'          => 'tablecontrols,|,hr,visualaid,|,sub,sup,|,charmap,emotions,iespell,image,media,advhr,|,link,unlink',
+            'buttons3'          => 'tablecontrols,|,hr,visualaid,|,sub,sup,|,charmap,emotions,iespell,image,media,advhr,|,link,unlink,anchor',
             'other'             => null,
         );
     }
