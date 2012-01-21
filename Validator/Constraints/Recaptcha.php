@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 class Recaptcha extends Constraint
 {
 
-    public $message = 'Captcha invalide';
+    public $message = 'This value is not valid';
 
     /**
      * {@inheritdoc}
