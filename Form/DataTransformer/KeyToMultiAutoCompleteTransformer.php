@@ -51,8 +51,8 @@ class KeyToMultiAutoCompleteTransformer extends EntityToMultiAutoCompleteTransfo
             foreach($query->execute() as $entity)
             {
                 $new_entity = array();
-                $new_entity['id'] = \htmlentities($entity->$key_method(), ENT_COMPAT, 'UTF-8');
-                $new_entity['name'] = \htmlentities($entity->$method(), ENT_COMPAT, 'UTF-8');
+                $new_entity['id'] = \htmlentities($entity->$key_method(), ENT_QUOTES, 'UTF-8');
+                $new_entity['name'] = \htmlentities($entity->$method(), ENT_QUOTES, 'UTF-8');
                 $results[] = $new_entity;
             }
         }
