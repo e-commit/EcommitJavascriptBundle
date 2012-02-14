@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityManager;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToMultiAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToMultiAutoCompleteTransformer;
+use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
 
 class MultiEntityAutoCompleteType extends AbstractType
 {
@@ -77,6 +78,9 @@ class MultiEntityAutoCompleteType extends AbstractType
         {
             $builder->appendClientTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
         }
+        
+        //Remove prePopulate if client's value is incorrect
+        $builder->addEventSubscriber(new FixMultiAutocomplete());
         
         $builder->setAttribute('url', $options['url']);
         $builder->setAttribute('hint_text', $options['hint_text']);
