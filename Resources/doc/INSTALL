@@ -7,7 +7,7 @@
  ***************************************************
 
 * Install prerequisites:
-  - EcommitUtilBundle (branch: 1.0.x)
+  - EcommitUtilBundle (branch: 1.1.x)
 
 * Add EcommitJavascriptBundle to your /vendor/bundles/Ecommit dir
 
