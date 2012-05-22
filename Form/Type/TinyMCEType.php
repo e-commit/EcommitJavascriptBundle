@@ -49,6 +49,7 @@ class TinyMCEType extends AbstractType
         $builder->setAttribute('buttons1', $options['buttons1']);
         $builder->setAttribute('buttons2', $options['buttons2']);
         $builder->setAttribute('buttons3', $options['buttons3']);
+        $builder->setAttribute('file_browser', $options['file_browser']);
         $builder->setAttribute('other', $options['other']);
     }
 
@@ -57,6 +58,10 @@ class TinyMCEType extends AbstractType
     {
         $this->javascript_manager->enablejQuery();
         $this->javascript_manager->addJs($this->jQuery_script_url);
+        if($form->getAttribute('file_browser'))
+        {
+            $this->javascript_manager->addJs('/bundles/ecommitmediabrowser/js/tiny_mce.js');
+        }
         
         $view->set('script_url', $form->getAttribute('script_url'));
         $view->set('theme', $form->getAttribute('theme'));
@@ -67,6 +72,7 @@ class TinyMCEType extends AbstractType
         $view->set('buttons1', $form->getAttribute('buttons1'));
         $view->set('buttons2', $form->getAttribute('buttons2'));
         $view->set('buttons3', $form->getAttribute('buttons3'));
+        $view->set('file_browser', $form->getAttribute('file_browser'));
         $view->set('other', $form->getAttribute('other'));
     }
     
@@ -87,6 +93,7 @@ class TinyMCEType extends AbstractType
             'buttons1'          => 'newdocument,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bullist,numlist,|,outdent,indent,|,print,fullscreen,preview,|,cleanup,code',
             'buttons2'          => 'formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,styleprops,|,nonbreaking,pagebreak',
             'buttons3'          => 'tablecontrols,|,hr,visualaid,|,sub,sup,|,charmap,emotions,iespell,image,media,advhr,|,link,unlink,anchor',
+            'file_browser'      => false,
             'other'             => null,
         );
     }
