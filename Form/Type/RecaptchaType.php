@@ -12,10 +12,11 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Exception\FormException;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RecaptchaType extends AbstractType
 {
@@ -41,12 +42,12 @@ class RecaptchaType extends AbstractType
         return $this->public_key;
     }
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
          $builder->setAttribute('options', $options['options']);
     }
 
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         if (!$this->enable)
         {
@@ -67,24 +68,24 @@ class RecaptchaType extends AbstractType
             $server = self::RECAPTCHA_API_SERVER;
         }
 
-        $view->set('url_challenge', $server.'/challenge?k='.$this->public_key);
-        $view->set('url_noscript', $server.'/noscript?k='.$this->public_key);
-        $view->set('public_key', $this->public_key);
-        $view->set('recaptcha_enable', $this->enable);
-        $view->set('options', $form->getAttribute('options'));
+        $view->setVar('url_challenge', $server.'/challenge?k='.$this->public_key);
+        $view->setVar('url_noscript', $server.'/noscript?k='.$this->public_key);
+        $view->setVar('public_key', $this->public_key);
+        $view->setVar('recaptcha_enable', $this->enable);
+        $view->setVar('options', $form->getAttribute('options'));
     }
     
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'options' => array(
                 'theme' => 'clean',
                 'lang' => $this->language,
             )
-        );
+        ));
     }
     
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'field';
     }

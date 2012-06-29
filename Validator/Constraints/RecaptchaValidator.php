@@ -30,12 +30,12 @@ class RecaptchaValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function isValid($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         // if recaptcha is disabled, always valid
         if (!$this->container->getParameter('ecommit_javascript.recaptcha.enable'))
         {
-            return true;
+            return;
         }
 
         // define variable for recaptcha check answer
@@ -51,17 +51,17 @@ class RecaptchaValidator extends ConstraintValidator
 
         if (!$challenge && !$response)
         {
-            $this->setMessage($constraint->message, array('{{ value }}' => $value));
-            return false;
+            $this->context->addViolation($constraint->message, array('{{ value }}' => $value));
+            return;
         }
 
         if (!$this->checkAnswer($privateKey, $remoteip, $challenge, $response))
         {
-            $this->setMessage($constraint->message, array('{{ value }}' => $value));
-            return false;
+            $this->context->addViolation($constraint->message, array('{{ value }}' => $value));
+            return;
         }
 
-        return true;
+        return;
     }
 
     /**

@@ -12,10 +12,11 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToAutoCompleteTransformer;
@@ -39,7 +40,7 @@ class EntityAutoCompleteType extends AbstractType
     }
     
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('key', 'hidden');
         $builder->add('text', 'text');
@@ -72,11 +73,11 @@ class EntityAutoCompleteType extends AbstractType
         
         if($options['input'] == 'entity')
         {
-            $builder->appendClientTransformer(new EntityToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+            $builder->addViewTransformer(new EntityToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
         }
         else
         {
-            $builder->appendClientTransformer(new KeyToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
+            $builder->addViewTransformer(new KeyToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
         }
         
         $builder->setAttribute('url', $options['url']);
@@ -86,25 +87,25 @@ class EntityAutoCompleteType extends AbstractType
     }
 
     
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQueryUi();
         
-        $view->set('url', $form->getAttribute('url'));
-        $view->set('image_autocomplete', $form->getAttribute('image_autocomplete'));
-        $view->set('image_ok', $form->getAttribute('image_ok'));
-        $view->set('min_chars', $form->getAttribute('min_chars'));
+        $view->setVar('url', $form->getAttribute('url'));
+        $view->setVar('image_autocomplete', $form->getAttribute('image_autocomplete'));
+        $view->setVar('image_ok', $form->getAttribute('image_ok'));
+        $view->setVar('min_chars', $form->getAttribute('min_chars'));
     }
     
     
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'form';
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'input'             => 'entity',
             'url'               => null,
             'em'                => $this->em,
@@ -118,19 +119,13 @@ class EntityAutoCompleteType extends AbstractType
             'min_chars'         => 1,
             
             'error_bubbling'    => false,
-        );
+        ));
+        
+        $resolver->setAllowedValues(array(
+            'input'     => array('entity', 'key'),
+        ));
     }
     
-    public function getAllowedOptionValues(array $options)
-    {
-        return array(
-            'input'     => array(
-                'entity',
-                'key',
-            ),
-        );
-    }
-
     public function getName()
     {
         return 'entity_autocomplete';

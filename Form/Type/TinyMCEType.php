@@ -12,9 +12,10 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Ecommit\JavascriptBundle\Form\DataTransformer\DateTimeToStringTransformer;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 
@@ -38,7 +39,7 @@ class TinyMCEType extends AbstractType
     }
     
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('script_url', $this->script_url);
         $builder->setAttribute('theme', $options['theme']);
@@ -54,7 +55,7 @@ class TinyMCEType extends AbstractType
     }
 
     
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQuery();
         $this->javascript_manager->addJs($this->jQuery_script_url);
@@ -63,28 +64,28 @@ class TinyMCEType extends AbstractType
             $this->javascript_manager->addJs('/bundles/ecommitmediabrowser/js/tiny_mce.js');
         }
         
-        $view->set('script_url', $form->getAttribute('script_url'));
-        $view->set('theme', $form->getAttribute('theme'));
-        $view->set('width', $form->getAttribute('width'));
-        $view->set('height', $form->getAttribute('height'));
-        $view->set('language', $form->getAttribute('language'));
-        $view->set('active_plugins', $form->getAttribute('active_plugins'));
-        $view->set('buttons1', $form->getAttribute('buttons1'));
-        $view->set('buttons2', $form->getAttribute('buttons2'));
-        $view->set('buttons3', $form->getAttribute('buttons3'));
-        $view->set('file_browser', $form->getAttribute('file_browser'));
-        $view->set('other', $form->getAttribute('other'));
+        $view->setVar('script_url', $form->getAttribute('script_url'));
+        $view->setVar('theme', $form->getAttribute('theme'));
+        $view->setVar('width', $form->getAttribute('width'));
+        $view->setVar('height', $form->getAttribute('height'));
+        $view->setVar('language', $form->getAttribute('language'));
+        $view->setVar('active_plugins', $form->getAttribute('active_plugins'));
+        $view->setVar('buttons1', $form->getAttribute('buttons1'));
+        $view->setVar('buttons2', $form->getAttribute('buttons2'));
+        $view->setVar('buttons3', $form->getAttribute('buttons3'));
+        $view->setVar('file_browser', $form->getAttribute('file_browser'));
+        $view->setVar('other', $form->getAttribute('other'));
     }
     
     
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'field';
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'theme'             => 'advanced',
             'width'             => null,
             'height'            => null,
@@ -95,19 +96,13 @@ class TinyMCEType extends AbstractType
             'buttons3'          => 'tablecontrols,|,hr,visualaid,|,sub,sup,|,charmap,emotions,iespell,image,media,advhr,|,link,unlink,anchor',
             'file_browser'      => false,
             'other'             => null,
-        );
+        ));
+        
+        $resolver->setAllowedValues(array(
+            'theme'     => array('advanced', 'simple'),
+        ));
     }
 
-    public function getAllowedOptionValues(array $options)
-    {
-        return array(
-            'theme'     => array(
-                'advanced',
-                'simple',
-            ),
-        );
-    }
-    
     public function getName()
     {
         return 'tiny_mce';

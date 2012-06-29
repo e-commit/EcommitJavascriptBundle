@@ -12,11 +12,12 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Exception\FormException;
-use Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
 use Doctrine\ORM\EntityManager;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToMultiAutoCompleteTransformer;
@@ -41,7 +42,7 @@ class MultiEntityAutoCompleteType extends AbstractType
     }
     
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $required_options = array('url', 'alias');
         foreach($required_options as $required_option)
@@ -71,12 +72,12 @@ class MultiEntityAutoCompleteType extends AbstractType
         
         if($options['input'] == 'entity')
         {
-            $builder->appendClientTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
-            $builder->addEventSubscriber(new MergeCollectionListener());
+            $builder->addViewTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+            $builder->addEventSubscriber(new MergeDoctrineCollectionListener());
         }
         else
         {
-            $builder->appendClientTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+            $builder->addViewTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
         }
         
         //Remove prePopulate if client's value is incorrect
@@ -94,7 +95,7 @@ class MultiEntityAutoCompleteType extends AbstractType
     }
 
     
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQuery();
         $this->javascript_manager->addJs('ejs/jQuery/tokeninput/js/jquery.tokeninput.min.js');
@@ -107,26 +108,26 @@ class MultiEntityAutoCompleteType extends AbstractType
             $this->javascript_manager->addCss('ejs/jQuery/tokeninput/css/'.$file_name);
         }
         
-        $view->set('url', $form->getAttribute('url'));
-        $view->set('hint_text', $form->getAttribute('hint_text'));
-        $view->set('no_results_text', $form->getAttribute('no_results_text'));
-        $view->set('searching_text', $form->getAttribute('searching_text'));
-        $view->set('theme', $theme);
-        $view->set('min_chars', $form->getAttribute('min_chars'));
-        $view->set('max', $form->getAttribute('max'));
-        $view->set('prevent_duplicates', ($form->getAttribute('prevent_duplicates'))? 'true' : 'false');
-        $view->set('query_param', $form->getAttribute('query_param'));
+        $view->setVar('url', $form->getAttribute('url'));
+        $view->setVar('hint_text', $form->getAttribute('hint_text'));
+        $view->setVar('no_results_text', $form->getAttribute('no_results_text'));
+        $view->setVar('searching_text', $form->getAttribute('searching_text'));
+        $view->setVar('theme', $theme);
+        $view->setVar('min_chars', $form->getAttribute('min_chars'));
+        $view->setVar('max', $form->getAttribute('max'));
+        $view->setVar('prevent_duplicates', ($form->getAttribute('prevent_duplicates'))? 'true' : 'false');
+        $view->setVar('query_param', $form->getAttribute('query_param'));
     }
     
     
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'field';
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'input'             => 'entity',
             'url'               => null,
             'em'                => $this->em,
@@ -147,19 +148,13 @@ class MultiEntityAutoCompleteType extends AbstractType
             //Field not required because the "html 5 error" is displayed
             //outside the screen (field outside the screen): Browser error is invisible
             'required'          => false,
-        );
+        ));
+        
+        $resolver->setAllowedValues(array(
+            'input'     => array('entity', 'key'),
+        ));
     }
     
-    public function getAllowedOptionValues(array $options)
-    {
-        return array(
-            'input'     => array(
-                'entity',
-                'key',
-            ),
-        );
-    }
-
     public function getName()
     {
         return 'multi_entity_autocomplete';

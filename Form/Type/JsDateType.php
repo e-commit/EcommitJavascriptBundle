@@ -12,9 +12,10 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Ecommit\JavascriptBundle\Form\DataTransformer\DateTimeToStringTransformer;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 
@@ -33,7 +34,7 @@ class JsDateType extends AbstractType
     }
     
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $array_date_php = array('d', 'g', 'I', 'm', 'n', 'F', 'Y');
         $array_date_jQuery = array('dd', 'd', 'DD', 'mm', 'm', 'MM', 'yy');
@@ -41,18 +42,18 @@ class JsDateType extends AbstractType
         $format_php = $options['format'];
         $format_jQuery = str_replace($array_date_php, $array_date_jQuery, $options['format']);
         
-        $builder->appendClientTransformer(new DateTimeToStringTransformer($options['data_timezone'], $options['user_timezone'], $format_php));
+        $builder->addViewTransformer(new DateTimeToStringTransformer($options['data_timezone'], $options['user_timezone'], $format_php));
         
         if ($options['input'] === 'string') {
-            $builder->appendNormTransformer(new ReversedTransformer(
+            $builder->addModelTransformer(new ReversedTransformer(
                 new DateTimeToStringTransformer($options['data_timezone'], $options['data_timezone'], 'Y-m-d')
             ));
         } else if ($options['input'] === 'timestamp') {
-            $builder->appendNormTransformer(new ReversedTransformer(
+            $builder->addModelTransformer(new ReversedTransformer(
                 new DateTimeToTimestampTransformer($options['data_timezone'], $options['data_timezone'])
             ));
         } else if ($options['input'] === 'array') {
-            $builder->appendNormTransformer(new ReversedTransformer(
+            $builder->addModelTransformer(new ReversedTransformer(
                 new DateTimeToArrayTransformer($options['data_timezone'], $options['data_timezone'], array('year', 'month', 'day'))
             ));
         } else if ($options['input'] !== 'datetime') {
@@ -69,28 +70,28 @@ class JsDateType extends AbstractType
     }
 
     
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQueryUi();
         
-        $view->set('date_format', $form->getAttribute('format_jQuery'));
-        $view->set('change_month', ($form->getAttribute('change_month'))? 'true' : 'false');
-        $view->set('change_year', ($form->getAttribute('change_year'))? 'true' : 'false');
-        $view->set('first_day', $form->getAttribute('first_day'));
-        $view->set('go_to_current', ($form->getAttribute('go_to_current'))? 'true' : 'false');
-        $view->set('number_of_months', $form->getAttribute('number_of_months'));
-        $view->set('other', $form->getAttribute('other'));
+        $view->setVar('date_format', $form->getAttribute('format_jQuery'));
+        $view->setVar('change_month', ($form->getAttribute('change_month'))? 'true' : 'false');
+        $view->setVar('change_year', ($form->getAttribute('change_year'))? 'true' : 'false');
+        $view->setVar('first_day', $form->getAttribute('first_day'));
+        $view->setVar('go_to_current', ($form->getAttribute('go_to_current'))? 'true' : 'false');
+        $view->setVar('number_of_months', $form->getAttribute('number_of_months'));
+        $view->setVar('other', $form->getAttribute('other'));
     }
     
     
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'field';
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'input'             => 'datetime',
             'format'            => 'd/m/Y',
             'data_timezone'     => null,
@@ -104,21 +105,13 @@ class JsDateType extends AbstractType
             // Don't modify \DateTime classes by reference, we treat
             // them like immutable value objects
             'by_reference'      => false,
-        );
+        ));
+        
+        $resolver->setAllowedValues(array(
+            'input'     => array('datetime', 'string', 'timestamp', 'array'),
+        ));
     }
 
-    public function getAllowedOptionValues(array $options)
-    {
-        return array(
-            'input'     => array(
-                'datetime',
-                'string',
-                'timestamp',
-                'array',
-            ),
-        );
-    }
-    
     public function getName()
     {
         return 'js_date';

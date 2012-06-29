@@ -13,16 +13,16 @@ namespace Ecommit\JavascriptBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 
 class FixMultiAutocomplete implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::POST_BIND => 'onPostBind');
+        return array(FormEvents::BIND => 'onBind');
     }
     
-    public function onPostBind(DataEvent $event)
+    public function onBind(FormEvent $event)
     {
         $form = $event->getForm();
         if(!$form->isSynchronized())

@@ -1,7 +1,7 @@
 {% use 'form_div_layout.html.twig' %}
 {% block js_date_widget %}
 {% spaceless %}
-    {{ block('field_widget') }}
+    {{ block('form_widget_simple') }}
     <script type="text/javascript">
         $(function() {
             $("#{{ id }}").datepicker({
@@ -38,22 +38,22 @@
     
     <script type="text/javascript">
         $(function() {
-            $("#{{ form.children.text.vars.id }}").unbind();
-            $("#{{ form.children.text.vars.id }}").bind("change", function(){
-                $("#{{ form.children.key.vars.id }}").val('');
+            $("#{{ form.all.text.vars.id }}").unbind();
+            $("#{{ form.all.text.vars.id }}").bind("change", function(){
+                $("#{{ form.all.key.vars.id }}").val('');
                 $("#image_{{id}}").hide();
             });
-            $("#{{ form.children.text.vars.id }}").autocomplete({
+            $("#{{ form.all.text.vars.id }}").autocomplete({
                 source: '{{ url }}',
                 minLength: {{ min_chars }},
                 select: function( event, ui ) {
                     if(ui.item){
-                        $("#{{ form.children.key.vars.id }}").val(ui.item.key);
+                        $("#{{ form.all.key.vars.id }}").val(ui.item.key);
                         $("#image_{{id}}").show();
                     }
                  } 
             });
-            if($("#{{ form.children.key.vars.id }}").val()){
+            if($("#{{ form.all.key.vars.id }}").val()){
                 $("#image_{{id}}").show();
             }
     });
@@ -87,7 +87,7 @@
 
 {% block tiny_mce_widget %}
 {% spaceless %}
-    {{ block('field_widget') }}
+    {{ block('form_widget_simple') }}
     <script type="text/javascript">
         $().ready(function() {
             $("#{{ id }}").tinymce({
