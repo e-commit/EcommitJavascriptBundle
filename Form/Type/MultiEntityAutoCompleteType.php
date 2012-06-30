@@ -148,6 +148,8 @@ class MultiEntityAutoCompleteType extends AbstractType
             //Field not required because the "html 5 error" is displayed
             //outside the screen (field outside the screen): Browser error is invisible
             'required'          => false,
+            
+            'compound'          => false,
         ));
         
         $resolver->setAllowedValues(array(

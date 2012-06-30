@@ -96,6 +96,8 @@ class TinyMCEType extends AbstractType
             'buttons3'          => 'tablecontrols,|,hr,visualaid,|,sub,sup,|,charmap,emotions,iespell,image,media,advhr,|,link,unlink,anchor',
             'file_browser'      => false,
             'other'             => null,
+            
+            'compound'          => false,
         ));
         
         $resolver->setAllowedValues(array(

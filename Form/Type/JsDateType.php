@@ -102,6 +102,8 @@ class JsDateType extends AbstractType
             'go_to_current'     => false,
             'number_of_months'  => 1,
             'other'             => null,
+            
+            'compound'          => false,
             // Don't modify \DateTime classes by reference, we treat
             // them like immutable value objects
             'by_reference'      => false,

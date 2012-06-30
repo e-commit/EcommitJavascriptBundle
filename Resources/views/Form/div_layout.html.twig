@@ -116,16 +116,16 @@
     
 {% block recaptcha_widget %}
 {% spaceless %}
-    {% if form.get('recaptcha_enable') %}
+    {% if form.getVar('recaptcha_enable') %}
         {% if attr.options is defined %}
             {% set options = options|merge(attr.options) %}
         {% endif %}
         <script type="text/javascript">
                 var RecaptchaOptions = {{ options|json_encode|raw }}
         </script>
-        <script src="{{ form.get('url_challenge') }}" type="text/javascript"></script>
+        <script src="{{ form.getVar('url_challenge') }}" type="text/javascript"></script>
         <noscript>
-            <iframe src="{{ form.get('url_noscript') }}" height="300" width="500" style="border: none;"></iframe><br/>
+            <iframe src="{{ form.getVar('url_noscript') }}" height="300" width="500" style="border: none;"></iframe><br/>
             <textarea name="recaptcha_challenge_field" id="{{ id }}" rows="3" cols="40"></textarea>
             <input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
         </noscript>

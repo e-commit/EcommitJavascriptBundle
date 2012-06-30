@@ -81,7 +81,9 @@ class RecaptchaType extends AbstractType
             'options' => array(
                 'theme' => 'clean',
                 'lang' => $this->language,
-            )
+            ),
+            
+            'compound'  => false,
         ));
     }
     
