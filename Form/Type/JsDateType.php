@@ -86,7 +86,7 @@ class JsDateType extends AbstractType
     
     public function getParent()
     {
-        return 'field';
+        return 'form';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

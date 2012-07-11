@@ -119,7 +119,6 @@ class EntityAutoCompleteType extends AbstractType
             'min_chars'         => 1,
             
             'error_bubbling'    => false,
-            'compound'          => false,
         ));
         
         $resolver->setAllowedValues(array(
