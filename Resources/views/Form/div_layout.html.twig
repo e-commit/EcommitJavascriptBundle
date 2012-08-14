@@ -38,22 +38,22 @@
     
     <script type="text/javascript">
         $(function() {
-            $("#{{ form.all.text.vars.id }}").unbind();
-            $("#{{ form.all.text.vars.id }}").bind("change", function(){
-                $("#{{ form.all.key.vars.id }}").val('');
+            $("#{{ form.children.text.vars.id }}").unbind();
+            $("#{{ form.children.text.vars.id }}").bind("change", function(){
+                $("#{{ form.children.key.vars.id }}").val('');
                 $("#image_{{id}}").hide();
             });
-            $("#{{ form.all.text.vars.id }}").autocomplete({
+            $("#{{ form.children.text.vars.id }}").autocomplete({
                 source: '{{ url }}',
                 minLength: {{ min_chars }},
                 select: function( event, ui ) {
                     if(ui.item){
-                        $("#{{ form.all.key.vars.id }}").val(ui.item.key);
+                        $("#{{ form.children.key.vars.id }}").val(ui.item.key);
                         $("#image_{{id}}").show();
                     }
                  } 
             });
-            if($("#{{ form.all.key.vars.id }}").val()){
+            if($("#{{ form.children.key.vars.id }}").val()){
                 $("#image_{{id}}").show();
             }
     });
@@ -116,16 +116,16 @@
     
 {% block recaptcha_widget %}
 {% spaceless %}
-    {% if form.getVar('recaptcha_enable') %}
+    {% if form.vars.recaptcha_enable %}
         {% if attr.options is defined %}
             {% set options = options|merge(attr.options) %}
         {% endif %}
         <script type="text/javascript">
                 var RecaptchaOptions = {{ options|json_encode|raw }}
         </script>
-        <script src="{{ form.getVar('url_challenge') }}" type="text/javascript"></script>
+        <script src="{{ form.vars.url_challenge }}" type="text/javascript"></script>
         <noscript>
-            <iframe src="{{ form.getVar('url_noscript') }}" height="300" width="500" style="border: none;"></iframe><br/>
+            <iframe src="{{ form.vars.url_noscript }}" height="300" width="500" style="border: none;"></iframe><br/>
             <textarea name="recaptcha_challenge_field" id="{{ id }}" rows="3" cols="40"></textarea>
             <input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
         </noscript>

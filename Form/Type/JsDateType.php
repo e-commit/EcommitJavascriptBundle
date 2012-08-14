@@ -11,13 +11,17 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Ecommit\JavascriptBundle\Form\DataTransformer\DateTimeToStringTransformer;
 use Ecommit\JavascriptBundle\jQuery\Manager;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ReversedTransformer;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class JsDateType extends AbstractType
 {
@@ -59,28 +63,20 @@ class JsDateType extends AbstractType
         } else if ($options['input'] !== 'datetime') {
             throw new FormException('The "input" option must be "datetime", "string", "timestamp" or "array".');
         }
-        
-        $builder->setAttribute('format_jQuery', $format_jQuery);
-        $builder->setAttribute('change_month', $options['change_month']);
-        $builder->setAttribute('change_year', $options['change_year']);
-        $builder->setAttribute('first_day', $options['first_day']);
-        $builder->setAttribute('go_to_current', $options['go_to_current']);
-        $builder->setAttribute('number_of_months', $options['number_of_months']);
-        $builder->setAttribute('other', $options['other']);
     }
 
     
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQueryUi();
         
-        $view->setVar('date_format', $form->getAttribute('format_jQuery'));
-        $view->setVar('change_month', ($form->getAttribute('change_month'))? 'true' : 'false');
-        $view->setVar('change_year', ($form->getAttribute('change_year'))? 'true' : 'false');
-        $view->setVar('first_day', $form->getAttribute('first_day'));
-        $view->setVar('go_to_current', ($form->getAttribute('go_to_current'))? 'true' : 'false');
-        $view->setVar('number_of_months', $form->getAttribute('number_of_months'));
-        $view->setVar('other', $form->getAttribute('other'));
+        $view->vars['date_format'] = $options['format_jQuery'];
+        $view->vars['change_month'] = ($options['change_month'])? 'true' : 'false';
+        $view->vars['change_year'] = ($options['change_year'])? 'true' : 'false';
+        $view->vars['first_day'] = $options['first_day'];
+        $view->vars['go_to_current'] = ($options['go_to_current'])? 'true' : 'false';
+        $view->vars['number_of_months'] = $options['number_of_months'];
+        $view->vars['other'] = $options['other'];
     }
     
     

@@ -11,13 +11,11 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Ecommit\JavascriptBundle\Form\DataTransformer\DateTimeToStringTransformer;
 use Ecommit\JavascriptBundle\jQuery\Manager;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TinyMCEType extends AbstractType
 {
@@ -36,45 +34,28 @@ class TinyMCEType extends AbstractType
         $this->javascript_manager = $javascript_manager;
         $this->script_url = $script_url;
         $this->jQuery_script_url = $jQuery_script_url;
-    }
+    } 
     
-    
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setAttribute('script_url', $this->script_url);
-        $builder->setAttribute('theme', $options['theme']);
-        $builder->setAttribute('width', $options['width']);
-        $builder->setAttribute('height', $options['height']);
-        $builder->setAttribute('language', $options['language']);
-        $builder->setAttribute('active_plugins', $options['active_plugins']);
-        $builder->setAttribute('buttons1', $options['buttons1']);
-        $builder->setAttribute('buttons2', $options['buttons2']);
-        $builder->setAttribute('buttons3', $options['buttons3']);
-        $builder->setAttribute('file_browser', $options['file_browser']);
-        $builder->setAttribute('other', $options['other']);
-    }
-
-    
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQuery();
         $this->javascript_manager->addJs($this->jQuery_script_url);
-        if($form->getAttribute('file_browser'))
+        if($options['file_browser'])
         {
             $this->javascript_manager->addJs('/bundles/ecommitmediabrowser/js/tiny_mce.js');
         }
         
-        $view->setVar('script_url', $form->getAttribute('script_url'));
-        $view->setVar('theme', $form->getAttribute('theme'));
-        $view->setVar('width', $form->getAttribute('width'));
-        $view->setVar('height', $form->getAttribute('height'));
-        $view->setVar('language', $form->getAttribute('language'));
-        $view->setVar('active_plugins', $form->getAttribute('active_plugins'));
-        $view->setVar('buttons1', $form->getAttribute('buttons1'));
-        $view->setVar('buttons2', $form->getAttribute('buttons2'));
-        $view->setVar('buttons3', $form->getAttribute('buttons3'));
-        $view->setVar('file_browser', $form->getAttribute('file_browser'));
-        $view->setVar('other', $form->getAttribute('other'));
+        $view->vars['script_url'] = $this->script_url;
+        $view->vars['theme'] = $options['theme'];
+        $view->vars['width'] = $options['width'];
+        $view->vars['height'] = $options['height'];
+        $view->vars['language'] = $options['language'];
+        $view->vars['active_plugins'] = $options['active_plugins'];
+        $view->vars['buttons1'] = $options['buttons1'];
+        $view->vars['buttons2'] = $options['buttons2'];
+        $view->vars['buttons3'] = $options['buttons3'];
+        $view->vars['file_browser'] = $options['file_browser'];
+        $view->vars['other'] = $options['other'];
     }
     
     

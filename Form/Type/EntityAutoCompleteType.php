@@ -11,16 +11,16 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Exception\FormException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
-use Ecommit\JavascriptBundle\jQuery\Manager;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToAutoCompleteTransformer;
+use Ecommit\JavascriptBundle\jQuery\Manager;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EntityAutoCompleteType extends AbstractType
 {
@@ -79,22 +79,17 @@ class EntityAutoCompleteType extends AbstractType
         {
             $builder->addViewTransformer(new KeyToAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method']));
         }
-        
-        $builder->setAttribute('url', $options['url']);
-        $builder->setAttribute('image_autocomplete', $options['image_autocomplete']);
-        $builder->setAttribute('image_ok', $options['image_ok']);
-        $builder->setAttribute('min_chars', $options['min_chars']);
     }
 
     
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $this->javascript_manager->enablejQueryUi();
         
-        $view->setVar('url', $form->getAttribute('url'));
-        $view->setVar('image_autocomplete', $form->getAttribute('image_autocomplete'));
-        $view->setVar('image_ok', $form->getAttribute('image_ok'));
-        $view->setVar('min_chars', $form->getAttribute('min_chars'));
+        $view->vars['url'] = $options['url'];
+        $view->vars['image_autocomplete'] = $options['image_autocomplete'];
+        $view->vars['image_ok'] = $options['image_ok'];
+        $view->vars['min_chars'] = $options['min_chars'];
     }
     
     
