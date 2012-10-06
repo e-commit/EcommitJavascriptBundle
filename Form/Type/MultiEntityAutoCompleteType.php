@@ -12,72 +12,49 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToMultiAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToMultiAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MultiEntityAutoCompleteType extends AbstractType
 {
     protected $javascript_manager;
-    protected $em;
+    protected $registry;
     
     /**
      * Constructor
      * 
      * @param Manager $javascript_manager
-     * @param EntityManager $em
+     * @param ManagerRegistry $registry
      */
-    public function __construct(Manager $javascript_manager, EntityManager $em)
+    public function __construct(Manager $javascript_manager, ManagerRegistry $registry)
     {
         $this->javascript_manager = $javascript_manager;
-        $this->em = $em;
+        $this->registry = $registry;
     }
     
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $required_options = array('url', 'alias');
-        foreach($required_options as $required_option)
-        {
-            if(empty($options[$required_option]))
-            {
-                throw new FormException(sprintf('The "%s" option is required', $required_option));
-            }
-        }
-        
-        if(!empty($options['query_builder']))
-        {
-            $query_builder = $options['query_builder'];
-            $alias = $options['alias'];
-        }
-        elseif(!empty($options['class']))
-        {
-            $query_builder = $this->em->createQueryBuilder()
-            ->from($options['class'], 'c')
-            ->select('c');
-            $alias = 'c.'.$options['alias'];
-        }
-        else
-        {
-            throw new FormException('"query_builder" or "class" option is required');
-        }
-        
         if($options['input'] == 'entity')
         {
-            $builder->addViewTransformer(new EntityToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+            $builder->addViewTransformer(new EntityToMultiAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['method'], $options['key_method'], $options['max']));
             $builder->addEventSubscriber(new MergeDoctrineCollectionListener());
         }
         else
         {
-            $builder->addViewTransformer(new KeyToMultiAutoCompleteTransformer($query_builder, $alias, $options['method'], $options['key_method'], $options['max']));
+            $builder->addViewTransformer(new KeyToMultiAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['method'], $options['key_method'], $options['max']));
         }
         
         //Remove prePopulate if client's value is incorrect
@@ -117,11 +94,58 @@ class MultiEntityAutoCompleteType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $registry = $this->registry;
+        $em_normalizer = function (Options $options, $em) use ($registry)
+        {
+            if(null !== $em)
+            {
+                return $registry->getManager($em);
+            }
+            return $registry->getManagerForClass($options['class']);
+        };
+
+        $query_builder_normalizer = function (Options $options, $query_builder)
+        {
+            $em = $options['em'];
+            $class = $options['class'];
+            if($query_builder == null)
+            {
+                $query_builder= $em->createQueryBuilder()
+                ->from($class, 'c')
+                ->select('c');
+            }
+            
+            if($query_builder instanceof \Closure)
+            {
+                $query_builder = $query_builder($em->getRepository($class));
+            }        
+            if(!$query_builder instanceof QueryBuilder)
+            {
+                throw new FormException('"query_builder" must be an instance of Doctrine\ORM\QueryBuilder');
+            }
+            return $query_builder;
+        };
+        
+        $alias_normalizer = function (Options $options, $alias)
+        {
+            if($alias == null)
+            {
+                $em = $options['em'];
+                $identifier = $em->getClassMetadata($options['class'])->getIdentifierFieldNames();
+                if(count($identifier) != 1)
+                {
+                    throw new FormException('"alias" option is required');
+                }
+                $identifier = $identifier[0];
+                $query_builder = $options['query_builder'];
+                $alias = current($query_builder->getRootAliases()).'.'.$identifier;
+            }
+            return $alias;
+        };
+        
         $resolver->setDefaults(array(
             'input'             => 'entity',
-            'url'               => null,
-            'em'                => $this->em,
-            'class'             => null,
+            'em'                => null,
             'query_builder'     => null,
             'alias'             => null,
             'method'            => '__toString',
@@ -142,8 +166,19 @@ class MultiEntityAutoCompleteType extends AbstractType
             'compound'          => false,
         ));
         
+        $resolver->setRequired(array(
+            'class',
+            'url',
+        ));
+        
         $resolver->setAllowedValues(array(
             'input'     => array('entity', 'key'),
+        ));
+        
+        $resolver->setNormalizers(array(
+            'em' => $em_normalizer,
+            'query_builder' => $query_builder_normalizer,
+            'alias' => $alias_normalizer,
         ));
     }
     
