@@ -40,11 +40,7 @@ class JsDateType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $array_date_php = array('d', 'g', 'I', 'm', 'n', 'F', 'Y');
-        $array_date_jQuery = array('dd', 'd', 'DD', 'mm', 'm', 'MM', 'yy');
-        
         $format_php = $options['format'];
-        $format_jQuery = str_replace($array_date_php, $array_date_jQuery, $options['format']);
         
         $builder->addViewTransformer(new DateTimeToStringTransformer($options['data_timezone'], $options['user_timezone'], $format_php));
         
@@ -70,7 +66,13 @@ class JsDateType extends AbstractType
     {
         $this->javascript_manager->enablejQueryUi();
         
-        $view->vars['date_format'] = $options['format_jQuery'];
+        $array_date_php = array('d', 'g', 'I', 'm', 'n', 'F', 'Y');
+        $array_date_jQuery = array('dd', 'd', 'DD', 'mm', 'm', 'MM', 'yy');
+        
+        $format_php = $options['format'];
+        $format_jQuery = str_replace($array_date_php, $array_date_jQuery, $format_php);
+        
+        $view->vars['date_format'] = $format_jQuery;
         $view->vars['change_month'] = ($options['change_month'])? 'true' : 'false';
         $view->vars['change_year'] = ($options['change_year'])? 'true' : 'false';
         $view->vars['first_day'] = $options['first_day'];
