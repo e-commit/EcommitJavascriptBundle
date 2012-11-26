@@ -8,7 +8,7 @@
 
 * Install prerequisites:
   - Symfony 2.1
-  - EcommitUtilBundle branch: 1.2.x
+  - EcommitUtilBundle branch: 1.3.x
 
 * Add EcommitJavascriptBundle to your vendor dir
 
