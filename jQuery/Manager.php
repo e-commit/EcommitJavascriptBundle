@@ -30,7 +30,6 @@ class Manager
     protected $others_js = array();
     protected $others_css = array();
     
-    protected $ajaxAutoCallbacks;
     protected $util;
 
     /**
@@ -38,10 +37,9 @@ class Manager
      * 
      * @param array $jQuery_core
      * @param array $jQuery_tools
-     * @param bool $ajaxAutoCallbacks 
      * @param UtilHelper $utilHelper
      */
-    public function __construct(Array $jQuery_core, Array $jQuery_ui, Array $jQuery_tools, $ajaxAutoCallbacks, UtilHelper $util) 
+    public function __construct(Array $jQuery_core, Array $jQuery_ui, Array $jQuery_tools, UtilHelper $util) 
     {
         $this->loadFiles($jQuery_core, 'jQuery_core');
         $this->loadFiles($jQuery_ui, 'jQuery_ui');
@@ -53,7 +51,6 @@ class Manager
             $this->enablejQuery();
         }
         
-        $this->ajaxAutoCallbacks = $ajaxAutoCallbacks;
         $this->util = $util;
     }
     
@@ -275,7 +272,6 @@ class Manager
      * - loading: Loading callback
      * - complete: Complete callback
      * - success: Success callback
-     * - auto_errors: Show a dialogbox (or not) if an error occured (True / False)
      * - script: Executes (or not) the code of the result (True / False)
      * - method: Method (POST / GET) (Default: POST)
      * - type: Synchronous or not (synchronous / false) (Default: false)
@@ -369,24 +365,6 @@ class Manager
     if (isset($options['loading'])) $callback_loading = $options['loading'];
     if (isset($options['complete'])) $callback_complete = $options['complete'];
     if (isset($options['success'])) $callback_success = $options['success'];
-    
-    // Auto callback
-        if(($this->ajaxAutoCallbacks && empty($options['auto_errors'])) || !empty($options['auto_errors']))
-        {
-            $callback_error = "if(XMLHttpRequest.status=='401'){alert('".$this->util->escape_javascript($this->util->translate('Vous avez perdu la connexion.'))."');window.location.reload(true);}";
-            $callback_error .= "else if(XMLHttpRequest.status=='403'){alert('".$this->util->escape_javascript($this->util->translate('Vous n\'avez pas les droits nécessaires.'))."');}";
-            $callback_error .= "else if(XMLHttpRequest.status=='404'){alert('".$this->util->escape_javascript($this->util->translate('La page demandée est introuvable.'))."');}";
-            $callback_error .= "else if(XMLHttpRequest.status=='500'){alert('".$this->util->escape_javascript($this->util->translate('Une erreur est survenue.'))."');}";            
-            if(isset($update_failure))
-            {
-                    $update_failure = $callback_error.' '.$update_failure;
-            }
-            else
-            {
-                    $update_failure = $callback_error;
-            }
-        }
-    
     
     $execute = 'false';
     if ((isset($options['script'])) && ($options['script'] == '1')) $execute = 'true';

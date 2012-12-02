@@ -12,9 +12,6 @@ ecommit_javascript:
     jQuery_tools:
          #Chemin du fichier JavaScript du plugin jQuery Tools
          js: ejs/jQuery/tools/jquery.tools.min.js
-    ajax:
-         #Ajoute automatiquement le traitement des erreurs dans les requetes Ajax
-         autocallbacks: true
     tiny_mce:
          #Chemin du fichier Javascript de TinyMCE
          script_url: js/tiny_mce/tiny_mce.js

@@ -26,7 +26,6 @@
         <argument type="collection">
                 <argument key="js">%ecommit_javascript.jQuery_tools.js%</argument>
         </argument>
-        <argument>%ecommit_javascript.ajax.autocallbacks%</argument>
         <argument type="service" id="ecommit_util.helper" />
     </service>
     
