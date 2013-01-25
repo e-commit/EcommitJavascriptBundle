@@ -44,6 +44,10 @@ class JavascriptListener
         
         $response = $event->getResponse();
         $content = $response->getContent();
+        if(!$content) //Test pour eviter exception avec StreamedResponse
+        {
+            return;
+        }
         $with_jquery = !$event->getRequest()->isXmlHttpRequest();
         
         $content_js = $this->jQueryManager->getCodeInsertJs($with_jquery);
