@@ -14,7 +14,7 @@ namespace Ecommit\JavascriptBundle\Form\Type;
 use Ecommit\JavascriptBundle\Form\DataTransformer\DateTimeToStringTransformer;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,7 +57,7 @@ class JsDateType extends AbstractType
                 new DateTimeToArrayTransformer($options['data_timezone'], $options['data_timezone'], array('year', 'month', 'day'))
             ));
         } else if ($options['input'] !== 'datetime') {
-            throw new FormException('The "input" option must be "datetime", "string", "timestamp" or "array".');
+            throw new InvalidConfigurationException('The "input" option must be "datetime", "string", "timestamp" or "array".');
         }
     }
 

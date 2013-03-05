@@ -17,7 +17,7 @@ use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToAutoCompleteTransforme
 use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -103,7 +103,7 @@ class EntityAutoCompleteType extends AbstractType
             }        
             if(!$query_builder instanceof QueryBuilder)
             {
-                throw new FormException('"query_builder" must be an instance of Doctrine\ORM\QueryBuilder');
+                throw new InvalidConfigurationException('"query_builder" must be an instance of Doctrine\ORM\QueryBuilder');
             }
             return $query_builder;
         };
@@ -116,7 +116,7 @@ class EntityAutoCompleteType extends AbstractType
                 $identifier = $em->getClassMetadata($options['class'])->getIdentifierFieldNames();
                 if(count($identifier) != 1)
                 {
-                    throw new FormException('"alias" option is required');
+                    throw new InvalidConfigurationException('"alias" option is required');
                 }
                 $identifier = $identifier[0];
                 $query_builder = $options['query_builder'];
