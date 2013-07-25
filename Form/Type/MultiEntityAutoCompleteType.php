@@ -49,12 +49,12 @@ class MultiEntityAutoCompleteType extends AbstractType
     {
         if($options['input'] == 'entity')
         {
-            $builder->addViewTransformer(new EntityToMultiAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['method'], $options['key_method'], $options['max']));
+            $builder->addViewTransformer(new EntityToMultiAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['render_method'], $options['key_method'], $options['max']));
             $builder->addEventSubscriber(new MergeDoctrineCollectionListener());
         }
         else
         {
-            $builder->addViewTransformer(new KeyToMultiAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['method'], $options['key_method'], $options['max']));
+            $builder->addViewTransformer(new KeyToMultiAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['render_method'], $options['key_method'], $options['max']));
         }
         
         //Remove prePopulate if client's value is incorrect
@@ -148,7 +148,7 @@ class MultiEntityAutoCompleteType extends AbstractType
             'em'                => null,
             'query_builder'     => null,
             'alias'             => null,
-            'method'            => '__toString',
+            'render_method'            => '__toString',
             'key_method'        => 'getId',
             'hint_text'         => 'Type in a search term',
             'no_results_text'   => 'No results',

@@ -49,11 +49,11 @@ class EntityAutoCompleteType extends AbstractType
         
         if($options['input'] == 'entity')
         {
-            $builder->addViewTransformer(new EntityToAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['method'], $options['key_method']));
+            $builder->addViewTransformer(new EntityToAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['render_method'], $options['key_method']));
         }
         else
         {
-            $builder->addViewTransformer(new KeyToAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['method'], $options['key_method']));
+            $builder->addViewTransformer(new KeyToAutoCompleteTransformer($options['query_builder'], $options['alias'], $options['render_method'], $options['key_method']));
         }
     }
 
@@ -129,7 +129,7 @@ class EntityAutoCompleteType extends AbstractType
             'input'             => 'entity',
             'em'                => null,
             'query_builder'     => null,
-            'method'            => '__toString',
+            'render_method'     => '__toString',
             'key_method'        => 'getId',
             'alias'             => null,
             'image_autocomplete'=> 'ecr/images/i16/keyboard_magnify.png',
