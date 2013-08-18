@@ -16,7 +16,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
 {
-    /**
+   /**
      * Transforms key to array (key, text)
      * 
      * @param scalar $key
@@ -36,16 +36,29 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
         
         try
         {
-            //Not use directly $this->query_builder otherwise transform and 
-            //reverse functions will use the same request 
-            $query_builder = clone $this->query_builder;
-            $query_builder->setParameters($this->query_builder->getParameters());
-            
-            $query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
-            ->setParameter('key_transformer', $key)
-            ->getQuery();
-            
-            $entity = $query->getSingleResult();
+            $hash = $this->getCacheHash($key);
+            if(array_key_exists($hash, $this->results_cache))
+            {
+                //Result in cache
+                //The cache is to avoid 3 SQL queries if reverseTransform is called (reverse - reverseTransform - reverse)
+                $entity = $this->results_cache[$hash];
+            }
+            else
+            {
+                //Result not in cache
+                
+                //Not use directly $this->query_builder otherwise transform and 
+                //reverse functions will use the same request 
+                $query_builder = clone $this->query_builder;
+                $query_builder->setParameters($this->query_builder->getParameters());
+
+                $query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
+                ->setParameter('key_transformer', $key)
+                ->getQuery();
+
+                $entity = $query->getSingleResult();
+                $this->results_cache[$hash] = $entity; //Saves result in cache
+            }
         }
         catch(\Exception $e)
         {
@@ -81,20 +94,33 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
         
         try
         {
-            //Not use directly $this->query_builder otherwise transform and 
-            //reverse functions will use the same request 
-            $query_builder = clone $this->query_builder;
-            $query_builder->setParameters($this->query_builder->getParameters());
-            
-            $query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
-            ->setParameter('key_transformer', $key)
-            ->getQuery();
-            
-            $entity = $query->getSingleResult();
+            $hash = $this->getCacheHash($key);
+            if(array_key_exists($hash, $this->results_cache))
+            {
+                //Result in cache
+                //The cache is to avoid 3 SQL queries if reverseTransform is called (reverse - reverseTransform - reverse)
+                $entity = $this->results_cache[$hash];
+            }
+            else
+            {
+                //Result not in cache
+                
+                //Not use directly $this->query_builder otherwise transform and 
+                //reverse functions will use the same request 
+                $query_builder = clone $this->query_builder;
+                $query_builder->setParameters($this->query_builder->getParameters());
+
+                $query = $query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
+                ->setParameter('key_transformer', $key)
+                ->getQuery();
+
+                $entity = $query->getSingleResult();
+                $this->results_cache[$hash] = $entity; //Saves result in cache
+            }
         }
         catch(\Exception $e)
         {
-            throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
+            throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found or is not unique', $key));
         }
         $key_method = $this->key_method;
         return $entity->$key_method();

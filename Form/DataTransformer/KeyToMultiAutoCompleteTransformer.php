@@ -39,16 +39,33 @@ class KeyToMultiAutoCompleteTransformer extends EntityToMultiAutoCompleteTransfo
         $results = array();
         try
         {
-            //Not use directly $this->query_builder otherwise transform and 
-            //reverse functions will use the same request 
-            $query_builder = clone $this->query_builder;
-            $query_builder->setParameters($this->query_builder->getParameters());
+            $hash = $this->getCacheHash($keys);
+            if(array_key_exists($hash, $this->results_cache))
+            {
+                //Results in cache
+                //The cache is to avoid 3 SQL queries if reverseTransform is called (reverse - reverseTransform - reverse)
+                $entities = $this->results_cache[$hash];
+            }
+            else
+            {
+                //Results not in cache
+                
+                //Not use directly $this->query_builder otherwise transform and 
+                //reverse functions will use the same request 
+                $query_builder = clone $this->query_builder;
+                $query_builder->setParameters($this->query_builder->getParameters());
+
+                $query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, ':select_ids'))
+                ->setParameter('select_ids', $keys)
+                ->setMaxResults($this->max)
+                ->getQuery();
+                
+                $entities = $query->execute();
+                $this->results_cache[$hash] = $entities; //Saves results in cache
+            }
             
-            $query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, $keys))
-            ->setMaxResults($this->max)
-            ->getQuery();
             
-            foreach($query->execute() as $entity)
+            foreach($entities as $entity)
             {
                 $new_entity = array();
                 $new_entity['id'] = \htmlentities($entity->$key_method(), ENT_QUOTES, 'UTF-8');
@@ -94,16 +111,32 @@ class KeyToMultiAutoCompleteTransformer extends EntityToMultiAutoCompleteTransfo
         $key_method = $this->key_method;
         try
         {
-            //Not use directly $this->query_builder otherwise transform and 
-            //reverse functions will use the same request 
-            $query_builder = clone $this->query_builder;
-            $query_builder->setParameters($this->query_builder->getParameters());
-            
-            $query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, $ids))
-            ->setMaxResults($this->max)
-            ->getQuery();
-            
-            foreach($query->execute() as $entity)
+            $hash = $this->getCacheHash($ids);
+            if(array_key_exists($hash, $this->results_cache))
+            {
+                //Results in cache
+                //The cache is to avoid 3 SQL queries if reverseTransform is called (reverse - reverseTransform - reverse)
+                $entities = $this->results_cache[$hash];
+            }
+            else
+            {
+                //Results not in cache
+                
+                //Not use directly $this->query_builder otherwise transform and 
+                //reverse functions will use the same request 
+                $query_builder = clone $this->query_builder;
+                $query_builder->setParameters($this->query_builder->getParameters());
+
+                $query = $query_builder->andWhere($this->query_builder->expr()->in($this->alias, ':select_ids'))
+                ->setParameter('select_ids', $ids)
+                ->setMaxResults($this->max)
+                ->getQuery();
+                
+                $entities = $query->execute();
+                $this->results_cache[$hash] = $entities; //Saves results in cache
+            }
+
+            foreach($entities as $entity)
             {
                 $collection[] = $entity->$key_method();
             }

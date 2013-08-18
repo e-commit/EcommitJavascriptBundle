@@ -23,6 +23,8 @@ class EntityToAutoCompleteTransformer implements DataTransformerInterface
     protected $method;
     protected $key_method;
     
+    protected $results_cache = array();
+    
     /**
      * Constructor
      * 
@@ -61,6 +63,12 @@ class EntityToAutoCompleteTransformer implements DataTransformerInterface
         $method = $this->method;
         $key = $entity->$key_method();
         $text = $entity->$method();
+        
+        //Saves result in cache
+        //The cache is to avoid 2 SQL queries if reverseTransform is called and data not changed
+        $hash = $this->getCacheHash($key);
+        $this->results_cache[$hash] = $entity;
+        
         return array('key' => $key, 'text' => $text); 
     }
     
@@ -86,16 +94,43 @@ class EntityToAutoCompleteTransformer implements DataTransformerInterface
         
         try
         {
-            $query = $this->query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
-            ->setParameter('key_transformer', $key)
-            ->getQuery();
-            
-            $entity = $query->getSingleResult();
+            $hash = $this->getCacheHash($key);
+            if(array_key_exists($hash, $this->results_cache))
+            {
+                //Result in cache
+                //The cache is to avoid 2 SQL queries if reverseTransform is called and data not changed
+                $entity = $this->results_cache[$hash];
+            }
+            else
+            {
+                //Result not in cache
+                
+                $query = $this->query_builder->andWhere(sprintf('%s = :key_transformer', $this->alias))
+                ->setParameter('key_transformer', $key)
+                ->getQuery();
+
+                $entity = $query->getSingleResult();
+                $this->results_cache[$hash] = $entity; //Saves result in cache
+            }  
         }
         catch(\Exception $e)
         {
-            throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
+            throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found or is not unique', $key));
         }
         return $entity;
+    }
+    
+    /**
+     * Returns cache key for found result
+     * @param array $id
+     * @return string
+     */
+    protected function getCacheHash($id)
+    {
+        return md5(json_encode(array(
+            spl_object_hash($this->query_builder),
+            $this->alias,
+            (string)$id,
+        )));
     }
 }

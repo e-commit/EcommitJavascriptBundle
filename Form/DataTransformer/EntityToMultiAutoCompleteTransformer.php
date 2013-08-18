@@ -26,6 +26,8 @@ class EntityToMultiAutoCompleteTransformer implements DataTransformerInterface
     protected $key_method;
     protected $max;
     
+    protected $results_cache = array();
+
     /**
      * Constructor
      * 
@@ -65,13 +67,20 @@ class EntityToMultiAutoCompleteTransformer implements DataTransformerInterface
         $key_method = $this->key_method;
         $method = $this->method;
         $results = array();
+        $ids = array();
         foreach($collection as $entity)
         {
             $new_entity = array();
             $new_entity['id'] = \htmlentities($entity->$key_method(), ENT_QUOTES, 'UTF-8');
             $new_entity['name'] = \htmlentities($entity->$method(), ENT_QUOTES, 'UTF-8');
             $results[] = $new_entity;
+            $ids[] = $entity->$key_method();
         }
+        
+        //Saves result in cache
+        //The cache is to avoid 2 SQL queries if reverseTransform is called and data not changed
+        $hash = $this->getCacheHash($ids);
+        $this->results_cache[$hash] = $collection;
               
         return json_encode($results); 
     }
@@ -106,13 +115,27 @@ class EntityToMultiAutoCompleteTransformer implements DataTransformerInterface
         
         try
         {
-            $query = $this->query_builder->andWhere($this->query_builder->expr()->in($this->alias, $ids))
-            ->setMaxResults($this->max)
-            ->getQuery();
-            
-            foreach($query->execute() as $entity)
+            $hash = $this->getCacheHash($ids);
+            if(array_key_exists($hash, $this->results_cache))
             {
-                $collection->add($entity);
+                //Result in cache
+                //The cache is to avoid 2 SQL queries if reverseTransform is called and data not changed
+                $collection = $this->results_cache[$hash];
+            }
+            else
+            {
+                //Result not in cache
+                
+                $query = $this->query_builder->andWhere($this->query_builder->expr()->in($this->alias, ':select_ids'))
+                ->setParameter('select_ids', $ids)
+                ->setMaxResults($this->max)
+                ->getQuery();
+
+                foreach($query->execute() as $entity)
+                {
+                    $collection->add($entity);
+                }
+                $this->results_cache[$hash] = $collection; //Saves result in cache
             }
         }
         catch(\Exception $e)
@@ -120,5 +143,27 @@ class EntityToMultiAutoCompleteTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Tranformation: Query Error');
         }
         return $collection;
+    }
+    
+    /**
+     * Returns cache key for found results
+     * @param array $ids
+     * @return string
+     */
+    protected function getCacheHash($ids)
+    {
+        if(is_array($ids))
+        {
+            $ids = array_map(function($id) {
+                    return (string)$id; //Converts ids from integer to string => Parameters for transform and reverse functions must be identicals
+                },$ids);
+            sort($ids);
+        }
+        
+        return md5(json_encode(array(
+            spl_object_hash($this->query_builder),
+            $this->alias,
+            $ids,
+        )));
     }
 }
