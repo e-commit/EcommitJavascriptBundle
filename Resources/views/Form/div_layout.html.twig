@@ -105,7 +105,7 @@
                 {% if width %}, width:  {{ width }}{% endif %}
                 {% if height %}, height:  {{ height }}{% endif %}
                 {% if file_browser %}, file_browser_callback: 'ecommitFileBrowser.tinymceCallback'{% endif %}
-                {% if other %}, {{ other }}{% endif %}
+                {% if other %}, {{ other|raw }}{% endif %}
             });
             {% if file_browser %}ecommitFileBrowser.init('{{ path('ecommitmediabrowser_show') }}');{% endif %}
     });
