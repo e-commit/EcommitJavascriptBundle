@@ -64,10 +64,8 @@ class EntityToAutoCompleteTransformer implements DataTransformerInterface
         $key = $entity->$key_method();
         $text = $entity->$method();
         
-        //Saves result in cache
-        //The cache is to avoid 2 SQL queries if reverseTransform is called and data not changed
-        $hash = $this->getCacheHash($key);
-        $this->results_cache[$hash] = $entity;
+        //Here, do not put the result in the cache because we must check the value in
+        //reverseTransform (by QueryBuilder)
         
         return array('key' => $key, 'text' => $text); 
     }
@@ -97,8 +95,6 @@ class EntityToAutoCompleteTransformer implements DataTransformerInterface
             $hash = $this->getCacheHash($key);
             if(array_key_exists($hash, $this->results_cache))
             {
-                //Result in cache
-                //The cache is to avoid 2 SQL queries if reverseTransform is called and data not changed
                 $entity = $this->results_cache[$hash];
             }
             else
