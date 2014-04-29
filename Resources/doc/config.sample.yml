@@ -26,3 +26,5 @@ ecommit_javascript:
          secure: false
          #Active ou non Recaptcha
          enable: true
+    #Utilise ou non bootstrap pour l'application (pour la creation des boutons)
+    use_boostrap: false

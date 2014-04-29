@@ -304,9 +304,8 @@ class Manager
     public function jQueryButtonToRemote($name, $url, $options = array(), $html_options = array())
     {
         $html_options['type'] = 'button';
-        $html_options['value'] = $name;
         $html_options['onclick'] = $this->jQueryRemoteFunction($url, $options).'; return false;';
-        return $this->util->tag('input', $html_options);
+        return $this->util->tag('button', $html_options, $name);
     }
     
     /**

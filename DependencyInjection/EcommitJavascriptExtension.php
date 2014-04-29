@@ -40,5 +40,6 @@ class EcommitJavascriptExtension extends Extension
         $container->setParameter('ecommit_javascript.recaptcha.private_key', $config['recaptcha']['private_key']);
         $container->setParameter('ecommit_javascript.recaptcha.secure', $config['recaptcha']['secure']);
         $container->setParameter('ecommit_javascript.recaptcha.enable', $config['recaptcha']['enable']);
+        $container->setParameter('ecommit_javascript.use_bootstrap', $config['use_bootstrap']);
     }
 }

@@ -67,6 +67,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('enable')->defaultTrue()->end()
                     ->end()
                 ->end()
+                ->booleanNode('use_bootstrap')->defaultValue(false)->end()
             ->end()
         ;
 
