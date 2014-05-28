@@ -11,6 +11,7 @@
 
 namespace Ecommit\JavascriptBundle\Form\DataTransformer;
 
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -59,6 +60,9 @@ class KeyToAutoCompleteTransformer extends EntityToAutoCompleteTransformer
                 $entity = $query->getSingleResult();
                 $this->results_cache[$hash] = $entity; //Saves result in cache
             }
+        }
+        catch(NoResultException $e) {
+            return array('key' => '', 'text' => '');
         }
         catch(\Exception $e)
         {
