@@ -15,7 +15,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToAutoCompleteTransformer;
-use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,18 +25,15 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EntityAutoCompleteType extends AbstractType
 {
-    protected $javascript_manager;
     protected $registry;
     
     /**
      * Constructor
-     * 
-     * @param Manager $javascript_manager
+     *
      * @param ManagerRegistry $em
      */
-    public function __construct(Manager $javascript_manager, ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->javascript_manager = $javascript_manager;
         $this->registry = $registry;
     }
     
@@ -60,8 +56,6 @@ class EntityAutoCompleteType extends AbstractType
     
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->javascript_manager->enablejQueryUi();
-        
         $view->vars['url'] = $options['url'];
         $view->vars['image_autocomplete'] = $options['image_autocomplete'];
         $view->vars['image_ok'] = $options['image_ok'];

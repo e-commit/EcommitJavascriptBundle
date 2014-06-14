@@ -12,7 +12,6 @@
 namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Ecommit\JavascriptBundle\Form\DataTransformer\DateTimeToStringTransformer;
-use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
@@ -25,19 +24,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class JsDateType extends AbstractType
 {
-    protected $javascript_manager;
-    
-    /**
-     * Constructor
-     * 
-     * @param Manager $javascript_manager 
-     */
-    public function __construct(Manager $javascript_manager)
-    {
-        $this->javascript_manager = $javascript_manager;
-    }
-    
-    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $format_php = $options['format'];
@@ -64,8 +50,6 @@ class JsDateType extends AbstractType
     
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->javascript_manager->enablejQueryUi();
-        
         $array_date_php = array('d', 'g', 'I', 'm', 'n', 'F', 'Y');
         $array_date_jQuery = array('dd', 'd', 'DD', 'mm', 'm', 'MM', 'yy');
         

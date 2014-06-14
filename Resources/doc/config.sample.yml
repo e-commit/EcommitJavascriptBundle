@@ -1,17 +1,4 @@
 ecommit_javascript:
-    jQuery_core:
-         #Ajoute (ou non) le fichier de jQuery à toutes les requetes
-         auto_enable: false
-         #Chemin du fichier JavaScript du core de jQuery
-         js: ejs/jQuery/jquery.min.js
-    jQuery_ui:
-         #Chemin du fichier JavaScript de jQuery Ui
-         js: ejs/jQuery/ui/js/jquery-ui.custom.min.js
-         #Chemin du fichier CSS de jQuery Ui
-         css: ejs/jQuery/ui/css/smoothness/jquery-ui.custom.css
-    jQuery_tools:
-         #Chemin du fichier JavaScript du plugin jQuery Tools
-         js: ejs/jQuery/tools/jquery.tools.min.js
     tiny_mce:
          #Chemin du fichier Javascript de TinyMCE
          script_url: js/tiny_mce/tiny_mce.js

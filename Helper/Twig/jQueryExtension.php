@@ -48,39 +48,13 @@ class jQueryExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            'jQuery_insert_js' => new Twig_Function_Method($this, 'insert_js', array('is_safe' => array('all'))),
-            'jQuery_insert_css' => new Twig_Function_Method($this, 'insert_css', array('is_safe' => array('all'))),
             'jQuery_ajax' => new Twig_Function_Method($this, 'jQuery_remote_function', array('is_safe' => array('all'))),
             'jQuery_ajax_link' => new Twig_Function_Method($this, 'jQuery_link_to_remote', array('is_safe' => array('all'))),
             'jQuery_ajax_button' => new Twig_Function_Method($this, 'jQuery_button_to_remote', array('is_safe' => array('all'))),
             'jQuery_ajax_form' => new Twig_Function_Method($this, 'jQuery_form_to_remote', array('is_safe' => array('all'))),
         );
     }
-    
-    
-    /**
-     * Returns auto Js Tag
-     * 
-     * @see Manager::getJsTag
-     * @return string 
-     */
-    public function insert_js()
-    {
-        return $this->jQueryManager->getJsTag();
-    }
-    
-    
-    /**
-     * Returns auto Css Tag
-     * 
-     * @see Manager::getCssTag
-     * @return type 
-     */
-    public function insert_css()
-    {
-        return $this->jQueryManager->getCssTag();
-    }
-    
+
     /**
      * Returns the javascript needed for a remote function defined by 'url'
      * 

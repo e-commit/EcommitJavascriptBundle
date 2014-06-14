@@ -11,7 +11,6 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -19,32 +18,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TinyMCEType extends AbstractType
 {
-    protected $javascript_manager;
-    
     protected $script_url;
     protected $jQuery_script_url;
-    
-    /**
-     * Constructor
-     * 
-     * @param Manager $javascript_manager 
-     */
-    public function __construct(Manager $javascript_manager, $script_url, $jQuery_script_url)
+
+    public function __construct($script_url, $jQuery_script_url)
     {
-        $this->javascript_manager = $javascript_manager;
         $this->script_url = $script_url;
         $this->jQuery_script_url = $jQuery_script_url;
     } 
     
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->javascript_manager->enablejQuery();
-        $this->javascript_manager->addJs($this->jQuery_script_url);
-        if($options['file_browser'])
-        {
-            $this->javascript_manager->addJs('/bundles/ecommitmediabrowser/js/tiny_mce.js');
-        }
-        
         $view->vars['script_url'] = $this->script_url;
         $view->vars['theme'] = $options['theme'];
         $view->vars['width'] = $options['width'];

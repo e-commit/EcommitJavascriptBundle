@@ -11,12 +11,10 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Ecommit\JavascriptBundle\Form\DataTransformer\EntityToMultiAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\KeyToMultiAutoCompleteTransformer;
 use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
-use Ecommit\JavascriptBundle\jQuery\Manager;
 use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -29,18 +27,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MultiEntityAutoCompleteType extends AbstractType
 {
-    protected $javascript_manager;
     protected $registry;
     
     /**
      * Constructor
-     * 
-     * @param Manager $javascript_manager
      * @param ManagerRegistry $registry
      */
-    public function __construct(Manager $javascript_manager, ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->javascript_manager = $javascript_manager;
         $this->registry = $registry;
     }
     
@@ -64,22 +58,11 @@ class MultiEntityAutoCompleteType extends AbstractType
     
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->javascript_manager->enablejQuery();
-        $this->javascript_manager->addJs('ejs/jQuery/tokeninput/js/jquery.tokeninput.min.js');
-        
-        $default_themes = array(null, 'facebook', 'mac');
-        $theme = $options['theme'];
-        if(in_array($theme, $default_themes))
-        {
-            $file_name = (is_null($theme))? 'token-input.css' : 'token-input-'.$theme.'.css';
-            $this->javascript_manager->addCss('ejs/jQuery/tokeninput/css/'.$file_name);
-        }
-        
         $view->vars['url'] = $options['url'];
         $view->vars['hint_text'] = $options['hint_text'];
         $view->vars['no_results_text'] = $options['no_results_text'];
         $view->vars['searching_text'] = $options['searching_text'];
-        $view->vars['theme'] = $theme;
+        $view->vars['theme'] = $options['theme'];
         $view->vars['min_chars'] = $options['min_chars'];
         $view->vars['max'] = $options['max'];
         $view->vars['prevent_duplicates'] = $options['prevent_duplicates']? 'true' : 'false';

@@ -28,12 +28,7 @@ class EcommitJavascriptExtension extends Extension
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        
-        $container->setParameter('ecommit_javascript.jQuery_core.auto_enable', $config['jQuery_core']['auto_enable']);
-        $container->setParameter('ecommit_javascript.jQuery_core.js', $config['jQuery_core']['js']);
-        $container->setParameter('ecommit_javascript.jQuery_ui.js', $config['jQuery_ui']['js']);
-        $container->setParameter('ecommit_javascript.jQuery_ui.css', $config['jQuery_ui']['css']);
-        $container->setParameter('ecommit_javascript.jQuery_tools.js', $config['jQuery_tools']['js']);
+
         $container->setParameter('ecommit_javascript.tiny_mce.script_url', $config['tiny_mce']['script_url']);
         $container->setParameter('ecommit_javascript.tiny_mce.jQuery_script_url', $config['tiny_mce']['jQuery_script_url']);
         $container->setParameter('ecommit_javascript.recaptcha.public_key', $config['recaptcha']['public_key']);

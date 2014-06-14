@@ -11,246 +11,23 @@
 
 namespace Ecommit\JavascriptBundle\jQuery;
 
-use Symfony\Component\Routing\RouterInterface;
 use Ecommit\UtilBundle\Helper\UtilHelper;
 
 class Manager 
 {
 
-    protected  $jQuery_core_js = array();
-    protected  $jQuery_core_css = array();
-    protected  $jQuery_core_enabled = false;
-    protected  $jQuery_ui_js = array();
-    protected  $jQuery_ui_css = array();
-    protected  $jQuery_ui_enabled = false;
-    protected  $jQuery_tools_js = array();
-    protected  $jQuery_tools_css = array();
-    protected  $jQuery_tools_enabled = false;
-    
-    protected $others_js = array();
-    protected $others_css = array();
-    
+    /**
+     * @var UtilHelper
+     */
     protected $util;
 
     /**
      * Constructor
-     * 
-     * @param array $jQuery_core
-     * @param array $jQuery_tools
      * @param UtilHelper $utilHelper
      */
-    public function __construct(Array $jQuery_core, Array $jQuery_ui, Array $jQuery_tools, UtilHelper $util) 
+    public function __construct(UtilHelper $util)
     {
-        $this->loadFiles($jQuery_core, 'jQuery_core');
-        $this->loadFiles($jQuery_ui, 'jQuery_ui');
-        $this->loadFiles($jQuery_tools, 'jQuery_tools');
-        
-        //Active ou non le core jQuery par défaut
-        if($jQuery_core['auto_enable'])
-        {
-            $this->enablejQuery();
-        }
-        
         $this->util = $util;
-    }
-    
-    /**
-     * Loads file's path (JS and CSS) inside current object
-     * 
-     * @param Array $files
-     * @param String $alias 
-     */
-    protected function loadFiles(Array $files, $alias)
-    {
-        if(!empty($files['js']))
-        {
-            $var = $alias.'_js';
-            $this->$var = (is_array($files['js']))? $files['js'] : array($files['js']);
-        }
-        if(!empty($files['css']))
-        {
-            $var = $alias.'_css';
-            $this->$var = (is_array($files['css']))? $files['css'] : array($files['css']);
-        }
-    }
-    
-    
-    /**
-     * Enables jQuery
-     */
-    public function enablejQuery()
-    {
-        $this->jQuery_core_enabled = true;
-    }
-    
-    /**
-     * Enables jQuery UI
-     */
-    public function enablejQueryUi()
-    {
-        $this->enablejQuery();
-        $this->jQuery_ui_enabled = true;
-    }
-    
-    /**
-     * Enables jQuery Tools
-     */
-    public function enablejQueryTools()
-    {
-        $this->enablejQuery();
-        $this->jQuery_tools_enabled = true;
-    }
-    
-    /**
-     * Adds JS file
-     * 
-     * @param string $file
-     */
-    public function addJs($file)
-    {
-        if(!in_array($file, $this->others_js))
-        {
-            $this->others_js[] = $file;
-        }
-    }
-    
-    /**
-     * Adds CSS file
-     * 
-     * @param string $file
-     */
-    public function addCss($file)
-    {
-        if(!in_array($file, $this->others_css))
-        {
-            $this->others_css[] = $file;
-        }
-    }
-    
-   /**
-    * Returns JS active files
-    * 
-    * @param boolean $with_jquery
-    * @return array
-    */
-   public function getJsEnabledFiles($with_jquery = true)
-   {
-       $return_files = array();
-       if($with_jquery && $this->jQuery_core_enabled)
-       {
-           foreach($this->jQuery_core_js as $file)
-           {
-               $return_files[] = $this->util->getAssetUrl($file);
-           }
-       }
-       if($this->jQuery_ui_enabled)
-       {
-           foreach($this->jQuery_ui_js as $file)
-           {
-               $return_files[] = $this->util->getAssetUrl($file);
-           }
-       }
-       if($this->jQuery_tools_enabled)
-       {
-           foreach($this->jQuery_tools_js as $file)
-           {
-               $return_files[] = $this->util->getAssetUrl($file);
-           }
-       }
-       foreach($this->others_js as $file)
-       {
-           $return_files[] = $this->util->getAssetUrl($file);
-       }
-       return $return_files;
-   }
-   
-   /**
-    * Returns CSS active files
-    * 
-    * @param boolean $with_jquery
-    * @return array 
-    */
-   public function getCssEnabledFiles($with_jquery = true)
-   {
-       $return_files = array();
-       if($with_jquery && $this->jQuery_core_enabled)
-       {
-           foreach($this->jQuery_core_css as $file)
-           {
-               $return_files[] = $this->util->getAssetUrl($file);
-           }
-       }
-       if($this->jQuery_ui_enabled)
-       {
-           foreach($this->jQuery_ui_css as $file)
-           {
-               $return_files[] = $this->util->getAssetUrl($file);
-           }
-       }
-       if($this->jQuery_tools_enabled)
-       {
-           foreach($this->jQuery_tools_css as $file)
-           {
-               $return_files[] = $this->util->getAssetUrl($file);
-           }
-       }
-       foreach($this->others_css as $file)
-       {
-           $return_files[] = $this->util->getAssetUrl($file);
-       }
-       return $return_files;
-   }
-   
-   /**
-    * Returns code required for inserting JS files
-    * 
-    * @param boolean $with_jquery
-    * @return string 
-    */
-   public function getCodeInsertJs($with_jquery = true)
-    {
-        $js = '';
-        foreach($this->getJsEnabledFiles($with_jquery) as $file)
-        {
-            $js .= '<script type="text/javascript" src="'.$file.'"></script>'."\n\t";
-        }
-        return $js;
-    }
-    
-    /**
-     *Returns code required for inserting CSS files
-     * 
-     * @param boolean $with_jquery
-     * @return string 
-     */
-    public function getCodeInsertCss($with_jquery = true)
-    {
-        $css = '';
-        foreach($this->getCssEnabledFiles($with_jquery) as $file)
-        {
-            $css .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$file.'" />'."\n\t";
-        }
-        return $css;
-    }
-    
-    /**
-     * Returns JS auto tag
-     * 
-     * @return string 
-     */
-    public function getJsTag()
-    {
-        return '<!-- #AUTO-JS# --> ';
-    }
-    
-    /**
-     * Returns CSS auto tag
-     * 
-     * @return type 
-     */
-    public function getCssTag()
-    {
-        return '<!-- #AUTO-CSS# --> ';
     }
 
     
@@ -337,8 +114,6 @@ class Manager
      */
     public function jQueryRemoteFunction($url, $options)
     {
-        $this->enablejQuery();   
-
         // Defining elements to update
     if (isset($options['update']) && is_array($options['update']))
     {

@@ -15,17 +15,6 @@
   
   <services>
     <service id="ecommit_javascript.manager" class="%ecommit_javascript.manager.class%">
-        <argument type="collection">
-                <argument key="js">%ecommit_javascript.jQuery_core.js%</argument>
-                <argument key="auto_enable">%ecommit_javascript.jQuery_core.auto_enable%</argument>
-        </argument>
-        <argument type="collection">
-                <argument key="js">%ecommit_javascript.jQuery_ui.js%</argument>
-                <argument key="css">%ecommit_javascript.jQuery_ui.css%</argument>
-        </argument>
-        <argument type="collection">
-                <argument key="js">%ecommit_javascript.jQuery_tools.js%</argument>
-        </argument>
         <argument type="service" id="ecommit_util.helper" />
     </service>
     
@@ -34,30 +23,21 @@
         <tag name="twig.extension" />
     </service>
     
-    <service id="ecommit_javascript.listener" class="%ecommit_javascript.listener.class%">
-        <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
-        <argument type="service" id="ecommit_javascript.manager" />
-    </service>
-    
     <service id="ecommit_javascript.form.type.js_date" class="%ecommit_javascript.form.type.js_date.class%">
-        <argument type="service" id="ecommit_javascript.manager" />
         <tag name="form.type" alias="js_date" />
     </service>
     
     <service id="ecommit_javascript.form.type.entity_autocomplete" class="%ecommit_javascript.form.type.entity_autocomplete.class%">
-        <argument type="service" id="ecommit_javascript.manager" />
         <argument type="service" id="doctrine" on-invalid="null" />
         <tag name="form.type" alias="entity_autocomplete" />
     </service>
     
     <service id="ecommit_javascript.form.type.multi_entity_autocomplete" class="%ecommit_javascript.form.type.multi_entity_autocomplete.class%">
-        <argument type="service" id="ecommit_javascript.manager" />
         <argument type="service" id="doctrine" on-invalid="null" />
         <tag name="form.type" alias="multi_entity_autocomplete" />
     </service>
     
     <service id="ecommit_javascript.form.type.tiny_mce" class="%ecommit_javascript.form.type.tiny_mce.class%">
-        <argument type="service" id="ecommit_javascript.manager" />
         <argument>%ecommit_javascript.tiny_mce.script_url%</argument>
         <argument>%ecommit_javascript.tiny_mce.jQuery_script_url%</argument>
         <tag name="form.type" alias="tiny_mce" />
