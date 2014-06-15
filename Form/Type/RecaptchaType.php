@@ -21,72 +21,68 @@ class RecaptchaType extends AbstractType
     const RECAPTCHA_API_SERVER = 'http://www.google.com/recaptcha/api';
     const RECAPTCHA_API_SECURE_SERVER = 'https://www.google.com/recaptcha/api';
     const RECAPTCHA_API_JS_SERVER = 'http://www.google.com/recaptcha/api/js/recaptcha_ajax.js';
-    
-    protected $public_key;
+
+    protected $publicKey;
     protected $secure;
     protected $enable;
     protected $language;
-    
-    public function __construct($public_key, $secure, $enable, $language)
+
+    public function __construct($publicKey, $secure, $enable, $language)
     {
-        $this->public_key = $public_key;
+        $this->publicKey = $publicKey;
         $this->secure = $secure;
         $this->enable = $enable;
         $this->language = $language;
     }
-    
+
     public function getPublicKey()
     {
-        return $this->public_key;
+        return $this->publicKey;
     }
-    
+
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['recaptcha_enable'] = $this->enable;
-        if (!$this->enable)
-        {
+        if (!$this->enable) {
             return;
         }
-        
-        if(empty($this->public_key))
-        {
+
+        if (empty($this->publicKey)) {
             throw new \Exception('Recaptcha: Public and private keys are required');
         }
-        
-        if ($this->secure)
-        {
+
+        if ($this->secure) {
             $server = self::RECAPTCHA_API_SECURE_SERVER;
-        }
-        else
-        {
+        } else {
             $server = self::RECAPTCHA_API_SERVER;
         }
 
-        $view->vars['url_challenge'] = $server.'/challenge?k='.$this->public_key;
-        $view->vars['url_noscript'] = $server.'/noscript?k='.$this->public_key;
-        $view->vars['public_key'] = $this->public_key;
+        $view->vars['url_challenge'] = $server . '/challenge?k=' . $this->publicKey;
+        $view->vars['url_noscript'] = $server . '/noscript?k=' . $this->publicKey;
+        $view->vars['public_key'] = $this->publicKey;
         $view->vars['options'] = $options['options'];
     }
-    
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'options' => array(
-                'theme' => 'clean',
-                'lang' => $this->language,
-            ),
-            
-            'compound'  => false,
-        ));
+        $resolver->setDefaults(
+            array(
+                'options' => array(
+                    'theme' => 'clean',
+                    'lang' => $this->language,
+                ),
+                'compound' => false,
+            )
+        );
     }
-    
+
     public function getParent()
     {
         return 'form';
     }
-    
+
     public function getName()
     {
-        return 'recaptcha';
+        return 'ecommit_javascript_recaptcha';
     }
 }

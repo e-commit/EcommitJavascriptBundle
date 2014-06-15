@@ -11,20 +11,28 @@
 
 namespace Ecommit\JavascriptBundle\Validator\Constraints;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 class RecaptchaValidator extends ConstraintValidator
 {
-    protected $container;
-
     const RECAPTCHA_VERIFY_SERVER = 'www.google.com';
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+    
+    protected $privateKey;
+    protected $enable;
+
+    public function __construct(RequestStack $requestStack, $privateKey, $enable)
     {
-        $this->container = $container;
+        $this->requestStack = $requestStack;
+        $this->privateKey = $privateKey;
+        $this->enable = $enable;
     }
 
     /**
@@ -33,31 +41,29 @@ class RecaptchaValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         // if recaptcha is disabled, always valid
-        if (!$this->container->getParameter('ecommit_javascript.recaptcha.enable'))
-        {
+        if (!$this->enable) {
             return;
         }
 
         // define variable for recaptcha check answer
-        $privateKey = $this->container->getParameter('ecommit_javascript.recaptcha.private_key');
-        if(empty($privateKey))
-        {
+        if (empty($this->privateKey)) {
             throw new ValidatorException('Recaptcha: Public and private keys are required');
         }
 
-        $remoteip = $this->container->get('request')->server->get('REMOTE_ADDR');
-        $challenge = $this->container->get('request')->request->get('recaptcha_challenge_field');
-        $response = $this->container->get('request')->request->get('recaptcha_response_field');
+        $request = $this->requestStack->getMasterRequest();
+        $remoteIp = $request->server->get('REMOTE_ADDR');
+        $challenge = $request->request->get('recaptcha_challenge_field');
+        $response = $request->request->get('recaptcha_response_field');
 
-        if (!$challenge && !$response)
-        {
+        if (!$challenge && !$response) {
             $this->context->addViolation($constraint->message, array('{{ value }}' => $value));
+
             return;
         }
 
-        if (!$this->checkAnswer($privateKey, $remoteip, $challenge, $response))
-        {
+        if (!$this->checkAnswer($this->privateKey, $remoteIp, $challenge, $response)) {
             $this->context->addViolation($constraint->message, array('{{ value }}' => $value));
+
             return;
         }
 
@@ -68,37 +74,38 @@ class RecaptchaValidator extends ConstraintValidator
      * Calls an HTTP POST function to verify if the user's guess was correct
      *
      * @param string $privateKey
-     * @param string $remoteip
+     * @param string $remoteIp
      * @param string $challenge
      * @param string $response
-     * @param array $extra_params an array of extra variables to post to the server
+     * @param array $extraParams an array of extra variables to post to the server
      *
      * @return ReCaptchaResponse
      */
-    private function checkAnswer($privateKey, $remoteip, $challenge, $response, $extra_params = array())
+    private function checkAnswer($privateKey, $remoteIp, $challenge, $response, $extraParams = array())
     {
-        if ($remoteip == null || $remoteip == '')
-        {
+        if ($remoteIp == null || $remoteIp == '') {
             throw new ValidatorException('For security reasons, you must pass the remote ip to reCAPTCHA');
         }
 
         // discard spam submissions
-        if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0)
-        {
+        if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0) {
             return false;
         }
 
-        $response = $this->httpPost(self::RECAPTCHA_VERIFY_SERVER, '/recaptcha/api/verify', array(
-            'privatekey' => $privateKey,
-            'remoteip' => $remoteip,
-            'challenge' => $challenge,
-            'response' => $response
-                ) + $extra_params);
+        $response = $this->httpPost(
+            self::RECAPTCHA_VERIFY_SERVER,
+            '/recaptcha/api/verify',
+            array(
+                'privatekey' => $privateKey,
+                'remoteip' => $remoteIp,
+                'challenge' => $challenge,
+                'response' => $response
+            ) + $extraParams
+        );
 
         $answers = explode("\n", $response [1]);
 
-        if (trim($answers[0]) == 'true')
-        {
+        if (trim($answers[0]) == 'true') {
             return true;
         }
 
@@ -119,24 +126,22 @@ class RecaptchaValidator extends ConstraintValidator
     {
         $req = $this->getQSEncode($data);
 
-        $http_request = "POST $path HTTP/1.0\r\n";
-        $http_request .= "Host: $host\r\n";
-        $http_request .= "Content-Type: application/x-www-form-urlencoded;\r\n";
-        $http_request .= "Content-Length: " . strlen($req) . "\r\n";
-        $http_request .= "User-Agent: reCAPTCHA/PHP\r\n";
-        $http_request .= "\r\n";
-        $http_request .= $req;
+        $httpRequest = "POST $path HTTP/1.0\r\n";
+        $httpRequest .= "Host: $host\r\n";
+        $httpRequest .= "Content-Type: application/x-www-form-urlencoded;\r\n";
+        $httpRequest .= "Content-Length: " . strlen($req) . "\r\n";
+        $httpRequest .= "User-Agent: reCAPTCHA/PHP\r\n";
+        $httpRequest .= "\r\n";
+        $httpRequest .= $req;
 
         $response = null;
-        if (!$fs = @fsockopen($host, $port, $errno, $errstr, 10))
-        {
+        if (!$fs = @fsockopen($host, $port, $errno, $errstr, 10)) {
             throw new ValidatorException('Could not open socket');
         }
 
-        fwrite($fs, $http_request);
+        fwrite($fs, $httpRequest);
 
-        while (!feof($fs))
-        {
+        while (!feof($fs)) {
             $response .= fgets($fs, 1160); // one TCP-IP packet
         }
 
@@ -157,13 +162,13 @@ class RecaptchaValidator extends ConstraintValidator
     private function getQSEncode($data)
     {
         $req = null;
-        foreach ($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $req .= $key . '=' . urlencode(stripslashes($value)) . '&';
         }
 
         // cut the last '&'
         $req = substr($req, 0, strlen($req) - 1);
+
         return $req;
     }
 }

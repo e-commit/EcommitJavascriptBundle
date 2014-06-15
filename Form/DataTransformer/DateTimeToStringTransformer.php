@@ -24,9 +24,9 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
      *
      * @see \DateTime::format() for supported formats
      *
-     * @param string $inputTimezone  The name of the input timezone
+     * @param string $inputTimezone The name of the input timezone
      * @param string $outputTimezone The name of the output timezone
-     * @param string $format         The date format
+     * @param string $format The date format
      *
      * @throws UnexpectedTypeException if a timezone is not a string
      */
@@ -41,9 +41,9 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
      * Transforms a DateTime object into a date string with the configured format
      * and timezone
      *
-     * @param  DateTime $value  A DateTime object
+     * @param  DateTime $value A DateTime object
      *
-     * @return string           A value as produced by PHP's date() function
+     * @return string A value as produced by PHP's date() function
      *
      * @throws UnexpectedTypeException if the given value is not a \DateTime instance
      * @throws TransformationFailedException if the output timezone is not supported
@@ -71,9 +71,9 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
     /**
      * Transforms a date string in the configured timezone into a DateTime object.
      *
-     * @param  string $value  A value as produced by PHP's date() function
+     * @param  string $value A value as produced by PHP's date() function
      *
-     * @return \DateTime      An instance of \DateTime
+     * @return \DateTime An instance of \DateTime
      *
      * @throws UnexpectedTypeException if the given value is not a string
      * @throws TransformationFailedException if the date could not be parsed
@@ -93,8 +93,10 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
             $dateTime = \DateTime::createFromFormat($this->format, $value, new \DateTimeZone($this->outputTimezone));
             $errors = \DateTime::getLastErrors();
             if ($errors['warning_count'] > 0 || $errors['error_count'] > 0) {
-                throw new \Exception('Date is invalid. List of warnings: "' . implode(', "',array_values($errors['warnings'])) . '" ' .
-                        'List of errors: "' . implode(', "',array_values($errors['errors'])) . '"');
+                throw new \Exception(
+                    'Date is invalid. List of warnings: "' . implode(', "', array_values($errors['warnings'])) . '" ' .
+                    'List of errors: "' . implode(', "', array_values($errors['errors'])) . '"'
+                );
             }
 
             // Force value to be in same format as given to transform

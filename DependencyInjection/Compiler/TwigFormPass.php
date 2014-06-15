@@ -19,13 +19,16 @@ class TwigFormPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('twig.form.resources'))
-        {
+        if (!$container->hasParameter('twig.form.resources')) {
             return;
         }
 
-        $container->setParameter('twig.form.resources', array_merge(
-                        $container->getParameter('twig.form.resources'), array('EcommitJavascriptBundle:Form:div_layout.html.twig')
-                ));
+        $container->setParameter(
+            'twig.form.resources',
+            array_merge(
+                $container->getParameter('twig.form.resources'),
+                array('EcommitJavascriptBundle:Form:div_layout.html.twig')
+            )
+        );
     }
 }

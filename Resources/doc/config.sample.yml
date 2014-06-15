@@ -2,8 +2,6 @@ ecommit_javascript:
     tiny_mce:
          #Chemin du fichier Javascript de TinyMCE
          script_url: js/tiny_mce/tiny_mce.js
-         #Chemin du fichier Javascript du plugin jQuery TinyMCE
-         jQuery_script_url: js/tiny_mce/jquery.tinymce.js
     recaptcha:
          #Clé publique de Recaptcha
          public_key: CHANGE IT

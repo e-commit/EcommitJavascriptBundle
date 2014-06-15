@@ -19,12 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class TinyMCEType extends AbstractType
 {
     protected $script_url;
-    protected $jQuery_script_url;
 
-    public function __construct($script_url, $jQuery_script_url)
+    public function __construct($script_url)
     {
         $this->script_url = $script_url;
-        $this->jQuery_script_url = $jQuery_script_url;
     } 
     
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -72,6 +70,6 @@ class TinyMCEType extends AbstractType
 
     public function getName()
     {
-        return 'tiny_mce';
+        return 'ecommit_javascript_tinymce';
     }
 }

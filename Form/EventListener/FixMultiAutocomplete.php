@@ -19,14 +19,13 @@ class FixMultiAutocomplete implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::BIND => 'onBind');
+        return array(FormEvents::SUBMIT => 'onBind');
     }
-    
+
     public function onBind(FormEvent $event)
     {
         $form = $event->getForm();
-        if(!$form->isSynchronized())
-        {
+        if (!$form->isSynchronized()) {
             $form->setData(null);
         }
     }

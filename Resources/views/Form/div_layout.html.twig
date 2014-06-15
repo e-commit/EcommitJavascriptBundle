@@ -1,4 +1,4 @@
-{% block js_date_widget %}
+{% block ecommit_javascript_jquerydatepicker_widget %}
 {% spaceless %}
     {{ block('form_widget_simple') }}
     <script type="text/javascript">
@@ -28,7 +28,7 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block entity_autocomplete_widget %}
+{% block ecommit_javascript_jqueryautocompleteentityajax_widget %}
 {% spaceless %}
     {{ form_widget(form.text) }}
     {{ form_widget(form.key) }}
@@ -60,7 +60,7 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block multi_entity_autocomplete_widget %}
+{% block ecommit_javascript_tokeninputentitiesajax_widget %}
 {% spaceless %}
     <input type="text" {{ block('widget_attributes') }} value="" />
 
@@ -84,7 +84,7 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block tiny_mce_widget %}
+{% block ecommit_javascript_tinymce_widget %}
 {% spaceless %}
     {{ block('form_widget_simple') }}
     <script type="text/javascript">
@@ -113,7 +113,7 @@
 {% endspaceless %}
 {% endblock %}
     
-{% block recaptcha_widget %}
+{% block ecommit_javascript_recaptcha_widget %}
 {% spaceless %}
     {% if form.vars.recaptcha_enable %}
         {% if attr.options is defined %}

@@ -211,7 +211,7 @@ class Manager
     }
     if (isset($options['confirm']))
     {
-        $function = "if (confirm('".$this->util->escape_javascript($options['confirm'])."')) { $function; }";
+        $function = "if (confirm('".$this->util->escapeJavascript($options['confirm'])."')) { $function; }";
         if (isset($options['cancel']))
         {
             $function = $function.' else { '.$options['cancel'].' }';

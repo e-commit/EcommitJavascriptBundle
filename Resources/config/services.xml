@@ -1,58 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-  
+
   <parameters>
       <parameter key="ecommit_javascript.manager.class">Ecommit\JavascriptBundle\jQuery\Manager</parameter>
       <parameter key="ecommit_javascript.helper.twig.extension.jQuery.class">Ecommit\JavascriptBundle\Helper\Twig\jQueryExtension</parameter>
       <parameter key="ecommit_javascript.listener.class">Ecommit\JavascriptBundle\Listener\JavascriptListener</parameter>
-      <parameter key="ecommit_javascript.form.type.js_date.class">Ecommit\JavascriptBundle\Form\Type\JsDateType</parameter>
-      <parameter key="ecommit_javascript.form.type.entity_autocomplete.class">Ecommit\JavascriptBundle\Form\Type\EntityAutoCompleteType</parameter>
-      <parameter key="ecommit_javascript.form.type.multi_entity_autocomplete.class">Ecommit\JavascriptBundle\Form\Type\MultiEntityAutoCompleteType</parameter>
+      <parameter key="ecommit_javascript.form.type.jquerydatepicker.class">Ecommit\JavascriptBundle\Form\Type\JqueryDatePicker</parameter>
+      <parameter key="ecommit_javascript.form.type.jqueryautocompleteentityajax.class">Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType</parameter>
+      <parameter key="ecommit_javascript.form.type.tokeninputentitiesajax.class">Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType</parameter>
       <parameter key="ecommit_javascript.form.type.tiny_mce.class">Ecommit\JavascriptBundle\Form\Type\TinyMCEType</parameter>
       <parameter key="ecommit_javascript.form.type.recaptcha.class">Ecommit\JavascriptBundle\Form\Type\RecaptchaType</parameter>
       <parameter key="ecommit_javascript.validator.constraints.recaptcha.class">Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator</parameter>
   </parameters>
-  
+
   <services>
     <service id="ecommit_javascript.manager" class="%ecommit_javascript.manager.class%">
         <argument type="service" id="ecommit_util.helper" />
     </service>
-    
+
     <service id="ecommit_javascript.helper.twig.extension.jQuery" class="%ecommit_javascript.helper.twig.extension.jQuery.class%">
         <argument type="service" id="ecommit_javascript.manager" />
         <tag name="twig.extension" />
     </service>
-    
-    <service id="ecommit_javascript.form.type.js_date" class="%ecommit_javascript.form.type.js_date.class%">
-        <tag name="form.type" alias="js_date" />
+
+    <service id="ecommit_javascript.form.type.jquerydatepicker" class="%ecommit_javascript.form.type.jquerydatepicker.class%">
+        <tag name="form.type" alias="ecommit_javascript_jquerydatepicker" />
     </service>
-    
-    <service id="ecommit_javascript.form.type.entity_autocomplete" class="%ecommit_javascript.form.type.entity_autocomplete.class%">
+
+    <service id="ecommit_javascript.form.type.jqueryautocompleteentityajax" class="%ecommit_javascript.form.type.jqueryautocompleteentityajax.class%">
         <argument type="service" id="doctrine" on-invalid="null" />
-        <tag name="form.type" alias="entity_autocomplete" />
+        <tag name="form.type" alias="ecommit_javascript_jqueryautocompleteentityajax" />
     </service>
-    
-    <service id="ecommit_javascript.form.type.multi_entity_autocomplete" class="%ecommit_javascript.form.type.multi_entity_autocomplete.class%">
+
+    <service id="ecommit_javascript.form.type.tokeninputentitiesajax" class="%ecommit_javascript.form.type.tokeninputentitiesajax.class%">
         <argument type="service" id="doctrine" on-invalid="null" />
-        <tag name="form.type" alias="multi_entity_autocomplete" />
+        <tag name="form.type" alias="ecommit_javascript_tokeninputentitiesajax" />
     </service>
-    
+
     <service id="ecommit_javascript.form.type.tiny_mce" class="%ecommit_javascript.form.type.tiny_mce.class%">
         <argument>%ecommit_javascript.tiny_mce.script_url%</argument>
-        <argument>%ecommit_javascript.tiny_mce.jQuery_script_url%</argument>
-        <tag name="form.type" alias="tiny_mce" />
+        <tag name="form.type" alias="ecommit_javascript_tinymce" />
     </service>
-    
+
     <service id="ecommit_javascript.form.type.recaptcha" class="%ecommit_javascript.form.type.recaptcha.class%">
         <argument>%ecommit_javascript.recaptcha.public_key%</argument>
         <argument>%ecommit_javascript.recaptcha.secure%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <argument>%locale%</argument>
-        <tag name="form.type" alias="recaptcha" />
+        <tag name="form.type" alias="ecommit_javascript_recaptcha" />
     </service>
-    
+
     <service id="ecommit_javascript.validator.constraints.recaptcha" class="%ecommit_javascript.validator.constraints.recaptcha.class%">
-        <argument type="service" id="service_container" />
+        <argument type="service" id="request_stack" />
+        <argument>%ecommit_javascript.recaptcha.private_key%</argument>
+        <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <tag name="validator.constraint_validator" alias="ecommit_javascript.validator.constraints.recaptcha" />
     </service>
   </services>
