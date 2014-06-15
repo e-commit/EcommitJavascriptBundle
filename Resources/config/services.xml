@@ -11,6 +11,9 @@
       <parameter key="ecommit_javascript.form.type.tiny_mce.class">Ecommit\JavascriptBundle\Form\Type\TinyMCEType</parameter>
       <parameter key="ecommit_javascript.form.type.recaptcha.class">Ecommit\JavascriptBundle\Form\Type\RecaptchaType</parameter>
       <parameter key="ecommit_javascript.validator.constraints.recaptcha.class">Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator</parameter>
+      <parameter key="ecommit_javascript.form.type.select2entityajax.class">Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType</parameter>
+      <parameter key="ecommit_javascript.form.type.select2entity.class">Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityType</parameter>
+      <parameter key="ecommit_javascript.form.type.select2choice.class">Ecommit\JavascriptBundle\Form\Type\Select2\Select2ChoiceType</parameter>
   </parameters>
 
   <services>
@@ -55,6 +58,19 @@
         <argument>%ecommit_javascript.recaptcha.private_key%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <tag name="validator.constraint_validator" alias="ecommit_javascript.validator.constraints.recaptcha" />
+    </service>
+
+    <service id="ecommit_javascript.form.type.select2entityajax" class="%ecommit_javascript.form.type.select2entityajax.class%">
+      <argument type="service" id="doctrine" on-invalid="null" />
+      <tag name="form.type" alias="ecommit_javascript_select2entityajax" />
+    </service>
+
+    <service id="ecommit_javascript.form.type.select2entity" class="%ecommit_javascript.form.type.select2entity.class%">
+      <tag name="form.type" alias="ecommit_javascript_select2entity" />
+    </service>
+
+    <service id="ecommit_javascript.form.type.select2choice" class="%ecommit_javascript.form.type.select2choice.class%">
+      <tag name="form.type" alias="ecommit_javascript_select2choice" />
     </service>
   </services>
 </container>
