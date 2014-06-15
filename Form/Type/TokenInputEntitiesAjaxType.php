@@ -10,22 +10,21 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Doctrine\ORM\QueryBuilder;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TokenInputEntitiesAjaxType extends AbstractType
 {
+    use EntityNormalizerTrait;
+
     protected $registry;
 
     /**
@@ -91,62 +90,6 @@ class TokenInputEntitiesAjaxType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $registry = $this->registry;
-        $emNormalizer = function (Options $options, $em) use ($registry) {
-            if (null !== $em) {
-                return $registry->getManager($em);
-            }
-
-            return $registry->getManagerForClass($options['class']);
-        };
-
-        $queryBuilderNormalizer = function (Options $options, $queryBuilder) {
-            $em = $options['em'];
-            $class = $options['class'];
-
-            if ($queryBuilder == null) {
-                $queryBuilder = $em->createQueryBuilder()
-                    ->from($class, 'c')
-                    ->select('c');
-            }
-
-            if ($queryBuilder instanceof \Closure) {
-                $queryBuilder = $queryBuilder($em->getRepository($class));
-            }
-
-            if (!$queryBuilder instanceof QueryBuilder) {
-                throw new InvalidConfigurationException(
-                    '"query_builder" must be an instance of Doctrine\ORM\QueryBuilder'
-                );
-            }
-
-            return $queryBuilder;
-        };
-
-        $rootAliasNormalizer = function (Options $options, $rootAlias) {
-            if (null !== $rootAlias) {
-                return $rootAlias;
-            }
-
-            $queryBuilder = $options['query_builder'];
-
-            return current($queryBuilder->getRootAliases());
-        };
-
-        $identifierNormalizer = function (Options $options, $identifier) {
-            if (null !== $identifier) {
-                return $identifier;
-            }
-
-            $em = $options['em'];
-            $identifiers = $em->getClassMetadata($options['class'])->getIdentifierFieldNames();
-            if (count($identifiers) != 1) {
-                throw new InvalidConfigurationException('"alias" option is required');
-            }
-
-            return $identifiers[0];
-        };
-
         $resolver->setDefaults(
             array(
                 'input' => 'entity',
@@ -185,10 +128,10 @@ class TokenInputEntitiesAjaxType extends AbstractType
 
         $resolver->setNormalizers(
             array(
-                'em' => $emNormalizer,
-                'query_builder' => $queryBuilderNormalizer,
-                'root_alias' => $rootAliasNormalizer,
-                'identifier' => $identifierNormalizer,
+                'em' => $this->getEmNormalizer($this->registry),
+                'query_builder' => $this->getQueryBuilderNormalizer(),
+                'root_alias' => $this->getRootAliasNormalizer(),
+                'identifier' => $this->getIdentifierNormalizer(),
             )
         );
     }
