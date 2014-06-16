@@ -141,6 +141,7 @@
                     minimumInputLength: {{ min_chars }},
                     placeholder: '{{ place_holder }}',
                     allowClear: true,
+                    multiple: {{ (multiple)? 'true' : 'false' }},
                     ajax: {
                         url: "{{ url }}",
                         dataType: 'json',
@@ -169,8 +170,20 @@
                         return bond.key;
                     },
                     initSelection: function (element, callback) {
-                        var text = $(element).attr('data-selected-data');
-                        var data = {key: element.val(), label: text};
+                        {% if multiple %}
+                            var data = [];
+                            try {
+                                $.each($.parseJSON(element.val()),function(id, object){
+                                    data.push({key: object.key, label: object.label});
+                                });
+                            } catch (e) {
+                                data = [];
+                            }
+                            element.val(''); //Remove JSON
+                        {% else %}
+                            var text = $(element).attr('data-selected-data');
+                            var data = {key: element.val(), label: text};
+                        {% endif %}
                         callback(data);
                     },
                     width: '{{ width }}'

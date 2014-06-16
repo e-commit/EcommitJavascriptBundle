@@ -21,6 +21,9 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
     protected $arrayIdentifierName;
     protected $arrayLabelName;
     protected $maxResults;
+    protected $onlyKeysInReverse;
+    protected $separatorIfOnlyKeysInReverse;
+    protected $escapeValues;
 
     /**
      * @param QueryBuilder $queryBuilder
@@ -39,12 +42,18 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
         $property,
         $arrayIdentifierName = 'id',
         $arrayLabelName = 'name',
-        $maxResults = 99
+        $maxResults = 99,
+        $onlyKeysInReverse = false,
+        $separatorIfOnlyKeysInReverse = ',',
+        $escapeValues = false
     ) {
         $this->init($queryBuilder, $rootAlias, $identifier, $property);
         $this->arrayIdentifierName = $arrayIdentifierName;
         $this->arrayLabelName = $arrayLabelName;
         $this->maxResults = $maxResults;
+        $this->onlyKeysInReverse = $onlyKeysInReverse;
+        $this->separatorIfOnlyKeysInReverse = $separatorIfOnlyKeysInReverse;
+        $this->escapeValues = $escapeValues;
     }
 
     /**
@@ -65,23 +74,29 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
         $results = array();
         foreach ($collection as $entity) {
             $results[] = array(
-                $this->arrayIdentifierName => \htmlentities(
-                    $this->accessor->getValue($entity, $this->identifier),
-                    ENT_QUOTES,
-                    'UTF-8'
+                $this->arrayIdentifierName => $this->displayValue(
+                    $this->accessor->getValue($entity, $this->identifier)
                 ),
-                $this->arrayLabelName => \htmlentities(
-                    $this->extractLabel($entity),
-                    ENT_QUOTES,
-                    'UTF-8'
-                ),
+                $this->arrayLabelName => $this->displayValue($this->extractLabel($entity)),
             );
         }
 
         //Here, do not put the result in the cache because we must check the value in
         //reverseTransform (by QueryBuilder)
-
         return json_encode($results);
+    }
+
+    protected function displayValue($value)
+    {
+        if ($this->escapeValues) {
+            return \htmlentities(
+                $value,
+                ENT_QUOTES,
+                'UTF-8'
+            );
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -101,9 +116,18 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $ids = \explode(',', $value);
-        $ids = \array_unique($ids);
+        if ($this->onlyKeysInReverse) {
+            $ids = \explode($this->separatorIfOnlyKeysInReverse, $value);
+        } else {
+            $ids = array();
+            foreach (json_decode($value, true) as $subValue) {
+                if (!empty($subValue[$this->arrayIdentifierName])) {
+                    $ids[] = $subValue[$this->arrayIdentifierName];
+                }
+            }
+        }
 
+        $ids = \array_unique($ids);
         if (count($ids) == 0) {
             return $collection;
         }

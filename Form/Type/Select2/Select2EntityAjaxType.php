@@ -11,15 +11,14 @@
 namespace Ecommit\JavascriptBundle\Form\Type\Select2;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\QueryBuilder;
+use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransformer;
+use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;
 use Ecommit\JavascriptBundle\Form\Type\EntityNormalizerTrait;
-use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -45,6 +44,46 @@ class Select2EntityAjaxType extends AbstractSelect2Type
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['multiple']) {
+            $this->multipleAddTransformers($builder, $options);
+        } else {
+            $this->noMultipleAddTransformers($builder, $options);
+        }
+    }
+
+    protected function multipleAddTransformers(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['input'] == 'key') {
+            $builder->addModelTransformer(
+                new ReversedTransformer(
+                    new EntitiesToIdsTransformer(
+                        $options['query_builder'],
+                        $options['root_alias'],
+                        $options['identifier'],
+                        $options['max']
+                    )
+                )
+            );
+        }
+
+        $builder->addViewTransformer(
+            new EntitiesToJsonTransformer(
+                $options['query_builder'],
+                $options['root_alias'],
+                $options['identifier'],
+                $options['property'],
+                'key',
+                'label',
+                $options['max'],
+                true,
+                ',',
+                false
+            )
+        );
+    }
+
+    protected function noMultipleAddTransformers(FormBuilderInterface $builder, array $options)
     {
         if ($options['input'] == 'key') {
             $builder->addModelTransformer(
@@ -77,14 +116,15 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         parent::buildView($view, $form, $options);
 
         $dataSelected = '';
-        if ($options['input'] == 'entity' && $form->getData() && is_object($form->getData())) {
+        if (!$options['multiple'] && $options['input'] == 'entity' && $form->getData() && is_object($form->getData())) {
             $dataSelected = $this->extractLabel($form->getData(), $options['property']);
-        } elseif ($options['input'] == 'key' && $form->getNormData() && is_object($form->getNormData())) {
+        } elseif (!$options['multiple'] && $options['input'] == 'key' && $form->getNormData() && is_object($form->getNormData())) {
             $dataSelected = $this->extractLabel($form->getNormData(), $options['property']);
         }
 
         $view->vars['url'] = $options['url'];
         $view->vars['min_chars'] = $options['min_chars'];
+        $view->vars['multiple'] = $options['multiple'];
         $view->vars['attr'] = array(
             'data-selected-data' => $dataSelected,
         );
@@ -124,6 +164,8 @@ class Select2EntityAjaxType extends AbstractSelect2Type
                 'identifier' => null,
                 'property' => null,
                 'min_chars' => 1,
+                'multiple' => false,
+                'max' => 50,
                 'error_bubbling' => false,
             )
         );

@@ -60,7 +60,10 @@ class TokenInputEntitiesAjaxType extends AbstractType
                 $options['property'],
                 'id',
                 'name',
-                $options['max']
+                $options['max'],
+                true,
+                ',',
+                true
             )
         );
 
