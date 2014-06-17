@@ -20,17 +20,15 @@ class EntityToIdTransformer extends AbstractEntityTransformer
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $rootAlias Doctrine Root Alias in Query Builder
      * @param string $identifier Identifier name
      * @param bool $throwExceptionIfValueNotFoundInReverse Throw Exception if value not found in reverse function
      */
     public function __construct(
         QueryBuilder $queryBuilder,
-        $rootAlias,
         $identifier,
         $throwExceptionIfValueNotFoundInReverse = true
     ) {
-        $this->init($queryBuilder, $rootAlias, $identifier, null);
+        $this->init($queryBuilder, $identifier, null);
         $this->throwExceptionIfValueNotFoundInReverse = $throwExceptionIfValueNotFoundInReverse;
     }
 
@@ -79,8 +77,9 @@ class EntityToIdTransformer extends AbstractEntityTransformer
             } else {
                 //Result not in cache
 
+                $alias = current($this->queryBuilder->getRootAliases());
                 $query = $this->queryBuilder->andWhere(
-                    sprintf('%s.%s = :key_transformer', $this->rootAlias, $this->identifier)
+                    sprintf('%s.%s = :key_transformer', $alias, $this->identifier)
                 )
                     ->setParameter('key_transformer', $value)
                     ->getQuery();

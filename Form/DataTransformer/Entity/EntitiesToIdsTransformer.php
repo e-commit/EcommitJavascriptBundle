@@ -13,6 +13,7 @@ namespace Ecommit\JavascriptBundle\Form\DataTransformer\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -22,17 +23,15 @@ class EntitiesToIdsTransformer extends AbstractEntityTransformer
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $rootAlias Doctrine Root Alias in Query Builder
      * @param string $identifier Identifier name
      * @param int $maxResults Maximum number of results allowed to be selected by the user
      */
     public function __construct(
         QueryBuilder $queryBuilder,
-        $rootAlias,
         $identifier,
         $maxResults = 99
     ) {
-        $this->init($queryBuilder, $rootAlias, $identifier, null);
+        $this->init($queryBuilder, $identifier, null);
         $this->maxResults = $maxResults;
     }
 
@@ -92,13 +91,10 @@ class EntitiesToIdsTransformer extends AbstractEntityTransformer
             } else {
                 //Result not in cache
 
-                $field = $this->rootAlias . '.' . $this->identifier;
-                $query = $this->queryBuilder->andWhere($this->queryBuilder->expr()->in($field, ':select_ids'))
-                    ->setParameter('select_ids', $values)
-                    ->setMaxResults($this->maxResults)
-                    ->getQuery();
+                $this->queryBuilder->setMaxResults($this->maxResults);
+                $queryBuilderLoader = new ORMQueryBuilderLoader($this->queryBuilder);
 
-                foreach ($query->execute() as $entity) {
+                foreach ($queryBuilderLoader->getEntitiesByIds($this->identifier, $values) as $entity) {
                     $collection->add($entity);
                 }
                 $this->cachedResults[$hash] = $collection; //Saves result in cache

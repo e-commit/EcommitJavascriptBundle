@@ -44,7 +44,6 @@ class TokenInputEntitiesAjaxType extends AbstractType
                 new ReversedTransformer(
                     new EntitiesToIdsTransformer(
                         $options['query_builder'],
-                        $options['root_alias'],
                         $options['identifier'],
                         $options['max']
                     )
@@ -55,7 +54,6 @@ class TokenInputEntitiesAjaxType extends AbstractType
         $builder->addViewTransformer(
             new EntitiesToJsonTransformer(
                 $options['query_builder'],
-                $options['root_alias'],
                 $options['identifier'],
                 $options['property'],
                 'id',
@@ -98,7 +96,6 @@ class TokenInputEntitiesAjaxType extends AbstractType
                 'input' => 'entity',
                 'em' => null,
                 'query_builder' => null,
-                'root_alias' => null,
                 'identifier' => null,
                 'property' => null,
                 'hint_text' => 'Type in a search term',
@@ -133,7 +130,6 @@ class TokenInputEntitiesAjaxType extends AbstractType
             array(
                 'em' => $this->getEmNormalizer($this->registry),
                 'query_builder' => $this->getQueryBuilderNormalizer(),
-                'root_alias' => $this->getRootAliasNormalizer(),
                 'identifier' => $this->getIdentifierNormalizer(),
             )
         );

@@ -58,21 +58,6 @@ trait EntityNormalizerTrait
         return $queryBuilderNormalizer;
     }
 
-    public function getRootAliasNormalizer()
-    {
-        $rootAliasNormalizer = function (Options $options, $rootAlias) {
-            if (null !== $rootAlias) {
-                return $rootAlias;
-            }
-
-            $queryBuilder = $options['query_builder'];
-
-            return current($queryBuilder->getRootAliases());
-        };
-
-        return $rootAliasNormalizer;
-    }
-
     public function getIdentifierNormalizer()
     {
         $identifierNormalizer = function (Options $options, $identifier) {

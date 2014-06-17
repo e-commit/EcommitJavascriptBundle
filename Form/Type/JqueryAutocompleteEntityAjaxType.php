@@ -47,7 +47,6 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
                 new ReversedTransformer(
                     new EntityToIdTransformer(
                         $options['query_builder'],
-                        $options['root_alias'],
                         $options['identifier'],
                         false
                     )
@@ -58,7 +57,6 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
         $builder->addViewTransformer(
             new EntityToArrayTransformer(
                 $options['query_builder'],
-                $options['root_alias'],
                 $options['identifier'],
                 $options['property']
             )
@@ -87,7 +85,6 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
                 'input' => 'entity',
                 'em' => null,
                 'query_builder' => null,
-                'root_alias' => null,
                 'identifier' => null,
                 'property' => null,
                 'image_autocomplete' => 'bundles/ecommitcrud/images/i16/keyboard_magnify.png',
@@ -114,7 +111,6 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
             array(
                 'em' => $this->getEmNormalizer($this->registry),
                 'query_builder' => $this->getQueryBuilderNormalizer(),
-                'root_alias' => $this->getRootAliasNormalizer(),
                 'identifier' => $this->getIdentifierNormalizer(),
             )
         );

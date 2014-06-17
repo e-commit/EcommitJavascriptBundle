@@ -21,7 +21,6 @@ class EntityToArrayTransformer extends AbstractEntityTransformer
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $rootAlias Doctrine Root Alias in Query Builder
      * @param string $identifier Identifier name
      * @param string $property property that should be used for displaying the entities as text in the HTML element.
      * If left blank, the entity object will be cast into a string and so must have a __toString() method
@@ -30,13 +29,12 @@ class EntityToArrayTransformer extends AbstractEntityTransformer
      */
     public function __construct(
         QueryBuilder $queryBuilder,
-        $rootAlias,
         $identifier,
         $property,
         $arrayIdentifierName = 'key',
         $arrayLabelName = 'text'
     ) {
-        $this->init($queryBuilder, $rootAlias, $identifier, $property);
+        $this->init($queryBuilder, $identifier, $property);
         $this->arrayIdentifierName = $arrayIdentifierName;
         $this->arrayLabelName = $arrayLabelName;
     }
@@ -89,7 +87,8 @@ class EntityToArrayTransformer extends AbstractEntityTransformer
             } else {
                 //Result not in cache
 
-                $query = $this->queryBuilder->andWhere(sprintf('%s.%s = :key_transformer', $this->rootAlias, $this->identifier))
+                $alias = current($this->queryBuilder->getRootAliases());
+                $query = $this->queryBuilder->andWhere(sprintf('%s.%s = :key_transformer', $alias, $this->identifier))
                     ->setParameter('key_transformer', $identifier)
                     ->getQuery();
 

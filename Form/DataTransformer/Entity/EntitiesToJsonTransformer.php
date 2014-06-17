@@ -13,6 +13,7 @@ namespace Ecommit\JavascriptBundle\Form\DataTransformer\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -27,7 +28,6 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $rootAlias Doctrine Root Alias in Query Builder
      * @param string $identifier Identifier name
      * @param string $property property that should be used for displaying the entities as text in the HTML element.
      * If left blank, the entity object will be cast into a string and so must have a __toString() method
@@ -37,7 +37,6 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
      */
     public function __construct(
         QueryBuilder $queryBuilder,
-        $rootAlias,
         $identifier,
         $property,
         $arrayIdentifierName = 'id',
@@ -47,7 +46,7 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
         $separatorIfOnlyKeysInReverse = ',',
         $escapeValues = false
     ) {
-        $this->init($queryBuilder, $rootAlias, $identifier, $property);
+        $this->init($queryBuilder, $identifier, $property);
         $this->arrayIdentifierName = $arrayIdentifierName;
         $this->arrayLabelName = $arrayLabelName;
         $this->maxResults = $maxResults;
@@ -139,13 +138,10 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
             } else {
                 //Result not in cache
 
-                $field = $this->rootAlias . '.' . $this->identifier;
-                $query = $this->queryBuilder->andWhere($this->queryBuilder->expr()->in($field, ':select_ids'))
-                    ->setParameter('select_ids', $ids)
-                    ->setMaxResults($this->maxResults)
-                    ->getQuery();
+                $this->queryBuilder->setMaxResults($this->maxResults);
+                $queryBuilderLoader = new ORMQueryBuilderLoader($this->queryBuilder);
 
-                foreach ($query->execute() as $entity) {
+                foreach ($queryBuilderLoader->getEntitiesByIds($this->identifier, $ids) as $entity) {
                     $collection->add($entity);
                 }
                 $this->cachedResults[$hash] = $collection; //Saves result in cache

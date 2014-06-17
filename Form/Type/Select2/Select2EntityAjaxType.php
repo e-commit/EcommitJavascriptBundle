@@ -59,7 +59,6 @@ class Select2EntityAjaxType extends AbstractSelect2Type
                 new ReversedTransformer(
                     new EntitiesToIdsTransformer(
                         $options['query_builder'],
-                        $options['root_alias'],
                         $options['identifier'],
                         $options['max']
                     )
@@ -70,7 +69,6 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         $builder->addViewTransformer(
             new EntitiesToJsonTransformer(
                 $options['query_builder'],
-                $options['root_alias'],
                 $options['identifier'],
                 $options['property'],
                 'key',
@@ -90,7 +88,6 @@ class Select2EntityAjaxType extends AbstractSelect2Type
                 new ReversedTransformer(
                     new EntityToIdTransformer(
                         $options['query_builder'],
-                        $options['root_alias'],
                         $options['identifier'],
                         false
                     )
@@ -101,7 +98,6 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         $builder->addViewTransformer(
             new EntityToIdTransformer(
                 $options['query_builder'],
-                $options['root_alias'],
                 $options['identifier'],
                 true
             )
@@ -160,7 +156,6 @@ class Select2EntityAjaxType extends AbstractSelect2Type
                 'input' => 'entity',
                 'em' => null,
                 'query_builder' => null,
-                'root_alias' => null,
                 'identifier' => null,
                 'property' => null,
                 'min_chars' => 1,
@@ -187,7 +182,6 @@ class Select2EntityAjaxType extends AbstractSelect2Type
             array(
                 'em' => $this->getEmNormalizer($this->registry),
                 'query_builder' => $this->getQueryBuilderNormalizer(),
-                'root_alias' => $this->getRootAliasNormalizer(),
                 'identifier' => $this->getIdentifierNormalizer(),
             )
         );

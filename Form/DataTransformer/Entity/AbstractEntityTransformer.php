@@ -22,7 +22,6 @@ abstract class AbstractEntityTransformer implements DataTransformerInterface
      */
     protected $queryBuilder;
 
-    protected $rootAlias;
     protected $identifier;
     protected $property;
 
@@ -35,15 +34,13 @@ abstract class AbstractEntityTransformer implements DataTransformerInterface
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $rootAlias Doctrine Root Alias in Query Builder
      * @param string $identifier Identifier name
      * @param string $property property that should be used for displaying the entities as text in the HTML element.
      * If left blank, the entity object will be cast into a string and so must have a __toString() method
      */
-    protected function init(QueryBuilder $queryBuilder, $rootAlias, $identifier, $property)
+    protected function init(QueryBuilder $queryBuilder, $identifier, $property)
     {
         $this->queryBuilder = $queryBuilder;
-        $this->rootAlias = $rootAlias;
         $this->identifier = $identifier;
         $this->property = $property;
         $this->accessor = PropertyAccess::createPropertyAccessor();
@@ -72,7 +69,6 @@ abstract class AbstractEntityTransformer implements DataTransformerInterface
             json_encode(
                 array(
                     spl_object_hash($this->queryBuilder),
-                    $this->rootAlias,
                     $this->identifier,
                     $id,
                 )
