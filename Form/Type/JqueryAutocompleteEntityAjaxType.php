@@ -87,8 +87,8 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
                 'query_builder' => null,
                 'identifier' => null,
                 'property' => null,
-                'image_autocomplete' => 'bundles/ecommitcrud/images/i16/keyboard_magnify.png',
-                'image_ok' => 'bundles/ecommitcrud/images/i16/apply.png',
+                'image_autocomplete' => 'bundles/ecommitjavascript/images/i16/keyboard_magnify.png',
+                'image_ok' => 'bundles/ecommitjavascript/images/i16/apply.png',
                 'min_chars' => 1,
                 'error_bubbling' => false,
             )
