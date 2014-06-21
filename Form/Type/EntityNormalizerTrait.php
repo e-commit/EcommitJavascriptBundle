@@ -15,6 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 trait EntityNormalizerTrait
 {
@@ -85,5 +86,51 @@ trait EntityNormalizerTrait
         }
 
         return null;
+    }
+
+    public function addCommonDefaultOptions(OptionsResolverInterface $resolver, ManagerRegistry $registry, Router $router)
+    {
+        $resolver->setDefaults(
+            array(
+                'input' => 'entity',
+                'em' => null,
+                'query_builder' => null,
+                'identifier' => null,
+                'property' => null,
+                'min_chars' => 1,
+                'route_name' => null,
+                'route_params' => array(),
+                'url' => function (Options $options) use($router) {
+                    return $this->getDefaultUrl($options, $router);
+                },
+            )
+        );
+
+        $resolver->setRequired(
+            array(
+                'class',
+            )
+        );
+
+        $resolver->setAllowedValues(
+            array(
+                'input' => array('entity', 'key'),
+            )
+        );
+
+        $resolver->setAllowedTypes(
+            array(
+                'url' => array('string'),
+                'route_params' => array('array'),
+            )
+        );
+
+        $resolver->setNormalizers(
+            array(
+                'em' => $this->getEmNormalizer($registry),
+                'query_builder' => $this->getQueryBuilderNormalizer(),
+                'identifier' => $this->getIdentifierNormalizer(),
+            )
+        );
     }
 } 

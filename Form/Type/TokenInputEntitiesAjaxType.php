@@ -102,27 +102,15 @@ class TokenInputEntitiesAjaxType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $router = $this->router;
         $resolver->setDefaults(
             array(
-                'input' => 'entity',
-                'em' => null,
-                'query_builder' => null,
-                'identifier' => null,
-                'property' => null,
                 'hint_text' => 'Type in a search term',
                 'no_results_text' => 'No results',
                 'searching_text' => 'Searching',
                 'theme' => null,
-                'min_chars' => 1,
                 'max' => 50,
                 'prevent_duplicates' => true,
                 'query_param' => 'term',
-                'route_name' => null,
-                'route_params' => array(),
-                'url' => function (Options $options) use($router) {
-                    return $this->getDefaultUrl($options, $router);
-                },
                 //Field not required because the "html 5 error" is displayed
                 //outside the screen (field outside the screen): Browser error is invisible
                 'required' => false,
@@ -130,32 +118,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
             )
         );
 
-        $resolver->setRequired(
-            array(
-                'class',
-            )
-        );
-
-        $resolver->setAllowedValues(
-            array(
-                'input' => array('entity', 'key'),
-            )
-        );
-
-        $resolver->setAllowedTypes(
-            array(
-                'url' => array('string'),
-                'route_params' => array('array'),
-            )
-        );
-
-        $resolver->setNormalizers(
-            array(
-                'em' => $this->getEmNormalizer($this->registry),
-                'query_builder' => $this->getQueryBuilderNormalizer(),
-                'identifier' => $this->getIdentifierNormalizer(),
-            )
-        );
+        $this->addCommonDefaultOptions($resolver, $this->registry, $this->router);
     }
 
     public function getName()

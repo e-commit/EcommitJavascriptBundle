@@ -91,52 +91,15 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $router = $this->router;
         $resolver->setDefaults(
             array(
-                'input' => 'entity',
-                'em' => null,
-                'query_builder' => null,
-                'identifier' => null,
-                'property' => null,
                 'image_autocomplete' => 'bundles/ecommitjavascript/images/i16/keyboard_magnify.png',
                 'image_ok' => 'bundles/ecommitjavascript/images/i16/apply.png',
-                'min_chars' => 1,
-                'route_name' => null,
-                'route_params' => array(),
-                'url' => function (Options $options) use($router) {
-                    return $this->getDefaultUrl($options, $router);
-                },
                 'error_bubbling' => false,
             )
         );
 
-        $resolver->setRequired(
-            array(
-                'class',
-            )
-        );
-
-        $resolver->setAllowedValues(
-            array(
-                'input' => array('entity', 'key'),
-            )
-        );
-
-        $resolver->setAllowedTypes(
-            array(
-                'url' => array('string'),
-                'route_params' => array('array'),
-            )
-        );
-
-        $resolver->setNormalizers(
-            array(
-                'em' => $this->getEmNormalizer($this->registry),
-                'query_builder' => $this->getQueryBuilderNormalizer(),
-                'identifier' => $this->getIdentifierNormalizer(),
-            )
-        );
+        $this->addCommonDefaultOptions($resolver, $this->registry, $this->router);
     }
 
     public function getName()
