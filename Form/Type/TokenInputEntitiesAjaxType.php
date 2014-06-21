@@ -14,26 +14,37 @@ use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransforme
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TokenInputEntitiesAjaxType extends AbstractType
 {
     use EntityNormalizerTrait;
 
+    /**
+     * @var ManagerRegistry
+     */
     protected $registry;
+
+    /**
+     * @var Router
+     */
+    protected $router;
 
     /**
      * Constructor
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Router $router)
     {
         $this->registry = $registry;
+        $this->router = $router;
     }
 
 
@@ -91,6 +102,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $router = $this->router;
         $resolver->setDefaults(
             array(
                 'input' => 'entity',
@@ -106,6 +118,11 @@ class TokenInputEntitiesAjaxType extends AbstractType
                 'max' => 50,
                 'prevent_duplicates' => true,
                 'query_param' => 'term',
+                'route_name' => null,
+                'route_params' => array(),
+                'url' => function (Options $options) use($router) {
+                    return $this->getDefaultUrl($options, $router);
+                },
                 //Field not required because the "html 5 error" is displayed
                 //outside the screen (field outside the screen): Browser error is invisible
                 'required' => false,
@@ -116,13 +133,19 @@ class TokenInputEntitiesAjaxType extends AbstractType
         $resolver->setRequired(
             array(
                 'class',
-                'url',
             )
         );
 
         $resolver->setAllowedValues(
             array(
                 'input' => array('entity', 'key'),
+            )
+        );
+
+        $resolver->setAllowedTypes(
+            array(
+                'url' => array('string'),
+                'route_params' => array('array'),
             )
         );
 

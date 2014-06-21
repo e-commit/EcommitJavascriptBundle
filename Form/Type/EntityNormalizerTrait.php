@@ -12,6 +12,7 @@ namespace Ecommit\JavascriptBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -75,5 +76,14 @@ trait EntityNormalizerTrait
         };
 
         return $identifierNormalizer;
+    }
+
+    public function getDefaultUrl(Options $options, Router $router)
+    {
+        if (!empty($options['route_name'])) {
+            return $router->generate($options['route_name'], $options['route_params']);
+        }
+
+        return null;
     }
 } 

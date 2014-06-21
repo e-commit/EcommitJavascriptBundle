@@ -15,10 +15,12 @@ use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransforme
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;
 use Ecommit\JavascriptBundle\Form\Type\EntityNormalizerTrait;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -32,12 +34,18 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     protected $registry;
 
     /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
      *
      * @param ManagerRegistry $em
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Router $router)
     {
         $this->registry = $registry;
+        $this->router = $router;
     }
 
     /**
@@ -151,6 +159,7 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     {
         parent::setDefaultOptions($resolver);
 
+        $router = $this->router;
         $resolver->setDefaults(
             array(
                 'input' => 'entity',
@@ -161,6 +170,11 @@ class Select2EntityAjaxType extends AbstractSelect2Type
                 'min_chars' => 1,
                 'multiple' => false,
                 'max' => 50,
+                'route_name' => null,
+                'route_params' => array(),
+                'url' => function (Options $options) use($router) {
+                    return $this->getDefaultUrl($options, $router);
+                },
                 'error_bubbling' => false,
             )
         );
@@ -168,13 +182,19 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         $resolver->setRequired(
             array(
                 'class',
-                'url',
             )
         );
 
         $resolver->setAllowedValues(
             array(
                 'input' => array('entity', 'key'),
+            )
+        );
+
+        $resolver->setAllowedTypes(
+            array(
+                'url' => array('string'),
+                'route_params' => array('array'),
             )
         );
 
