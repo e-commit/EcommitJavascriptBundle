@@ -18,54 +18,40 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TinyMCEType extends AbstractType
 {
-    protected $script_url;
-
-    public function __construct($script_url)
-    {
-        $this->script_url = $script_url;
-    } 
-    
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['script_url'] = $this->script_url;
         $view->vars['theme'] = $options['theme'];
         $view->vars['width'] = $options['width'];
         $view->vars['height'] = $options['height'];
         $view->vars['language'] = $options['language'];
-        $view->vars['active_plugins'] = $options['active_plugins'];
-        $view->vars['buttons1'] = $options['buttons1'];
-        $view->vars['buttons2'] = $options['buttons2'];
-        $view->vars['buttons3'] = $options['buttons3'];
+        $view->vars['plugins'] = $options['plugins'];
+        $view->vars['toolbar1'] = $options['toolbar1'];
+        $view->vars['toolbar2'] = $options['toolbar2'];
         $view->vars['file_browser'] = $options['file_browser'];
         $view->vars['other'] = $options['other'];
     }
-    
-    
+
+
     public function getParent()
     {
-        return 'form';
+        return 'textarea';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'theme'             => 'advanced',
-            'width'             => null,
-            'height'            => null,
-            'language'          => 'fr',
-            'active_plugins'    => 'safari,style,table,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,pagebreak',
-            'buttons1'          => 'newdocument,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bullist,numlist,|,outdent,indent,|,print,fullscreen,preview,|,cleanup,code',
-            'buttons2'          => 'formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,styleprops,|,nonbreaking,pagebreak',
-            'buttons3'          => 'tablecontrols,|,hr,visualaid,|,sub,sup,|,charmap,emotions,iespell,image,media,advhr,|,link,unlink,anchor',
-            'file_browser'      => false,
-            'other'             => null,
-            
-            'compound'          => false,
-        ));
-        
-        $resolver->setAllowedValues(array(
-            'theme'     => array('advanced', 'simple'),
-        ));
+        $resolver->setDefaults(
+            array(
+                'theme' => 'modern',
+                'width' => null,
+                'height' => null,
+                'language' => 'fr_FR',
+                'plugins' => 'advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor colorpicker textpattern',
+                'toolbar1' => 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                'toolbar2' => 'print preview media | forecolor backcolor emoticons',
+                'file_browser' => false,
+                'other' => null,
+            )
+        );
     }
 
     public function getName()

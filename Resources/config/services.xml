@@ -43,7 +43,6 @@
     </service>
 
     <service id="ecommit_javascript.form.type.tiny_mce" class="%ecommit_javascript.form.type.tiny_mce.class%">
-        <argument>%ecommit_javascript.tiny_mce.script_url%</argument>
         <tag name="form.type" alias="ecommit_javascript_tinymce" />
     </service>
 

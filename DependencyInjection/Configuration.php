@@ -31,12 +31,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('tiny_mce')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('script_url')->defaultValue('js/tiny_mce/tiny_mce.js')->end()
-                    ->end()
-                ->end()
                 ->arrayNode('recaptcha')
                     ->addDefaultsIfNotSet()
                     ->children()
