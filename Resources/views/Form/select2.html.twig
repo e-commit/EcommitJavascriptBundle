@@ -5,7 +5,7 @@
             $(function () {
                 $("#{{ id }}").select2({
                     minimumInputLength: {{ min_chars }},
-                    placeholder: '{{ place_holder }}',
+                    placeholder: '{{ place_holder|trans|e('js') }}',
                     allowClear: true,
                     multiple: {{ (multiple)? 'true' : 'false' }},
                     ajax: {
@@ -77,7 +77,7 @@
     <script type="text/javascript">
         $(function () {
             $("#{{ id }}").select2({
-                placeholder: '{{ place_holder }}',
+                placeholder: '{{ place_holder|trans|e('js') }}',
                 allowClear: true,
                 dropdownAutoWidth: true,
                 width: '{{ width }}'
