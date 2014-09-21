@@ -103,4 +103,4 @@ class EntityToArrayTransformer extends AbstractEntityTransformer
 
         return $entity;
     }
-} 
+}

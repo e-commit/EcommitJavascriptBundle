@@ -106,4 +106,4 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
     {
         return 'ecommit_javascript_jqueryautocompleteentityajax';
     }
-} 
+}

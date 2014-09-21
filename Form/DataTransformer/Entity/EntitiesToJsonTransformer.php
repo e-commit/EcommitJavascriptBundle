@@ -152,4 +152,4 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
 
         return $collection;
     }
-} 
+}

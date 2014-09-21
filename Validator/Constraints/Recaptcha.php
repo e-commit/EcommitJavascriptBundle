@@ -37,3 +37,4 @@ class Recaptcha extends Constraint
         return 'ecommit_javascript.validator.constraints.recaptcha';
     }
 }
+

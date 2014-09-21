@@ -185,4 +185,4 @@ class Select2EntityAjaxType extends AbstractSelect2Type
     {
         return 'ecommit_javascript_select2entityajax';
     }
-} 
+}

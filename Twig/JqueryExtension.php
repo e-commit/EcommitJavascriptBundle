@@ -129,4 +129,3 @@ class JqueryExtension extends Twig_Extension
         return $this->jqueryHelper->jQueryFormToRemote($url, $options, $htmlOptions);
     }
 }
-

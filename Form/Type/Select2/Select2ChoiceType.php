@@ -27,4 +27,4 @@ class Select2ChoiceType extends AbstractSelect2Type
     {
         return 'ecommit_javascript_select2choice';
     }
-} 
+}

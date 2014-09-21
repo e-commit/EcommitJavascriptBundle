@@ -38,4 +38,4 @@ abstract class AbstractSelect2Type extends AbstractType
             )
         );
     }
-} 
+}

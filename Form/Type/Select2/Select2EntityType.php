@@ -27,4 +27,4 @@ class Select2EntityType extends AbstractSelect2Type
     {
         return 'ecommit_javascript_select2entity';
     }
-} 
+}

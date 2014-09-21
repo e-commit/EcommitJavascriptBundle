@@ -125,4 +125,4 @@ class TokenInputEntitiesAjaxType extends AbstractType
     {
         return 'ecommit_javascript_tokeninputentitiesajax';
     }
-} 
+}

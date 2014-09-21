@@ -36,3 +36,4 @@ class EcommitJavascriptExtension extends Extension
         $container->setParameter('ecommit_javascript.use_bootstrap', $config['use_bootstrap']);
     }
 }
+
