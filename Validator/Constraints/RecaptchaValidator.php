@@ -135,7 +135,7 @@ class RecaptchaValidator extends ConstraintValidator
         $httpRequest .= $req;
 
         $response = null;
-        if (!$fs = @fsockopen($host, $port, $errno, $errstr, 10)) {
+        if (!$fs = fsockopen($host, $port, $errno, $errstr, 10)) {
             throw new ValidatorException('Could not open socket');
         }
 
