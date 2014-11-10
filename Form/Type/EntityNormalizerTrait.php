@@ -38,7 +38,7 @@ trait EntityNormalizerTrait
             $em = $options['em'];
             $class = $options['class'];
 
-            if ($queryBuilder == null) {
+            if ($queryBuilder === null) {
                 $queryBuilder = $em->createQueryBuilder()
                     ->from($class, 'c')
                     ->select('c');

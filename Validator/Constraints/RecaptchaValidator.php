@@ -83,12 +83,12 @@ class RecaptchaValidator extends ConstraintValidator
      */
     private function checkAnswer($privateKey, $remoteIp, $challenge, $response, $extraParams = array())
     {
-        if ($remoteIp == null || $remoteIp == '') {
+        if (empty($remoteIp)) {
             throw new ValidatorException('For security reasons, you must pass the remote ip to reCAPTCHA');
         }
 
         // discard spam submissions
-        if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0) {
+        if (empty($challenge) || empty($response)) {
             return false;
         }
 
