@@ -108,11 +108,7 @@ class JqueryDatePicker extends AbstractType
             )
         );
 
-        $resolver->setAllowedValues(
-            array(
-                'input' => array('datetime', 'string', 'timestamp', 'array'),
-            )
-        );
+        $resolver->setAllowedValues('input', array('datetime', 'string', 'timestamp', 'array'));
     }
 
     public function getName()

@@ -10,11 +10,11 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": ">=2.5.2, <2.7",
+        "symfony/framework-bundle": ">=2.6.0, <2.7",
         "twig/twig": "*",
         "doctrine/orm": "*",
         "doctrine/doctrine-bundle": "*",
-        "ecommit/util-bundle": "2.0.*@dev"
+        "ecommit/util-bundle": "2.1.*@dev"
     },
     "autoload": {
         "psr-0": { "Ecommit\\JavascriptBundle": "" }
@@ -22,7 +22,7 @@
     "target-dir": "Ecommit/JavascriptBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "2.1.x-dev"
         }
     }
 }

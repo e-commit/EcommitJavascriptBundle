@@ -112,18 +112,10 @@ trait EntityNormalizerTrait
             )
         );
 
-        $resolver->setAllowedValues(
-            array(
-                'input' => array('entity', 'key'),
-            )
-        );
+        $resolver->setAllowedValues('input', array('entity', 'key'));
 
-        $resolver->setAllowedTypes(
-            array(
-                'url' => array('string'),
-                'route_params' => array('array'),
-            )
-        );
+        $resolver->setAllowedTypes('url', array('string'));
+        $resolver->setAllowedTypes('route_params', array('array'));
 
         $resolver->setNormalizers(
             array(
