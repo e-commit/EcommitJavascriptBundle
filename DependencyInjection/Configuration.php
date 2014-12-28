@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->booleanNode('use_bootstrap')->defaultValue(false)->end()
+                ->scalarNode('overlay_service')->defaultValue('ecommit_javascript.overlay.jquery_popup_overlay')->end()
             ->end()
         ;
 

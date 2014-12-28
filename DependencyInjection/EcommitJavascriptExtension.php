@@ -34,6 +34,13 @@ class EcommitJavascriptExtension extends Extension
         $container->setParameter('ecommit_javascript.recaptcha.secure', $config['recaptcha']['secure']);
         $container->setParameter('ecommit_javascript.recaptcha.enable', $config['recaptcha']['enable']);
         $container->setParameter('ecommit_javascript.use_bootstrap', $config['use_bootstrap']);
+
+        //Overlay service
+        $container->addAliases(
+            array(
+                'ecommit_javascript.overlay' => $config['overlay_service'],
+            )
+        );
     }
 }
 

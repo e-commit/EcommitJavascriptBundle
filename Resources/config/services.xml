@@ -74,5 +74,13 @@
     <service id="ecommit_javascript.form.type.select2choice" class="%ecommit_javascript.form.type.select2choice.class%">
       <tag name="form.type" alias="ecommit_javascript_select2choice" />
     </service>
+
+    <service id="ecommit_javascript.overlay.jquery_tools_overlay" class="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay">
+        <argument>%ecommit_javascript.use_bootstrap%</argument>
+    </service>
+
+    <service id="ecommit_javascript.overlay.jquery_popup_overlay" class="Ecommit\JavascriptBundle\Overlay\JQueryPopupOverlay">
+        <argument>%ecommit_javascript.use_bootstrap%</argument>
+    </service>
   </services>
 </container>
