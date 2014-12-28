@@ -12,6 +12,7 @@
 namespace Ecommit\JavascriptBundle\Helper;
 
 use Ecommit\UtilBundle\Helper\UtilHelper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JqueryHelper
 {
@@ -51,13 +52,16 @@ class JqueryHelper
      * - success: Success callback
      * - script: Executes (or not) the code of the result (True / False)
      * - method: Method (POST / GET) (Default: POST)
-     * - type: Synchronous or not (synchronous / false) (Default: false)
+     * - type: Asynchronously or not (Default: true)
+     * - form: Serialize this form (and submit data) or not (Défault: false)
+     * - submit: If defined, serialize this object (by Id) and submit data
      * - with: Addionnels parameters in request
      * - before: Called before request is initiated
      * - after: Called immediately after request was initiated and before 'loading'
      * - condition: Perform remote request conditionally by this expression. Use this to describe browser-side conditions
      *   when request should not be initiated
      * - confirm: Adds confirmation dialog
+     * - cancel: Code executed if callback defined in "confirm" option returns false
      * - cache: Request Cache (Default: false)
      * - crsf: [Not yet implemented]
      */
@@ -73,14 +77,46 @@ class JqueryHelper
      * Returns the javascript needed for a remote function.
      *
      * @param string $url Request Url
-     * @param array $options Options. See Manager::jQueryLinkToRemote
-     * @see Manager:jQueryLinkToRemote
+     * @param array $options Options. See JqueryHelper::jQueryLinkToRemote
+     * @see JqueryHelper:jQueryLinkToRemote
      * @return string
      */
     public function jQueryRemoteFunction($url, $options)
     {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            array(
+                'update' => null,
+                'position' => 'replace',
+                'loading' => null, //Callback
+                'complete' => null, //Callback
+                'success' => null, //Callback
+                'script' => false,
+                'dataType' => null,
+                'method' => 'POST',
+                'type' => true,
+                'form' => false,
+                'submit' => null,
+                'with' => null,
+                'cache' => false,
+                'before' => null,
+                'after' => null,
+                'condition' => null,
+                'confirm' => null,
+                'cancel' => null,
+            )
+        );
+        $resolver->setAllowedTypes('update', array('array', 'string', 'null'));
+        $resolver->setAllowedValues('position', array('before', 'after', 'top', 'bottom', 'replace'));
+        $resolver->setAllowedTypes('script', array('bool'));
+        $resolver->setAllowedValues('method', array('POST', 'GET', 'PUT', 'DELETE'));
+        $resolver->setAllowedTypes('type', array('bool'));
+        $resolver->setAllowedTypes('form', array('bool'));
+        $resolver->setAllowedTypes('cache', array('bool'));
+        $options = $resolver->resolve($options);
+
         // Defining elements to update
-        if (isset($options['update']) && is_array($options['update'])) {
+        if ($options['update'] && is_array($options['update'])) {
             // On success, update the element with returned data
             if (isset($options['update']['success'])) {
                 $updateSuccess = "#" . $options['update']['success'];
@@ -90,14 +126,13 @@ class JqueryHelper
             if (isset($options['update']['failure'])) {
                 $updateFailure = $options['update']['failure'];
             }
-        } elseif (isset($options['update'])) {
+        } elseif ($options['update']) {
             $updateSuccess = "#" . $options['update'];
         }
 
         // Update method
-        $updatePosition = isset($options['position']) ? $options['position'] : '';
         $updateMethod = 'html';
-        switch ($updatePosition) {
+        switch ($options['position']) {
             case 'before':
                 $updateMethod = 'before';
                 break;
@@ -112,24 +147,13 @@ class JqueryHelper
                 break;
         }
 
-        // Callbacks
-        if (isset($options['loading'])) {
-            $loadingCallback = $options['loading'];
-        }
-        if (isset($options['complete'])) {
-            $completeCallback = $options['complete'];
-        }
-        if (isset($options['success'])) {
-            $successCallback = $options['success'];
-        }
-
         $execute = 'false';
-        if ((isset($options['script'])) && ($options['script'] == '1')) {
+        if ($options['script']) {
             $execute = 'true';
         }
 
         // Data Type
-        if (isset($options['dataType'])) {
+        if ($options['dataType']) {
             $dataType = $options['dataType'];
         } elseif ($execute) {
             $dataType = 'html';
@@ -137,75 +161,62 @@ class JqueryHelper
             $dataType = 'text';
         }
 
-        // POST or GET ?
-        $method = 'POST';
-        if ((isset($options['method'])) && (strtoupper($options['method']) == 'GET')) {
-            $method = $options['method'];
-        }
-
-        // async or sync, async is default
-        if ((isset($options['type'])) && ($options['type'] == 'synchronous')) {
-            $type = 'false';
-        }
-
         // Is it a form submitting
-        if (isset($options['form'])) {
+        if ($options['form']) {
             $formData = 'jQuery(this).serialize()';
-        } elseif (isset($options['submit'])) {
+        } elseif ($options['submit']) {
             $formData = '{\'#' . $options['submit'] . '\'}.serialize()';
-        } elseif (isset($options['with'])) {
+        } elseif ($options['with']) {
             $formData = $options['with'];
-        } // Is it a link with csrf protection
-        elseif (isset($options['csrf']) && $options['csrf'] == '1') {
-            /*
-             * TODO
-             */
         }
 
         //Cache
-        $cache = (empty($options['cache'])) ? 'false' : 'true';
+        $cache = 'false';
+        if ($options['cache']) {
+            $cache = 'true';
+        }
 
         // build the function
         $function = "jQuery.ajax({";
-        $function .= 'type:\'' . $method . '\'';
+        $function .= 'type:\'' . $options['method'] . '\'';
         $function .= ',dataType:\'' . $dataType . '\'';
         $function .= ',cache: ' . $cache;
-        if (isset($type)) {
-            $function .= ',async:' . $type;
+        if (!$options['type']) {
+            $function .= ',async: false';
         }
         if (isset($formData)) {
             $function .= ',data:' . $formData;
         }
-        if (isset($updateSuccess) && !isset($successCallback)) {
+        if (isset($updateSuccess) && !$options['success']) {
             $function .= ',success:function(data, textStatus){jQuery(\'' . $updateSuccess . '\').' . $updateMethod . '(data);}';
         }
         if (isset($updateFailure)) {
             $function .= ',error:function(XMLHttpRequest, textStatus, errorThrown){' . $updateFailure . '}';
         }
-        if (isset($loadingCallback)) {
-            $function .= ',beforeSend:function(XMLHttpRequest){' . $loadingCallback . '}';
+        if ($options['loading']) {
+            $function .= ',beforeSend:function(XMLHttpRequest){' . $options['loading'] . '}';
         }
-        if (isset($completeCallback)) {
-            $function .= ',complete:function(XMLHttpRequest, textStatus){' . $completeCallback . '}';
+        if ($options['complete']) {
+            $function .= ',complete:function(XMLHttpRequest, textStatus){' . $options['complete'] . '}';
         }
-        if (isset($successCallback)) {
-            $function .= ',success:function(data, textStatus){' . $successCallback . '}';
+        if ($options['success']) {
+            $function .= ',success:function(data, textStatus){' . $options['success'] . '}';
         }
         $function .= ',url:\'' . $url . '\'';
         $function .= '})';
 
-        if (isset($options['before'])) {
+        if ($options['before']) {
             $function = $options['before'] . '; ' . $function;
         }
-        if (isset($options['after'])) {
+        if ($options['after']) {
             $function = $function . '; ' . $options['after'];
         }
-        if (isset($options['condition'])) {
+        if ($options['condition']) {
             $function = 'if (' . $options['condition'] . ') { ' . $function . '; }';
         }
-        if (isset($options['confirm'])) {
+        if ($options['confirm']) {
             $function = "if (confirm('" . $this->util->escapeJavascript($options['confirm']) . "')) { $function; }";
-            if (isset($options['cancel'])) {
+            if ($options['cancel']) {
                 $function = $function . ' else { ' . $options['cancel'] . ' }';
             }
         }
@@ -218,9 +229,9 @@ class JqueryHelper
      *
      * @param string $name The button text
      * @param string $url The button url
-     * @param array $options Options. See Manager::jQueryLinkToRemote
+     * @param array $options Options. See JqueryHelper::jQueryLinkToRemote
      * @param array $htmlOptions Html options
-     * @see Manager::jQueryLinkToRemote
+     * @see JqueryHelper::jQueryLinkToRemote
      * @return string
      */
     public function jQueryButtonToRemote($name, $url, $options = array(), $htmlOptions = array())
@@ -236,9 +247,9 @@ class JqueryHelper
      * reloading POST arrangement.
      *
      * @param string $name The button text
-     * @param array $options Options. See Manager::jQueryLinkToRemote
+     * @param array $options Options. See JqueryHelper::jQueryLinkToRemote
      * @param array $htmlOptions Html options
-     * @see See Manager::jQueryLinkToRemote
+     * @see See JqueryHelper::jQueryLinkToRemote
      * @return string
      */
     public function jQueryFormToRemote($url, $options = array(), $htmlOptions = array())
