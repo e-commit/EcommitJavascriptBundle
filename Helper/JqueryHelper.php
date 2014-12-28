@@ -91,7 +91,7 @@ class JqueryHelper
                 'loading' => null, //Callback
                 'complete' => null, //Callback
                 'success' => null, //Callback
-                'script' => false,
+                'script' => true,
                 'dataType' => null,
                 'method' => 'POST',
                 'type' => true,
@@ -147,15 +147,10 @@ class JqueryHelper
                 break;
         }
 
-        $execute = 'false';
-        if ($options['script']) {
-            $execute = 'true';
-        }
-
         // Data Type
         if ($options['dataType']) {
             $dataType = $options['dataType'];
-        } elseif ($execute) {
+        } elseif ($options['script']) {
             $dataType = 'html';
         } else {
             $dataType = 'text';
