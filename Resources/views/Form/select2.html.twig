@@ -85,3 +85,8 @@
         });
     </script>
 {% endblock %}
+
+{#Used because ecommit_javascript_select2entityajax is hidden (display label) #}
+{% block ecommit_javascript_select2entityajax_row -%}
+    {{- block('form_row') -}}
+{%- endblock ecommit_javascript_select2entityajax_row -%}
