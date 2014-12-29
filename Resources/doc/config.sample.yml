@@ -9,6 +9,6 @@ ecommit_javascript:
          #Active ou non Recaptcha
          enable: true
     #Utilise ou non bootstrap pour l'application (pour la creation des boutons)
-    use_bootstrap: false
+    use_bootstrap: true
     #Service utilisé pour Overlay
     overlay_service: ecommit_javascript.overlay.jquery_popup_overlay
