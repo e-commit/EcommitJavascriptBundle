@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('enable')->defaultTrue()->end()
                     ->end()
                 ->end()
-                ->booleanNode('use_bootstrap')->defaultValue(false)->end()
+                ->booleanNode('use_bootstrap')->defaultValue(true)->end()
                 ->scalarNode('overlay_service')->defaultValue('ecommit_javascript.overlay.jquery_popup_overlay')->end()
             ->end()
         ;
