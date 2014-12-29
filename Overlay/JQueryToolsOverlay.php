@@ -22,15 +22,16 @@ class JQueryToolsOverlay extends AbstractOverlay
         $this->useBoostrap = $useBoostrap;
     }
 
-    public function declareJavascriptModal($modalId, $jsOnOpen = null, $jsOnClose = null, $closeDivClass = 'overlay-close')
+    public function declareJavascriptModal($modalId, $options = array())
     {
         $modalId = str_replace(' ', '', $modalId);
         $apiVar = $this->getApiVariableName($modalId);
+        $options = $this->getDeclareJavascriptModalOptions($options);
 
         $jsModal = \sprintf("var %s = $('#%s').overlay({oneInstance: false, api: true, fixed: false", $apiVar, $modalId);
-        $jsModal .= empty($jsOnOpen) ? '' : " ,onLoad: function() { $jsOnOpen }";
-        $jsModal .= empty($jsOnClose) ? '' : " ,onClose: function() { $jsOnClose }";
-        $jsModal .= empty($closeDivClass) ? '' : " ,close: '.$closeDivClass'";
+        $jsModal .= empty($options['js_on_open']) ? '' : sprintf(" ,onLoad: function() { %s }", $options['js_on_open']);
+        $jsModal .= empty($options['js_on_close']) ? '' : sprintf(" ,onClose: function() { %s }", $options['js_on_close']);
+        $jsModal .= empty($options['close_div_class']) ? '' : sprintf(" ,close: '.%s'", $options['close_div_class']);
         $jsModal .= '}); ';
 
         return $jsModal;

@@ -17,14 +17,15 @@ class JQueryPopupOverlay extends AbstractOverlay
         $this->useBootstrap = $useBootstrap;
     }
 
-    public function declareJavascriptModal($modalId, $jsOnOpen = null, $jsOnClose = null, $closeDivClass = 'overlay-close')
+    public function declareJavascriptModal($modalId, $options = array())
     {
         $modalId = str_replace(' ', '', $modalId);
+        $options = $this->getDeclareJavascriptModalOptions($options);
 
         $jsModal = \sprintf("$('#%s').popup({setzindex: false, scrolllock: true, autoopen: false", $modalId);
-        $jsModal .= empty($jsOnOpen) ? '' : " ,onopen: function() { $jsOnOpen }";
-        $jsModal .= empty($jsOnClose) ? '' : " ,onclose: function() { $jsOnClose }";
-        $jsModal .= empty($closeDivClass) ? '' : " ,closeelement: '.$closeDivClass'";
+        $jsModal .= empty($options['js_on_open']) ? '' : sprintf(" ,onopen: function() { %s }", $options['js_on_open']);
+        $jsModal .= empty($options['js_on_close']) ? '' : sprintf(" ,onclose: function() { %s }", $options['js_on_close']);
+        $jsModal .= empty($options['close_div_class']) ? '' : sprintf(" ,closeelement: '.%s'", $options['close_div_class']);
         $jsModal .= '}); ';
 
         return $jsModal;
