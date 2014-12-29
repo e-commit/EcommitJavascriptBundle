@@ -15,11 +15,11 @@ class JQueryToolsOverlay extends AbstractOverlay
     /**
      * @var bool
      */
-    protected $useBoostrap;
+    protected $useBootstrap;
 
-    public function __construct($useBoostrap)
+    public function __construct($useBootstrap)
     {
-        $this->useBoostrap = $useBoostrap;
+        $this->useBootstrap = $useBootstrap;
     }
 
     public function declareJavascriptModal($modalId, $options = array())
