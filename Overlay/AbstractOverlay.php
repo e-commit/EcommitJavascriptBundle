@@ -10,7 +10,7 @@
 
 namespace Ecommit\JavascriptBundle\Overlay;
 
-abstract class AbstractOverlay implements OverlayInterface
+abstract class AbstractOverlay
 {
     /**
      * @var bool
@@ -40,4 +40,10 @@ abstract class AbstractOverlay implements OverlayInterface
             return sprintf('<div id="%s" class="crud_modal">%s<div class="contentWrap">%s</div></div>', $modalId, $closeDiv, $content);
         }
     }
+
+    public abstract function declareJavascriptModal($modalId, $jsOnOpen, $jsOnClose, $closeDivClass);
+
+    public abstract function openModal($modalId);
+
+    public abstract function closeModal($modalId);
 }
