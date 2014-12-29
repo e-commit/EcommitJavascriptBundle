@@ -1,52 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-  <parameters>
-      <parameter key="ecommit_javascript.helper.jquery_helper.class">Ecommit\JavascriptBundle\Helper\JqueryHelper</parameter>
-      <parameter key="ecommit_javascript.twig.jquery_extension.class">Ecommit\JavascriptBundle\Twig\JqueryExtension</parameter>
-      <parameter key="ecommit_javascript.listener.class">Ecommit\JavascriptBundle\Listener\JavascriptListener</parameter>
-      <parameter key="ecommit_javascript.form.type.jquerydatepicker.class">Ecommit\JavascriptBundle\Form\Type\JqueryDatePicker</parameter>
-      <parameter key="ecommit_javascript.form.type.jqueryautocompleteentityajax.class">Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType</parameter>
-      <parameter key="ecommit_javascript.form.type.tokeninputentitiesajax.class">Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType</parameter>
-      <parameter key="ecommit_javascript.form.type.tiny_mce.class">Ecommit\JavascriptBundle\Form\Type\TinyMCEType</parameter>
-      <parameter key="ecommit_javascript.form.type.recaptcha.class">Ecommit\JavascriptBundle\Form\Type\RecaptchaType</parameter>
-      <parameter key="ecommit_javascript.validator.constraints.recaptcha.class">Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator</parameter>
-      <parameter key="ecommit_javascript.form.type.select2entityajax.class">Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType</parameter>
-      <parameter key="ecommit_javascript.form.type.select2entity.class">Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityType</parameter>
-      <parameter key="ecommit_javascript.form.type.select2choice.class">Ecommit\JavascriptBundle\Form\Type\Select2\Select2ChoiceType</parameter>
-  </parameters>
-
   <services>
-    <service id="ecommit_javascript.helper.jquery_helper" class="%ecommit_javascript.helper.jquery_helper.class%">
+    <service id="ecommit_javascript.helper.jquery_helper" class="Ecommit\JavascriptBundle\Helper\JqueryHelper">
         <argument type="service" id="ecommit_util.helper" />
     </service>
 
-    <service id="ecommit_javascript.twig.jquery_extension" class="%ecommit_javascript.twig.jquery_extension.class%">
+    <service id="ecommit_javascript.twig.jquery_extension" class="Ecommit\JavascriptBundle\Twig\JqueryExtension">
         <argument type="service" id="ecommit_javascript.helper.jquery_helper" />
         <tag name="twig.extension" />
     </service>
 
-    <service id="ecommit_javascript.form.type.jquerydatepicker" class="%ecommit_javascript.form.type.jquerydatepicker.class%">
+    <service id="ecommit_javascript.form.type.jquerydatepicker" class="Ecommit\JavascriptBundle\Form\Type\JqueryDatePicker">
         <tag name="form.type" alias="ecommit_javascript_jquerydatepicker" />
     </service>
 
-    <service id="ecommit_javascript.form.type.jqueryautocompleteentityajax" class="%ecommit_javascript.form.type.jqueryautocompleteentityajax.class%">
+    <service id="ecommit_javascript.form.type.jqueryautocompleteentityajax" class="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType">
         <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="router" />
         <tag name="form.type" alias="ecommit_javascript_jqueryautocompleteentityajax" />
     </service>
 
-    <service id="ecommit_javascript.form.type.tokeninputentitiesajax" class="%ecommit_javascript.form.type.tokeninputentitiesajax.class%">
+    <service id="ecommit_javascript.form.type.tokeninputentitiesajax" class="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType">
         <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="router" />
         <tag name="form.type" alias="ecommit_javascript_tokeninputentitiesajax" />
     </service>
 
-    <service id="ecommit_javascript.form.type.tiny_mce" class="%ecommit_javascript.form.type.tiny_mce.class%">
+    <service id="ecommit_javascript.form.type.tiny_mce" class="Ecommit\JavascriptBundle\Form\Type\TinyMCEType">
         <tag name="form.type" alias="ecommit_javascript_tinymce" />
     </service>
 
-    <service id="ecommit_javascript.form.type.recaptcha" class="%ecommit_javascript.form.type.recaptcha.class%">
+    <service id="ecommit_javascript.form.type.recaptcha" class="Ecommit\JavascriptBundle\Form\Type\RecaptchaType">
         <argument>%ecommit_javascript.recaptcha.public_key%</argument>
         <argument>%ecommit_javascript.recaptcha.secure%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
@@ -54,24 +39,24 @@
         <tag name="form.type" alias="ecommit_javascript_recaptcha" />
     </service>
 
-    <service id="ecommit_javascript.validator.constraints.recaptcha" class="%ecommit_javascript.validator.constraints.recaptcha.class%">
+    <service id="ecommit_javascript.validator.constraints.recaptcha" class="Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator">
         <argument type="service" id="request_stack" />
         <argument>%ecommit_javascript.recaptcha.private_key%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <tag name="validator.constraint_validator" alias="ecommit_javascript.validator.constraints.recaptcha" />
     </service>
 
-    <service id="ecommit_javascript.form.type.select2entityajax" class="%ecommit_javascript.form.type.select2entityajax.class%">
+    <service id="ecommit_javascript.form.type.select2entityajax" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
       <argument type="service" id="doctrine" on-invalid="null" />
       <argument type="service" id="router" />
       <tag name="form.type" alias="ecommit_javascript_select2entityajax" />
     </service>
 
-    <service id="ecommit_javascript.form.type.select2entity" class="%ecommit_javascript.form.type.select2entity.class%">
+    <service id="ecommit_javascript.form.type.select2entity" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityType">
       <tag name="form.type" alias="ecommit_javascript_select2entity" />
     </service>
 
-    <service id="ecommit_javascript.form.type.select2choice" class="%ecommit_javascript.form.type.select2choice.class%">
+    <service id="ecommit_javascript.form.type.select2choice" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2ChoiceType">
       <tag name="form.type" alias="ecommit_javascript_select2choice" />
     </service>
 
