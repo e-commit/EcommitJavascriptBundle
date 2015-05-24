@@ -12,6 +12,7 @@
 namespace Ecommit\JavascriptBundle\Helper;
 
 use Ecommit\UtilBundle\Helper\UtilHelper;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JqueryHelper
@@ -241,14 +242,33 @@ class JqueryHelper
      * Returns a form tag that will submit using XMLHttpRequest in the background instead of the regular
      * reloading POST arrangement.
      *
-     * @param string $name The button text
+     * @param FormView|string $form The form or the url. Url is deprecated since 2.2 version
      * @param array $options Options. See JqueryHelper::jQueryLinkToRemote
      * @param array $htmlOptions Html options
      * @see See JqueryHelper::jQueryLinkToRemote
      * @return string
      */
-    public function jQueryFormToRemote($url, $options = array(), $htmlOptions = array())
+    public function jQueryFormToRemote($form, $options = array(), $htmlOptions = array())
     {
+        //Set Url
+        if (isset($options['url'])) {
+            $url = $options['url'];
+            unset($options['url']);
+        } else {
+            if ($form instanceof FormView) {
+                $url = $form->vars['action'];
+            } elseif (is_string($form)) {
+                // BC
+                $url = $form;
+                trigger_error('Use url in jQueryFormToRemote\'s first argument is deprecated since 2.2 version.', E_USER_DEPRECATED);
+            } else {
+                throw new \Exception('form msut be FormView object or string value.');
+            }
+        }
+        if (!$url) {
+            throw new \Exception('Url must be defined.');
+        }
+
         $options['form'] = true;
         $htmlOptions['action'] = isset($htmlOptions['action']) ? $htmlOptions['action'] : $url;
         $htmlOptions['method'] = isset($htmlOptions['method']) ? $htmlOptions['method'] : 'post';

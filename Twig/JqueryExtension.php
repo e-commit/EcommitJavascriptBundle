@@ -118,14 +118,14 @@ class JqueryExtension extends Twig_Extension
      * Returns a form tag that will submit using XMLHttpRequest in the background instead of the regular
      * reloading POST arrangement.
      *
-     * @param string $name The button text
+     * @param FormView|string $form The form or the url. Url is deprecated since 2.2 version
      * @param array $options Options. See Manager::jQueryFormToRemote
      * @param array $htmlOptions Html options
      * @see See Manager::jQueryFormToRemote
      * @return string
      */
-    public function jqueryAjaxForm($url, $options = array(), $htmlOptions = array())
+    public function jqueryAjaxForm($form, $options = array(), $htmlOptions = array())
     {
-        return $this->jqueryHelper->jQueryFormToRemote($url, $options, $htmlOptions);
+        return $this->jqueryHelper->jQueryFormToRemote($form, $options, $htmlOptions);
     }
 }
