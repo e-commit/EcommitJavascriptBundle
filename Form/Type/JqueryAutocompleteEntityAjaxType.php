@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JqueryAutocompleteEntityAjaxType extends AbstractType
 {
@@ -89,7 +89,7 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
         return 'form';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
