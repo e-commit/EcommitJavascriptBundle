@@ -96,7 +96,17 @@ trait EntityNormalizerTrait
                 'em' => null,
                 'query_builder' => null,
                 'identifier' => null,
-                'property' => null,
+                'property' => null, // deprecated since 2.2, use "choice_label"
+                'choice_label' => function (Options $options) {
+                    // BC with the "property" option
+                    if ($options['property']) {
+                        trigger_error('The "property" option is deprecated since version 2.2. Use "choice_label" instead.', E_USER_DEPRECATED);
+
+                        return $options['property'];
+                    }
+
+                    return null;
+                },
                 'min_chars' => 1,
                 'route_name' => null,
                 'route_params' => array(),

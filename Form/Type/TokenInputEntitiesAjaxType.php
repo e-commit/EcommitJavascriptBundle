@@ -66,7 +66,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
             new EntitiesToJsonTransformer(
                 $options['query_builder'],
                 $options['identifier'],
-                $options['property'],
+                $options['choice_label'],
                 'id',
                 'name',
                 $options['max'],

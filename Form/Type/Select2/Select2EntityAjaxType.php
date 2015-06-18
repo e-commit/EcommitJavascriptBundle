@@ -78,7 +78,7 @@ class Select2EntityAjaxType extends AbstractSelect2Type
             new EntitiesToJsonTransformer(
                 $options['query_builder'],
                 $options['identifier'],
-                $options['property'],
+                $options['choice_label'],
                 'key',
                 'label',
                 $options['max'],
@@ -121,9 +121,9 @@ class Select2EntityAjaxType extends AbstractSelect2Type
 
         $dataSelected = '';
         if (!$options['multiple'] && $options['input'] == 'entity' && $form->getData() && is_object($form->getData())) {
-            $dataSelected = $this->extractLabel($form->getData(), $options['property']);
+            $dataSelected = $this->extractLabel($form->getData(), $options['choice_label']);
         } elseif (!$options['multiple'] && $options['input'] == 'key' && $form->getNormData() && is_object($form->getNormData())) {
-            $dataSelected = $this->extractLabel($form->getNormData(), $options['property']);
+            $dataSelected = $this->extractLabel($form->getNormData(), $options['choice_label']);
         }
 
         $view->vars['url'] = $options['url'];
@@ -148,7 +148,7 @@ class Select2EntityAjaxType extends AbstractSelect2Type
         } elseif (method_exists($object, '__toString')) {
             return (string)$object;
         } else {
-            throw new \Exception('"property" option or "__toString" method must be defined"');
+            throw new \Exception('"choice_label" option or "__toString" method must be defined"');
         }
     }
 

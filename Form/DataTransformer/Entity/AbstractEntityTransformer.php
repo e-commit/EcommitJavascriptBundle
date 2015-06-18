@@ -88,7 +88,7 @@ abstract class AbstractEntityTransformer implements DataTransformerInterface
         } elseif (method_exists($object, '__toString')) {
             return (string)$object;
         } else {
-            throw new \Exception('"property" option or "__toString" method must be defined"');
+            throw new \Exception('"choice_label" option or "__toString" method must be defined"');
         }
     }
 }
