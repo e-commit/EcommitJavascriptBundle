@@ -60,6 +60,10 @@
       <tag name="form.type" alias="ecommit_javascript_select2choice" />
     </service>
 
+    <service id="ecommit_javascript.form.type.select2country" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2CountryType">
+      <tag name="form.type" alias="ecommit_javascript_select2country" />
+    </service>
+
     <service id="ecommit_javascript.overlay.jquery_tools_overlay" class="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay">
         <argument>%ecommit_javascript.use_bootstrap%</argument>
     </service>
