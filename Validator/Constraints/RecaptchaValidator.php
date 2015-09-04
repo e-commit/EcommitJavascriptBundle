@@ -16,6 +16,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
+/**
+ * @deprecated Deprecated since version 2.2.
+ */
 class RecaptchaValidator extends ConstraintValidator
 {
     const RECAPTCHA_VERIFY_SERVER = 'www.google.com';
@@ -30,6 +33,8 @@ class RecaptchaValidator extends ConstraintValidator
 
     public function __construct(RequestStack $requestStack, $privateKey, $enable)
     {
+        trigger_error('RecaptchaValidator is deprecated since 2.2 version.', E_USER_DEPRECATED);
+
         $this->requestStack = $requestStack;
         $this->privateKey = $privateKey;
         $this->enable = $enable;

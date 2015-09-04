@@ -16,6 +16,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @deprecated Deprecated since version 2.2.
+ */
 class RecaptchaType extends AbstractType
 {
     const RECAPTCHA_API_SERVER = 'http://www.google.com/recaptcha/api';
@@ -29,6 +32,8 @@ class RecaptchaType extends AbstractType
 
     public function __construct($publicKey, $secure, $enable, $language)
     {
+        trigger_error('RecaptchaType is deprecated since 2.2 version.', E_USER_DEPRECATED);
+
         $this->publicKey = $publicKey;
         $this->secure = $secure;
         $this->enable = $enable;
