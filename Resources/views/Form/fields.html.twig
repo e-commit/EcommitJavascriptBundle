@@ -111,6 +111,20 @@
                     });
                     return false;
                 }
+                {% elseif elfinder_file_browser %}, file_browser_callback: function (field_name, url, type, win) {
+                    tinyMCE.activeEditor.windowManager.open({
+                        file:"{{ url('elfinder', {'instance': elfinder_file_browser}) }}",
+                        title : 'File Browser',
+                        width : 950,
+                        height : 600,
+                        resizable: 'yes'
+                    }, {
+                        setUrl: function (url) {
+                            win.document.getElementById(field_name).value = url;
+                        }
+                    });
+                    return false;
+                }
                 {% endif %}
                 {% if other %}, {{ other|raw }}{% endif %}
             });
