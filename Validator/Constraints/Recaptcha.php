@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
+ * @deprecated Deprecated since version 2.2.
  */
 class Recaptcha extends Constraint
 {
