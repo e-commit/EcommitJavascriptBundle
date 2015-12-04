@@ -37,6 +37,7 @@
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <argument>%locale%</argument>
         <tag name="form.type" alias="ecommit_javascript_recaptcha" />
+        <deprecated>The "%service_id%" service is deprecated since version 2.2.</deprecated>
     </service>
 
     <service id="ecommit_javascript.validator.constraints.recaptcha" class="Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator">
@@ -44,6 +45,7 @@
         <argument>%ecommit_javascript.recaptcha.private_key%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <tag name="validator.constraint_validator" alias="ecommit_javascript.validator.constraints.recaptcha" />
+        <deprecated>The "%service_id%" service is deprecated since version 2.2.</deprecated>
     </service>
 
     <service id="ecommit_javascript.form.type.select2entityajax" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
