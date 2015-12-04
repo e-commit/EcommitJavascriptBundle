@@ -83,10 +83,10 @@ class RecaptchaType extends AbstractType
 
     public function getParent()
     {
-        return 'form';
+        return 'Symfony\Component\Form\Extension\Core\Type\FormType';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_recaptcha';
     }

@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JqueryDatePicker extends AbstractType
+class JqueryDatePickerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -84,7 +84,7 @@ class JqueryDatePicker extends AbstractType
 
     public function getParent()
     {
-        return 'form';
+        return 'Symfony\Component\Form\Extension\Core\Type\FormType';
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -111,7 +111,7 @@ class JqueryDatePicker extends AbstractType
         $resolver->setAllowedValues('input', array('datetime', 'string', 'timestamp', 'array'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_jquerydatepicker';
     }

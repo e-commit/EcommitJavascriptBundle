@@ -97,7 +97,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
 
     public function getParent()
     {
-        return 'form';
+        return 'Symfony\Component\Form\Extension\Core\Type\FormType';
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -121,7 +121,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
         $this->addCommonDefaultOptions($resolver, $this->registry, $this->router);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_tokeninputentitiesajax';
     }

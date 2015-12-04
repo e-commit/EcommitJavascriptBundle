@@ -10,6 +10,8 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type\Select2;
 
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+
 class Select2CountryType extends AbstractSelect2Type
 {
     /**
@@ -17,13 +19,13 @@ class Select2CountryType extends AbstractSelect2Type
      */
     public function getParent()
     {
-        return 'country';
+        return CountryType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_select2country';
     }

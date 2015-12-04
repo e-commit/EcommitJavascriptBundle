@@ -10,6 +10,8 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type\Select2;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 class Select2EntityType extends AbstractSelect2Type
 {
     /**
@@ -17,13 +19,13 @@ class Select2EntityType extends AbstractSelect2Type
      */
     public function getParent()
     {
-        return 'entity';
+        return EntityType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_select2entity';
     }

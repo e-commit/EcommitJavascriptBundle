@@ -12,23 +12,23 @@
     </service>
 
     <service id="ecommit_javascript.form.type.jquerydatepicker" class="Ecommit\JavascriptBundle\Form\Type\JqueryDatePicker">
-        <tag name="form.type" alias="ecommit_javascript_jquerydatepicker" />
+        <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.jqueryautocompleteentityajax" class="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType">
         <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="router" />
-        <tag name="form.type" alias="ecommit_javascript_jqueryautocompleteentityajax" />
+        <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.tokeninputentitiesajax" class="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType">
         <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="router" />
-        <tag name="form.type" alias="ecommit_javascript_tokeninputentitiesajax" />
+        <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.tiny_mce" class="Ecommit\JavascriptBundle\Form\Type\TinyMCEType">
-        <tag name="form.type" alias="ecommit_javascript_tinymce" />
+        <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.recaptcha" class="Ecommit\JavascriptBundle\Form\Type\RecaptchaType">
@@ -36,7 +36,7 @@
         <argument>%ecommit_javascript.recaptcha.secure%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
         <argument>%locale%</argument>
-        <tag name="form.type" alias="ecommit_javascript_recaptcha" />
+        <tag name="form.type" />
         <deprecated>The "%service_id%" service is deprecated since version 2.2.</deprecated>
     </service>
 
@@ -51,19 +51,19 @@
     <service id="ecommit_javascript.form.type.select2entityajax" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
       <argument type="service" id="doctrine" on-invalid="null" />
       <argument type="service" id="router" />
-      <tag name="form.type" alias="ecommit_javascript_select2entityajax" />
+      <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.select2entity" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityType">
-      <tag name="form.type" alias="ecommit_javascript_select2entity" />
+      <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.select2choice" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2ChoiceType">
-      <tag name="form.type" alias="ecommit_javascript_select2choice" />
+      <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.form.type.select2country" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2CountryType">
-      <tag name="form.type" alias="ecommit_javascript_select2country" />
+      <tag name="form.type" />
     </service>
 
     <service id="ecommit_javascript.overlay.jquery_tools_overlay" class="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay">

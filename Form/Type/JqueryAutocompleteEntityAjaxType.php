@@ -15,6 +15,8 @@ use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToArrayTransforme
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -50,8 +52,8 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('key', 'hidden');
-        $builder->add('text', 'text');
+        $builder->add('key', HiddenType::class);
+        $builder->add('text', TextType::class);
 
         if ($options['input'] == 'key') {
             $builder->addModelTransformer(
@@ -86,7 +88,7 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
 
     public function getParent()
     {
-        return 'form';
+        return 'Symfony\Component\Form\Extension\Core\Type\FormType';
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -102,7 +104,7 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
         $this->addCommonDefaultOptions($resolver, $this->registry, $this->router);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_jqueryautocompleteentityajax';
     }

@@ -16,6 +16,7 @@ use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransform
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;
 use Ecommit\JavascriptBundle\Form\Type\EntityNormalizerTrait;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -175,13 +176,13 @@ class Select2EntityAjaxType extends AbstractSelect2Type
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_select2entityajax';
     }

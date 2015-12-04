@@ -10,6 +10,8 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type\Select2;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 class Select2ChoiceType extends AbstractSelect2Type
 {
     /**
@@ -17,13 +19,13 @@ class Select2ChoiceType extends AbstractSelect2Type
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ecommit_javascript_select2choice';
     }
