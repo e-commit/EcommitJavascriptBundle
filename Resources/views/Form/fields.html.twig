@@ -99,19 +99,7 @@
                 {% if toolbar2 %}, toolbar2:  "{{ toolbar2 }}"{% endif %}
                 {% if width %}, width:  {{ width }}{% endif %}
                 {% if height %}, height:  {{ height }}{% endif %}
-                {% if file_browser %}, file_browser_callback: function (field_name, url, type, win) {
-                    tinyMCE.activeEditor.windowManager.open({
-                        url : '{{ path('ecommitmediabrowser_show') }}',
-                        title : 'File Browser',
-                        width : 950,
-                        height : 600
-                    }, {
-                        window : win,
-                        input : field_name
-                    });
-                    return false;
-                }
-                {% elseif elfinder_file_browser %}, file_browser_callback: function (field_name, url, type, win) {
+                {% if elfinder_file_browser %}, file_browser_callback: function (field_name, url, type, win) {
                     tinyMCE.activeEditor.windowManager.open({
                         file:"{{ url('elfinder', {'instance': elfinder_file_browser}) }}",
                         title : 'File Browser',

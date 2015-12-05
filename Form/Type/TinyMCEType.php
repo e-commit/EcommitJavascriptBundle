@@ -28,7 +28,6 @@ class TinyMCEType extends AbstractType
         $view->vars['plugins'] = $options['plugins'];
         $view->vars['toolbar1'] = $options['toolbar1'];
         $view->vars['toolbar2'] = $options['toolbar2'];
-        $view->vars['file_browser'] = $options['file_browser'];
         $view->vars['elfinder_file_browser'] = $options['elfinder_file_browser'];
         $view->vars['other'] = $options['other'];
     }
@@ -50,7 +49,6 @@ class TinyMCEType extends AbstractType
                 'plugins' => 'advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor colorpicker textpattern',
                 'toolbar1' => 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
                 'toolbar2' => 'print preview media | forecolor backcolor emoticons',
-                'file_browser' => false,
                 'elfinder_file_browser' => false,
                 'other' => null,
             )
