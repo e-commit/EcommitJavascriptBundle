@@ -38,7 +38,7 @@
     <script type="text/javascript">
         $(function() {
             $("#{{ form.children.text.vars.id }}").unbind();
-            $("#{{ form.children.text.vars.id }}").bind("change", function(){
+            $("#{{ form.children.text.vars.id }}").bind("keyup", function(){
                 $("#{{ form.children.key.vars.id }}").val('');
                 $("#image_{{id}}").hide();
             });
