@@ -11,10 +11,6 @@
         <tag name="twig.extension" />
     </service>
 
-    <service id="ecommit_javascript.form.type.jquerydatepicker" class="Ecommit\JavascriptBundle\Form\Type\JqueryDatePicker">
-        <tag name="form.type" />
-    </service>
-
     <service id="ecommit_javascript.form.type.jqueryautocompleteentityajax" class="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType">
         <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="router" />
@@ -24,10 +20,6 @@
     <service id="ecommit_javascript.form.type.tokeninputentitiesajax" class="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType">
         <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="router" />
-        <tag name="form.type" />
-    </service>
-
-    <service id="ecommit_javascript.form.type.tiny_mce" class="Ecommit\JavascriptBundle\Form\Type\TinyMCEType">
         <tag name="form.type" />
     </service>
 
@@ -51,18 +43,6 @@
     <service id="ecommit_javascript.form.type.select2entityajax" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
       <argument type="service" id="doctrine" on-invalid="null" />
       <argument type="service" id="router" />
-      <tag name="form.type" />
-    </service>
-
-    <service id="ecommit_javascript.form.type.select2entity" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityType">
-      <tag name="form.type" />
-    </service>
-
-    <service id="ecommit_javascript.form.type.select2choice" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2ChoiceType">
-      <tag name="form.type" />
-    </service>
-
-    <service id="ecommit_javascript.form.type.select2country" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2CountryType">
       <tag name="form.type" />
     </service>
 
