@@ -20,7 +20,6 @@
     "autoload": {
         "psr-4": { "Ecommit\\JavascriptBundle\\": "" }
     },
-    "target-dir": "Ecommit/JavascriptBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.4.x-dev"
