@@ -1,6 +1,6 @@
 {% block ecommit_javascript_select2entityajax_widget %}
     {% spaceless %}
-        <span class="select2-ajax">{{ form_widget(form) }}</span>
+        <span class="select2-ajax">{{ form_widget(form, {'attr': {'class': (attr.class|default('') ~ ' form-control')|trim}}) }}</span>
         <script type="text/javascript">
             $(function () {
                 $("#{{ id }}").select2({
