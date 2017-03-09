@@ -11,6 +11,7 @@
 namespace Ecommit\JavascriptBundle\Form\DataTransformer\Entity;
 
 use Doctrine\ORM\QueryBuilder;
+use Ecommit\UtilBundle\Util\Util;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -54,6 +55,7 @@ abstract class AbstractEntityTransformer implements DataTransformerInterface
     protected function getCacheHash($id)
     {
         if (is_array($id)) {
+            $id = Util::filterScalarValues($id);
             $id = array_map(
                 function ($child) {
                     return (string)$child; //Converts ids from integer to string => Parameters for transform and reverse functions must be identicals
