@@ -86,7 +86,11 @@ abstract class AbstractEntityTransformer implements DataTransformerInterface
     protected function extractLabel($object)
     {
         if ($this->property) {
-            return $this->accessor->getValue($object, $this->property);
+            if ($this->property instanceof \Closure) {
+                return $this->property->__invoke($object);
+            } else {
+                return $this->accessor->getValue($object, $this->property);
+            }
         } elseif (method_exists($object, '__toString')) {
             return (string)$object;
         } else {
