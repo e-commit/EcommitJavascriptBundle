@@ -130,6 +130,11 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
         if (count($ids) == 0) {
             return $collection;
         }
+        if (count($ids) > $this->maxResults) {
+            throw new TransformationFailedException(
+                sprintf('This collection should contain %s elements or less.', $this->maxResults)
+            );
+        }
 
         try {
             $hash = $this->getCacheHash($ids);
@@ -138,7 +143,6 @@ class EntitiesToJsonTransformer extends AbstractEntityTransformer
             } else {
                 //Result not in cache
 
-                $this->queryBuilder->setMaxResults($this->maxResults);
                 $queryBuilderLoader = new ORMQueryBuilderLoader($this->queryBuilder);
 
                 foreach ($queryBuilderLoader->getEntitiesByIds($this->identifier, $ids) as $entity) {

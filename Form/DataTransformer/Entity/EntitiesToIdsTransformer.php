@@ -85,6 +85,11 @@ class EntitiesToIdsTransformer extends AbstractEntityTransformer
             return $collection;
         }
         $values = \array_unique($values);
+        if (count($values) > $this->maxResults) {
+            throw new TransformationFailedException(
+                sprintf('This collection should contain %s elements or less.', $this->maxResults)
+            );
+        }
 
         try {
             $hash = $this->getCacheHash($values);
@@ -93,7 +98,6 @@ class EntitiesToIdsTransformer extends AbstractEntityTransformer
             } else {
                 //Result not in cache
 
-                $this->queryBuilder->setMaxResults($this->maxResults);
                 $queryBuilderLoader = new ORMQueryBuilderLoader($this->queryBuilder);
 
                 foreach ($queryBuilderLoader->getEntitiesByIds($this->identifier, $values) as $entity) {
