@@ -4,6 +4,7 @@
   <services>
     <service id="ecommit_javascript.helper.jquery_helper" class="Ecommit\JavascriptBundle\Helper\JqueryHelper">
         <argument type="service" id="ecommit_util.helper" />
+        <argument type="service" id="twig"/>
     </service>
 
     <service id="ecommit_javascript.twig.jquery_extension" class="Ecommit\JavascriptBundle\Twig\JqueryExtension">

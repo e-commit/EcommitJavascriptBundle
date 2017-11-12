@@ -14,6 +14,7 @@ namespace Ecommit\JavascriptBundle\Helper;
 use Ecommit\UtilBundle\Helper\UtilHelper;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig_Environment;
 
 class JqueryHelper
 {
@@ -24,12 +25,19 @@ class JqueryHelper
     protected $util;
 
     /**
+     * @var Twig_Environment
+     */
+    protected $templating;
+
+    /**
      * Constructor
      * @param UtilHelper $utilHelper
+     * @param Twig_Environment $templating
      */
-    public function __construct(UtilHelper $util)
+    public function __construct(UtilHelper $util, Twig_Environment $templating)
     {
         $this->util = $util;
+        $this->templating = $templating;
     }
 
 
@@ -250,14 +258,21 @@ class JqueryHelper
      */
     public function jQueryFormToRemote($form, $options = array(), $htmlOptions = array())
     {
+        if ($form instanceof FormView) {
+            $options['form'] = true;
+            $htmlOptions['onsubmit'] = $this->jQueryRemoteFunction($form->vars['action'], $options) . '; return false;';
+
+            //Après suppression du BC (ci-dessous), la méthode devra être uniquement ce cas
+            return $this->templating->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
+                ->renderBlock($form, 'form_start', ['attr' => $htmlOptions]);
+        }
+
         //Set Url
         if (isset($options['url'])) {
             $url = $options['url'];
             unset($options['url']);
         } else {
-            if ($form instanceof FormView) {
-                $url = $form->vars['action'];
-            } elseif (is_string($form)) {
+            if (is_string($form)) {
                 // BC
                 $url = $form;
                 trigger_error('Use url in jQueryFormToRemote\'s first argument is deprecated since 2.2 version.', E_USER_DEPRECATED);
