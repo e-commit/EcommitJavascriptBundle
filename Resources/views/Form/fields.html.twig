@@ -99,6 +99,7 @@
                 {% if toolbar2 %}, toolbar2:  "{{ toolbar2 }}"{% endif %}
                 {% if width %}, width:  {{ width }}{% endif %}
                 {% if height %}, height:  {{ height }}{% endif %}
+                {% if form.vars.disabled %}, readonly: true{% endif %}
                 {% if elfinder_file_browser %}, file_browser_callback: function (field_name, url, type, win) {
                     tinyMCE.activeEditor.windowManager.open({
                         file:"{{ url('elfinder', {'instance': elfinder_file_browser}) }}",
