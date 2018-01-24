@@ -263,8 +263,15 @@ class JqueryHelper
             $htmlOptions['onsubmit'] = $this->jQueryRemoteFunction($form->vars['action'], $options) . '; return false;';
 
             //Après suppression du BC (ci-dessous), la méthode devra être uniquement ce cas
-            return $this->templating->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
-                ->renderBlock($form, 'form_start', ['attr' => $htmlOptions]);
+            try {
+                $runtime = $this->templating->getRuntime('Symfony\Component\Form\FormRenderer');
+            } catch (\Twig_Error_Runtime $e) {
+                if ('Unable to load the "Symfony\Component\Form\FormRenderer" runtime.' === $e->getMessage()) { //Symfony < 3.4
+                    $runtime = $this->templating->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer');
+                }
+            }
+
+            return $runtime->renderBlock($form, 'form_start', ['attr' => $htmlOptions]);
         }
 
         //Set Url
