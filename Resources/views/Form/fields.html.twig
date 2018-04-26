@@ -1,10 +1,14 @@
 {% block ecommit_javascript_jquerydatepicker_widget %}
 {% spaceless %}
     {{ block('form_widget_simple') }}
+    {% set jsFctName = (time_format) ? 'datetimepicker' : 'datepicker' %}
     <script type="text/javascript">
         $(function() {
-            $("#{{ id }}").datepicker({
+            $("#{{ id }}").{{ jsFctName }}({
                 dateFormat:     '{{ date_format|raw }}',
+                {% if time_format %}
+                timeFormat:     '{{ time_format }}',
+                {% endif %}
                 changeMonth:    {{ change_month }},
                 changeYear:     {{ change_year }},
                 firstDay:       {{ first_day }},

@@ -26,10 +26,17 @@ class JqueryDatePickerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $format_php = $options['format'];
+        $formatPhp = $options['format'];
+        if ($options['time_format']) {
+            if ($options['input'] !== 'datetime') {
+                throw new InvalidConfigurationException('The time_format is compatible only with input = datetime');
+            }
+
+            $formatPhp = \sprintf('%s %s', $formatPhp, $options['time_format']);
+        }
 
         $builder->addViewTransformer(
-            new DateTimeToStringTransformer($options['data_timezone'], $options['user_timezone'], $format_php)
+            new DateTimeToStringTransformer($options['data_timezone'], $options['user_timezone'], $formatPhp)
         );
 
         if ($options['input'] === 'string') {
@@ -79,6 +86,15 @@ class JqueryDatePickerType extends AbstractType
         $view->vars['go_to_current'] = ($options['go_to_current']) ? 'true' : 'false';
         $view->vars['number_of_months'] = $options['number_of_months'];
         $view->vars['other'] = $options['other'];
+
+        $view->vars['time_format'] = null;
+        $phpTimeFormat = $options['time_format'];
+        if ($phpTimeFormat) {
+            $phpTimes = array('a', 'A', 'g', 'G', 'h', 'H', 'i', 's', 'u', 'v');
+            $jqueryTimes = array('t', 'T', 'h', 'H', 'hh', 'HH', 'mm','ss', 's', 'c', 'l');
+
+            $view->vars['time_format'] = str_replace($phpTimes, $jqueryTimes, $phpTimeFormat);
+        }
     }
 
 
@@ -93,6 +109,7 @@ class JqueryDatePickerType extends AbstractType
             array(
                 'input' => 'datetime',
                 'format' => 'd/m/Y',
+                'time_format' => null,
                 'data_timezone' => null,
                 'user_timezone' => null,
                 'change_month' => true,
