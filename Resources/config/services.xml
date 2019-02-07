@@ -2,29 +2,30 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
   <services>
-    <service id="ecommit_javascript.helper.jquery_helper" class="Ecommit\JavascriptBundle\Helper\JqueryHelper">
-        <argument type="service" id="ecommit_util.helper" />
-        <argument type="service" id="twig"/>
+    <service id="Ecommit\JavascriptBundle\Helper\JqueryHelper" class="Ecommit\JavascriptBundle\Helper\JqueryHelper" public="true">
+        <argument type="service" id="Ecommit\UtilBundle\Helper\UtilHelper" />
+        <argument type="service" id="Twig\Environment"/>
     </service>
+    <service id="ecommit_javascript.helper.jquery_helper" alias="Ecommit\JavascriptBundle\Helper\JqueryHelper" public="true" />
 
-    <service id="ecommit_javascript.twig.jquery_extension" class="Ecommit\JavascriptBundle\Twig\JqueryExtension">
-        <argument type="service" id="ecommit_javascript.helper.jquery_helper" />
+    <service id="Ecommit\JavascriptBundle\Twig\JqueryExtension" class="Ecommit\JavascriptBundle\Twig\JqueryExtension">
+        <argument type="service" id="Ecommit\JavascriptBundle\Helper\JqueryHelper" />
         <tag name="twig.extension" />
     </service>
 
-    <service id="ecommit_javascript.form.type.jqueryautocompleteentityajax" class="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType">
-        <argument type="service" id="doctrine" on-invalid="null" />
-        <argument type="service" id="router" />
+    <service id="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType" class="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType">
+        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+        <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
         <tag name="form.type" />
     </service>
 
-    <service id="ecommit_javascript.form.type.tokeninputentitiesajax" class="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType">
-        <argument type="service" id="doctrine" on-invalid="null" />
-        <argument type="service" id="router" />
+    <service id="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType" class="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType">
+        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+        <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
         <tag name="form.type" />
     </service>
 
-    <service id="ecommit_javascript.form.type.recaptcha" class="Ecommit\JavascriptBundle\Form\Type\RecaptchaType">
+    <service id="Ecommit\JavascriptBundle\Form\Type\RecaptchaType" class="Ecommit\JavascriptBundle\Form\Type\RecaptchaType">
         <argument>%ecommit_javascript.recaptcha.public_key%</argument>
         <argument>%ecommit_javascript.recaptcha.secure%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
@@ -33,26 +34,28 @@
         <deprecated>The "%service_id%" service is deprecated since version 2.2.</deprecated>
     </service>
 
-    <service id="ecommit_javascript.validator.constraints.recaptcha" class="Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator">
-        <argument type="service" id="request_stack" />
+    <service id="Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator" class="Ecommit\JavascriptBundle\Validator\Constraints\RecaptchaValidator">
+        <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
         <argument>%ecommit_javascript.recaptcha.private_key%</argument>
         <argument>%ecommit_javascript.recaptcha.enable%</argument>
-        <tag name="validator.constraint_validator" alias="ecommit_javascript.validator.constraints.recaptcha" />
+        <tag name="validator.constraint_validator" />
         <deprecated>The "%service_id%" service is deprecated since version 2.2.</deprecated>
     </service>
 
-    <service id="ecommit_javascript.form.type.select2entityajax" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
-      <argument type="service" id="doctrine" on-invalid="null" />
-      <argument type="service" id="router" />
+    <service id="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
+      <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+      <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
       <tag name="form.type" />
     </service>
 
-    <service id="ecommit_javascript.overlay.jquery_tools_overlay" class="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay">
+    <service id="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay" class="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay" public="true">
         <argument>%ecommit_javascript.use_bootstrap%</argument>
     </service>
+    <service id="ecommit_javascript.overlay.jquery_tools_overlay" alias="Ecommit\JavascriptBundle\Overlay\JQueryToolsOverlay" public="true" />
 
-    <service id="ecommit_javascript.overlay.jquery_popup_overlay" class="Ecommit\JavascriptBundle\Overlay\JQueryPopupOverlay">
+    <service id="Ecommit\JavascriptBundle\Overlay\JQueryPopupOverlay" class="Ecommit\JavascriptBundle\Overlay\JQueryPopupOverlay" public="true">
         <argument>%ecommit_javascript.use_bootstrap%</argument>
     </service>
+    <service id="ecommit_javascript.overlay.jquery_popup_overlay" alias="Ecommit\JavascriptBundle\Overlay\JQueryPopupOverlay" public="true" />
   </services>
 </container>

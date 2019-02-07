@@ -11,4 +11,4 @@ ecommit_javascript:
     #Utilise ou non bootstrap pour l'application (pour la creation des boutons)
     use_bootstrap: true
     #Service utilisé pour Overlay
-    overlay_service: ecommit_javascript.overlay.jquery_popup_overlay
+    overlay_service: Ecommit\JavascriptBundle\Overlay\JQueryPopupOverlay

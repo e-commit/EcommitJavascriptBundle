@@ -29,13 +29,5 @@ class Recaptcha extends Constraint
     {
         return Constraint::PROPERTY_CONSTRAINT;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
-    {
-        return 'ecommit_javascript.validator.constraints.recaptcha';
-    }
 }
 
