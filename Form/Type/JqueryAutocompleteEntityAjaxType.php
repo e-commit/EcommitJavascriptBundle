@@ -13,7 +13,6 @@ namespace Ecommit\JavascriptBundle\Form\Type;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToArrayTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,8 +20,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class JqueryAutocompleteEntityAjaxType extends AbstractType
 {
@@ -34,7 +33,7 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
     protected $registry;
 
     /**
-     * @var Router
+     * @var RouterInterface
      */
     protected $router;
 
@@ -43,7 +42,7 @@ class JqueryAutocompleteEntityAjaxType extends AbstractType
      *
      * @param ManagerRegistry $em
      */
-    public function __construct(ManagerRegistry $registry, Router $router)
+    public function __construct(ManagerRegistry $registry, RouterInterface $router)
     {
         $this->registry = $registry;
         $this->router = $router;

@@ -14,14 +14,13 @@ use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransforme
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class TokenInputEntitiesAjaxType extends AbstractType
 {
@@ -33,7 +32,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
     protected $registry;
 
     /**
-     * @var Router
+     * @var RouterInterface
      */
     protected $router;
 
@@ -41,7 +40,7 @@ class TokenInputEntitiesAjaxType extends AbstractType
      * Constructor
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry, Router $router)
+    public function __construct(ManagerRegistry $registry, RouterInterface $router)
     {
         $this->registry = $registry;
         $this->router = $router;
