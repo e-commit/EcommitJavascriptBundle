@@ -14,13 +14,13 @@
     </service>
 
     <service id="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType" class="Ecommit\JavascriptBundle\Form\Type\JqueryAutocompleteEntityAjaxType">
-        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+        <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
         <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
         <tag name="form.type" />
     </service>
 
     <service id="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType" class="Ecommit\JavascriptBundle\Form\Type\TokenInputEntitiesAjaxType">
-        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+        <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
         <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
         <tag name="form.type" />
     </service>
@@ -43,7 +43,7 @@
     </service>
 
     <service id="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType" class="Ecommit\JavascriptBundle\Form\Type\Select2\Select2EntityAjaxType">
-      <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+      <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
       <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
       <tag name="form.type" />
     </service>

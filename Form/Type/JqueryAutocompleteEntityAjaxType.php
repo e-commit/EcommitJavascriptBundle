@@ -10,7 +10,7 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToArrayTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;

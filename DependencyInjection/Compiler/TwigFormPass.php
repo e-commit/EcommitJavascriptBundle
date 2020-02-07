@@ -28,8 +28,8 @@ class TwigFormPass implements CompilerPassInterface
             array_merge(
                 $container->getParameter('twig.form.resources'),
                 array(
-                    'EcommitJavascriptBundle:Form:fields.html.twig',
-                    'EcommitJavascriptBundle:Form:select2.html.twig',
+                    '@EcommitJavascript/Form/fields.html.twig',
+                    '@EcommitJavascript/Form/select2.html.twig',
                 )
             )
         );

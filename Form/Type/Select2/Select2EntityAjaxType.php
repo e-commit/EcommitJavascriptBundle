@@ -10,7 +10,7 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type\Select2;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntityToIdTransformer;

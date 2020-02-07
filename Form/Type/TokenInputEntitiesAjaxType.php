@@ -10,10 +10,10 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToIdsTransformer;
 use Ecommit\JavascriptBundle\Form\DataTransformer\Entity\EntitiesToJsonTransformer;
 use Ecommit\JavascriptBundle\Form\EventListener\FixMultiAutocomplete;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
