@@ -13,7 +13,7 @@ namespace Ecommit\JavascriptBundle\Form\DataTransformer\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\QueryBuilder;
-use Ecommit\UtilBundle\Util\Util;
+use Ecommit\ScalarValues\ScalarValues;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -79,7 +79,7 @@ class EntitiesToIdsTransformer extends AbstractEntityTransformer
         if (!is_array($values)) {
             throw new UnexpectedTypeException($values, 'array');
         }
-        $values = Util::filterScalarValues($values);
+        $values = ScalarValues::filterScalarValues($values);
 
         if (count($values) == 0) {
             return $collection;

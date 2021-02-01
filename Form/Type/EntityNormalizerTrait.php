@@ -10,8 +10,8 @@
 
 namespace Ecommit\JavascriptBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\OptionsResolver\Options;
