@@ -14,7 +14,7 @@ namespace Ecommit\JavascriptBundle\Helper;
 use Ecommit\UtilBundle\Helper\UtilHelper;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Twig_Environment;
+use Twig\Environment;
 
 class JqueryHelper
 {
@@ -25,14 +25,14 @@ class JqueryHelper
     protected $util;
 
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $templating;
 
     /**
      * Constructor
      * @param UtilHelper $utilHelper
-     * @param Twig_Environment $templating
+     * @param Environment $templating
      */
     public function __construct(UtilHelper $util, Twig_Environment $templating)
     {
