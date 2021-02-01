@@ -34,7 +34,7 @@ class JqueryHelper
      * @param UtilHelper $utilHelper
      * @param Environment $templating
      */
-    public function __construct(UtilHelper $util, Twig_Environment $templating)
+    public function __construct(UtilHelper $util, Environment $templating)
     {
         $this->util = $util;
         $this->templating = $templating;
