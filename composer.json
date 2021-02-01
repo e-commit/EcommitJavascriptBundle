@@ -29,10 +29,5 @@
     },
     "autoload": {
         "psr-4": { "Ecommit\\JavascriptBundle\\": "" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.0.x-dev"
-        }
     }
 }
