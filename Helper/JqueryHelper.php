@@ -192,7 +192,8 @@ class JqueryHelper
             $function .= ',data:' . $formData;
         }
         if (isset($updateSuccess) && !$options['success']) {
-            $function .= ',success:function(data, textStatus){jQuery(\'' . $updateSuccess . '\').' . $updateMethod . '(data);}';
+            $afterUpdate = "var eventAfter = $.Event('ec-crud-ajax-update-dom-after', {element: '$updateSuccess'}); $('$updateSuccess').trigger(eventAfter);";
+            $function .= ',success:function(data, textStatus){jQuery(\'' . $updateSuccess . '\').' . $updateMethod . '(data); '.$afterUpdate.'}';
         }
         if (isset($updateFailure)) {
             $function .= ',error:function(XMLHttpRequest, textStatus, errorThrown){' . $updateFailure . '}';
